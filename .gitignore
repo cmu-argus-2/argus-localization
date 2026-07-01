@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+*.egg-info/
+.venv/
+venv/
+
+cache/
+output/
+*.faiss
+*.pt
+*.ckpt
+
+# Vendored read-only reference copy of https://github.com/gmberton/EarthLoc,
+# not our code, not tracked.
+third_party/
+
+.DS_Store

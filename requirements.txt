@@ -1,0 +1,12 @@
+torch
+timm
+faiss-cpu
+opencv-python
+numpy
+pillow
+pyyaml
+tqdm
+shapely
+
+# LightGlue is not on PyPI, install from source:
+# pip install git+https://github.com/cvg/LightGlue.git

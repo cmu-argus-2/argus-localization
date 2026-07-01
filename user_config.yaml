@@ -1,0 +1,13 @@
+# Local, machine-specific paths. Not meant to be identical across dev machines.
+
+# Root of the rsynced EarthLoc data (https://github.com/gmberton/EarthLoc). Read-only,
+# owned by root on this machine, do not expect write access here.
+data_root: /mnt/sdc1/astroloc/data
+queries_dir: /mnt/sdc1/astroloc/data/queries
+database_dir: /mnt/sdc1/astroloc/data/database
+earthloc_checkpoint: /mnt/sdc1/astroloc/data/best_trained_model.pt
+queries_intersections_path: /mnt/sdc1/astroloc/data/queries_intersections_with_db_2021.pt
+
+# Local scratch space for built indexes, cached descriptors, and demo outputs.
+cache_dir: ./cache
+output_dir: ./output

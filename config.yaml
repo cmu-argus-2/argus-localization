@@ -1,0 +1,35 @@
+# Pipeline configuration. See docs/argus_localization_spec.md section 4 (PipelineConfig)
+# and docs/argus_localization_design.md, "Starting hyperparameters" section.
+
+device: cuda   # falls back to cpu automatically if cuda is unavailable
+
+pipeline:
+  top_k: 15              # shortlist size handed to the matcher; trade down toward 5 if matcher cost dominates
+  min_inliers: 30         # below this, reject the candidate (no_fix)
+  query_size: 512
+  max_ransac_iters: 3
+
+retriever:
+  # v0: "earthloc" wraps the released ResNet50 + MixVPR checkpoint, for baseline plumbing only.
+  # Phase 2 target: "small", a distilled EfficientNet-Lite/MobileNetV3 + GeM retriever.
+  kind: earthloc
+  descriptor_dim: 512   # only used by kind "small"; "earthloc" is fixed at 4096 by the checkpoint
+  head: gem
+
+matcher:
+  name: sift_lightglue
+  max_num_keypoints: 1024
+  img_size: 512
+  max_ransac_iters: 3
+
+index:
+  type: faiss_flat   # swap to ivf_pq only if the database grows RAM-bound
+
+eval:
+  iou_threshold: 0.2       # retrieval hit = retrieved tile footprint overlaps ground truth above this IoU
+  recall_k_values: [1, 5, 15]
+  db_year: 2021             # restrict the reference database to one year, matches the intersections file
+  db_dist_km: 5000          # keep db tiles within this geodesic distance of the region center
+  query_dist_km: 2500       # keep queries within this geodesic distance of the region center
+  max_matching_queries: 50  # matching (retrieval + SIFT-LightGlue) is much slower than retrieval alone,
+                             # so the matching stage subsamples queries; retrieval recall still uses all of them
