@@ -2,7 +2,6 @@
 
 Companion to `argus_localization_design.md` (the rationale doc). That doc is the "why" for the team. This is the "how" for a coding agent. Where they disagree, the rationale doc wins on intent; this doc wins on interfaces.
 
-Hard rule for all code and comments: no em dashes anywhere.
 
 Update (2026-07-01, confirmed with Priyanka): every "Sentinel-2" mention below for the Phase 1 reference DB is superseded. The actual available imagery on this machine is Landsat-8 (`/mnt/sda2/geotiffs/`, 16 MGRS zones, `l8_` filename prefix, B4/B3/B2 bands, 175m/pixel, ~500 temporal composites per zone). Read "Sentinel-2" as "Landsat-8" throughout until this doc is revised.
 
