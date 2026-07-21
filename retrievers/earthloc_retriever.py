@@ -1,4 +1,8 @@
-"""v0 default retriever: wraps the released EarthLoc model (DINOv2-base + SALAD).
+"""v0 default retriever: wraps the released EarthLoc model (ResNet50, truncated
+after layer3, + MixVPR aggregation, see third_party/EarthLoc/apl_models/{resnet,
+mixvpr,apl_model}.py for the actual architecture behind best_trained_model.pt).
+Not DINOv2+SALAD -- that's a different backbone/aggregator combo the EarthLoc
+paper explores, but not what this checkpoint's weights are.
 
 This validates plumbing and gets a baseline recall number fast. It is NOT the
 deployment retriever, see docs/argus_localization_design.md section 6 and

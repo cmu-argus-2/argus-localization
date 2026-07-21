@@ -35,7 +35,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from core.pipeline import LocalizationPipeline
 from core.types import GeoTile, PipelineConfig
 from data_loading.earthloc_loader import load_query_set, parse_geotile_filename
-from database.reference_database import ReferenceDatabase
+from database.reference_database import ReferenceDatabase, dedup_search
 from georeference.georeferencer import Georeferencer
 from index.faiss_index import FaissFlatIndex
 from matchers.sift_lightglue_matcher import SiftLightGlueMatcher
@@ -164,7 +164,7 @@ def evaluate_retrieval(
         images = [load_image_array(query.image_path) for query, _ in chunk]
         descriptors = db.retriever.embed_batch(images)
         for (query, positives_set), descriptor in zip(chunk, descriptors):
-            retrieved = db.index.search(descriptor, max_k)
+            retrieved = dedup_search(db.index, descriptor, max_k)
             retrieved_ids = [tile_id for tile_id, _ in retrieved]
             for k in k_values:
                 if any(tile_id in positives_set for tile_id in retrieved_ids[:k]):

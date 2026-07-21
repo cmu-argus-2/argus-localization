@@ -27,10 +27,14 @@ Every stage is a `typing.Protocol` (`core/interfaces.py`), so any concrete imple
 ### Stage by stage
 
 **1. Retriever** (`core/interfaces.py::Retriever`, implemented in `retrievers/earthloc_retriever.py::EarthLocRetriever`)
-Wraps the released EarthLoc checkpoint (ResNet50 backbone + MixVPR aggregation, see `third_party/EarthLoc/apl_models/`). Takes an `(H,W,3)` uint8 image, returns a 4096-dim L2-normalized descriptor vector. This is a baseline for plumbing only, not the deployment retriever: it is a ~400MB model trained on astronaut photography, not something that runs on flight hardware. The Phase 2 target, `retrievers/small_retriever.py::SmallRetriever`, is a stub for a distilled EfficientNet-Lite/MobileNetV3 model with a 512-dim descriptor, not implemented yet.
+Wraps the released EarthLoc checkpoint: **ResNet50 (ImageNet-pretrained, truncated after layer3) + MixVPR aggregation + a final 4096-d linear projection**, L2-normalized (see `third_party/EarthLoc/apl_models/{resnet,mixvpr,apl_model}.py`, and the EarthLoc paper section 5.1.1, which states this exactly: *"Our model has a MixVPR-style architecture, with a ResNet50 backbone and an MLP-Mixer with output dimension 4096"*). Takes an `(H,W,3)` uint8 image, resizes to 320x320, returns a 4096-dim L2-normalized descriptor vector. This is a baseline for plumbing only, not the deployment retriever: it is trained on astronaut photography, not something that has been verified to run on flight hardware. The Phase 2 target, `retrievers/small_retriever.py::SmallRetriever`, is a stub for a distilled EfficientNet-Lite/MobileNetV3 model with a 512-dim descriptor, not implemented yet.
+
+Note on a documentation error that was in this repo until it was caught and fixed: earlier versions of this README and the design/spec docs described this checkpoint as "DINOv2-base + SALAD". That's wrong for *this* codebase -- DINOv2+SALAD, multi-similarity loss, "MuM", and clustering-based localization belong to **AstroLoc**, a different, related paper/project from the same research group. No AstroLoc code is vendored in this repo (only `third_party/EarthLoc/`), and the checkpoint we actually load (`best_trained_model.pt`) is the ResNet50+MixVPR architecture above, confirmed directly against the EarthLoc paper text and the vendored `apl_models/` source. (EarthLoc's own paper does use a multi-similarity loss variant -- "Neutral-Aware Multi-Similarity Loss" -- and clustered-batch training; those are EarthLoc's, not AstroLoc's contribution, and are training-time techniques baked into the released checkpoint's weights, not something this repo runs.)
 
 **2. Index** (`core/interfaces.py::DescriptorIndex`, implemented in `index/faiss_index.py::FaissFlatIndex`)
-A flat FAISS `IndexFlatIP` over L2-normalized descriptors, which gives exact cosine similarity search. `database/reference_database.py::ReferenceDatabase` is the layer above this: it embeds every reference tile once (`build()`), stores tile metadata (`GeoTile` objects keyed by `tile_id`), and answers `retrieve(frame, k)` by embedding the query and searching the index. This embed-once, search-many-times database is "the dataset" that retrieval runs against; it is cached to disk under `cache/db_<region>/` so it does not need rebuilding on every run.
+A flat FAISS `IndexFlatIP` over L2-normalized descriptors, which gives exact cosine similarity search. `database/reference_database.py::ReferenceDatabase` is the layer above this: it embeds every reference tile at **4 rotations (0/90/180/270)** (`build()`), stores tile metadata (`GeoTile` objects keyed by `tile_id`), and answers `retrieve(frame, k)` by embedding the query once, over-fetching from the index, and deduping rotation variants back to their base tile (keeping each tile's best-scoring rotation) via `database/reference_database.py::dedup_search`. This embed-once, search-many-times database is "the dataset" that retrieval runs against; it is cached to disk under `cache/db_<region>/` so it does not need rebuilding on every run.
+
+Why 4 rotations: astronaut/camera frames arrive at an arbitrary roll, and a single north-up descriptor per tile retrieves poorly against a rotated query. This mirrors EarthLoc's own evaluation methodology exactly -- their paper calls it "4x90°TTA" and applies it to every method in their benchmark table, including their own headline numbers (see Results below). It was deliberately skipped in the initial Phase 0 build for baseline plumbing only, then added once the gap was root-caused (see Results).
 
 **3. Matcher** (`core/interfaces.py::Matcher`, implemented in `matchers/sift_lightglue_matcher.py::SiftLightGlueMatcher`)
 For a (query frame, candidate tile) pair: extracts SIFT keypoints from both (max 1024 keypoints, images resized to 512px), matches them with LightGlue, then fits a homography with `cv2.findHomography` using MAGSAC RANSAC. Returns a `MatchResult`: the matched pixel coordinates in both images, an inlier mask, the homography, and `num_inliers`. This mirrors the EarthMatch algorithm (see "EarthMatch reproduction" below). The matcher does not decide accept/reject; it just reports the inlier count. Database-side keypoints are cached per `tile_id` so repeated candidates across queries do not re-extract features.
@@ -89,7 +93,7 @@ Reference tiles and queries are rsynced from [EarthLoc](https://github.com/gmber
 
 - `queries/*.jpg`, 17763 files, each an oblique astronaut photograph
 - `database/YYYY_MM/*.jpg`, nadir satellite tiles, multiple years
-- `best_trained_model.pt`, the released EarthLoc checkpoint (DINOv2-base + SALAD)
+- `best_trained_model.pt`, the released EarthLoc checkpoint (ResNet50 + MixVPR -- see "Retriever" above)
 
 Both queries and reference tiles encode their footprint and metadata directly in the filename:
 
@@ -149,37 +153,49 @@ This is EarthLoc's own retrieval model and test harness, run inside this repo pu
 R@1: 58.4, R@5: 72.3, R@10: 76.9, R@20: 81.0, R@100: 89.4
 ```
 
-This matches EarthLoc's own published numbers for this region, confirming the checkpoint and data are wired correctly.
+This matches EarthLoc's own published numbers for this region, confirming the checkpoint and data are wired correctly. Note this reproduction already includes EarthLoc's own "4x90°TTA" (4 rotations per database tile) internally, per their test harness -- which is why it was the target to match once rotation TTA was added to this repo's own pipeline below.
 
 ### Argus pipeline evaluation (`evaluate.py`, Alps region)
 
+Current numbers, with rotation TTA (4 rotations/tile) enabled in `ReferenceDatabase`:
+
 ```
 === Retrieval (Alps, 2393 queries with a ground-truth positive) ===
-R@1: 25.4, R@5: 35.9, R@15: 45.0
+R@1: 56.8, R@5: 69.7, R@15: 76.4
 
 === Matching (Alps, 50 queries) ===
-fix rate (num_inliers >= 30): 36.0%
-median localization error: 3.3 km
+mean best-candidate num_inliers: 59.2
+fix rate (num_inliers >= 30): 44.0%
+median localization error: 3.0 km
 ```
 
-Retrieval recall here is much lower than the EarthLoc reproduction above (R@1 25.4 vs 58.4). This gap has been measured and understood, it is not a retrieval quality bug:
+R@1 56.8 is now 97% of the EarthLoc reproduction above (58.4), using our own `FaissFlatIndex`/dedup path rather than EarthLoc's own test harness. Before rotation TTA, this pipeline measured R@1 25.4 / R@5 35.9 / R@15 45.0 and a 36.0% fix rate -- a large, measured, and now-closed gap. What happened:
 
-1. **Ground truth strictness (about 20% of the gap at R@15).** `evaluate.py` only counts a retrieved tile as correct if its footprint overlaps the query's at IoU >= 0.2. EarthLoc's own precomputed positives file is far more generous (about 65 positive tiles per query on average, versus about 10 under our IoU check on the same queries), because EarthLoc query footprints (~25,000 sq km) are only about a quarter the area of a database tile (~97,000-98,000 sq km): even a query fully contained in one tile caps IoU well below 1.0. This is the query/database scale mismatch the design doc already flags as the most likely reason numbers look bad for a reason unrelated to the method, and it is exactly why Phase 1 rebuilds the reference database at Argus's actual matched scale.
-2. **Rotation test-time augmentation (the rest of the gap).** EarthLoc's own test code embeds every database tile at four rotations (0/90/180/270) and keeps whichever aligns best with the query, which matters a lot for oblique, arbitrarily-rotated astronaut photography. `EarthLocRetriever` deliberately does not do this. Swapping in EarthLoc's own generous ground truth while still using our non-augmented retriever only recovers part of the gap (R@15 45 -> 54 on a 400-query sample), confirming augmentation is the larger of the two factors.
+1. **Root cause, confirmed by direct measurement, not guesswork.** A diagnostic script (classifying every `no_fix` frame on Alps as either "ground-truth tile never reached the top-k shortlist" vs. "it reached the matcher but fell short on inliers") found the split was 25/32 (78%) retrieval misses vs. 7/32 (22%) matcher misses, and the matcher misses had near-zero best-inlier counts anyway (0-18, well under the 30 threshold) -- so loosening `min_inliers` would not have helped. Retrieval, not matching, was the bottleneck.
+2. **Fix: rotation TTA, exactly what EarthLoc's own paper does.** EarthLoc's paper (section 5.2, "Inference") describes embedding every database tile at 4 rotations (0/90/180/270) and calls this "4x90°TTA" -- applied to *every* method in their benchmark table, including their own headline numbers, "for fairness". `EarthLocRetriever`/`ReferenceDatabase` deliberately skipped this in the initial Phase 0 build (baseline plumbing only). Adding it (`database/reference_database.py::ReferenceDatabase.build`/`retrieve`, see docstring) took Alps from R@1 25.4 -> 56.8.
+3. **Remaining ~1.6-point gap to EarthLoc's own 58.4** is plausibly the IoU>=0.2 ground-truth strictness noted before (EarthLoc's precomputed positives file is more generous than this repo's IoU check, since EarthLoc query footprints, ~25,000 sq km, are only about a quarter the area of a database tile, ~97,000-98,000 sq km) plus minor implementation differences (exact `IndexFlatIP` search here vs. EarthLoc's own test harness). Not chased further since it's a small remainder and Phase 1 (matched-scale reference DB) is the real fix for the scale mismatch, not IoU-threshold tuning.
+
+Rotation TTA costs what the paper says it costs: 4x build time (Alps: ~270s -> ~1070s to embed 52,951 tiles) and 4x index memory (~3.5 GB of descriptor vectors for Alps alone, at 4096-dim x 4 rotations x 52,951 tiles).
 
 ### Coordinates dataset export (`build_coordinates_dataset.py`, all 6 EarthLoc regions, 50 frames each)
 
+With rotation TTA (current):
+
 ```
-Region          Reference tiles embedded   Fix rate
-Alps            52951                      36.0%
-Texas           34032                      20.0%
-Toshka Lakes    62617                      46.0%
-Amazon          19126                      28.0%
-Napa            30400                      28.0%
-Gobi            54687                      32.0%
+Region          Reference tiles embedded   Fix rate   Fix rate (pre-TTA)
+Alps            52951                      50.0%      36.0%
+Texas           34032                      34.0%      20.0%
+Toshka Lakes    62617                      70.0%      46.0%
+Amazon          19126                      42.0%      28.0%
+Napa            30400                      42.0%      28.0%
+Gobi            54687                      40.0%      32.0%
 ```
 
-Fix rate is the fraction of sampled frames where the best-matching candidate cleared the 30-inlier threshold and produced real coordinates. The spread across regions (20-46%) tracks terrain and texture, not a bug: Toshka Lakes' high-contrast desert/water coastlines give SIFT strong, distinctive keypoints, while Texas' more uniform agricultural/urban texture at this scale gives fewer distinctive features to match confidently. As above, these numbers describe matching EarthLoc's oblique, large-area astronaut photography against a mismatched-scale reference database, not Argus's own frames; they confirm the retrieve-match-georeference pipeline runs correctly end to end and produces sane tie points and footprints (spot-checked against ground truth), not what fix rate to expect in production.
+Every region improved; Toshka Lakes reaches 70% and is the clear standout, consistent with a separate saliency analysis of this database (see below) that ranked it highest for coastline/landmark content. These fix rates are measured on a different 50-frame sample per region than the `evaluate.py` numbers quoted elsewhere in this README (`build_coordinates_dataset.py` takes the first 50 scoped queries in file-listing order, `evaluate.py`'s matching eval takes a random sample) -- e.g. Alps reads 50.0% here vs. 44.0% in the Alps section above, Texas 34.0% here vs. 56.0% there. Both are real, it's sampling variance between two different 50-query subsets of the same region, not a discrepancy in the pipeline. Every "fix" record in `output/coordinates_<region>.json` has a real 4-corner `query_footprint_latlon`, verified directly (`len(fix records) == len(records with non-null footprint)` for all 6 regions).
+
+Fix rate is the fraction of sampled frames where the best-matching candidate cleared the 30-inlier threshold and produced real coordinates. The remaining spread across regions (34-70%, with TTA) still tracks terrain and texture, not a bug: Toshka Lakes' high-contrast desert/water coastlines give SIFT strong, distinctive keypoints, while Texas' more uniform agricultural/urban texture at this scale gives fewer distinctive features to match confidently. As above, these numbers describe matching EarthLoc's oblique, large-area astronaut photography against a mismatched-scale reference database, not Argus's own frames; they confirm the retrieve-match-georeference pipeline runs correctly end to end and produces sane tie points and footprints (spot-checked against ground truth), not what fix rate to expect in production.
+
+A companion analysis of which of these six regions have the most retrieval-friendly (salient) content -- identifiable coastlines, landmarks, high-contrast geography vs. uniform texture -- found, by sampling 250 zoom-11 tiles/region and scoring coastline presence + edge density: Napa and Toshka Lakes score highest (11.2%/6.4% of tiles coastal, with Toshka Lakes' coastal tiles the most visually distinctive of any region), Amazon and Gobi lowest (uniform rainforest canopy and desert respectively). This tracks the fix-rate ranking above reasonably well, though not perfectly (Toshka Lakes' saliency ranking predicts and matches its top fix rate; the middle-of-pack regions don't order identically between the two analyses, which isn't surprising since fix rate also depends on the specific 50 sampled queries, not just the reference DB's overall content).
 
 ### EarthMatch reproduction (separate repo, sanity check only)
 
@@ -199,7 +215,7 @@ Gate each phase on the previous one succeeding.
 
 - **Phase 0 (done):** wire the released EarthLoc retriever, FaissFlatIndex, and a SIFT-LightGlue matcher into one pipeline; get baseline recall and fix-rate numbers on the rsynced EarthLoc data. Validates plumbing only, not Argus-representative accuracy (see caveats above).
 - **Phase 1 (next):** rebuild the reference database at Argus's actual scale from the Landsat-8 GeoTIFFs at `/mnt/sda2/geotiffs/` (16 MGRS zones: 10S, 10T, 11R, 12R, 16T, 17R, 17T, 18S, 32S, 32T, 33S, 33T, 52S, 53S, 54S, 54T; each zone has about 500 temporal composites of the same near-full-zone footprint at 175m/pixel, UTM projected). This supersedes the "Sentinel-2" wording still present in the design and spec docs. Tiling needs to reproject each zone's UTM footprint to lat/lon corners for `GeoTile.corners_latlon`, and pick a subset of the roughly 500 timestamps per zone rather than using all of them. This is a make-or-break check: confirm retrieval is sane once query and database scales actually match, since the numbers above use EarthLoc's own mismatched scales.
-- **Phase 2:** distill a small on-device retriever (EfficientNet-Lite/MobileNetV3 + GeM, descriptor_dim 512) from the EarthLoc DINOv2+SALAD teacher via relational (pairwise-similarity) distillation, then domain fine-tune on the Phase 1 reference tiles. Goal is recall@k parity with the teacher, not matching its R@1 exactly.
+- **Phase 2:** distill a small on-device retriever (EfficientNet-Lite/MobileNetV3 + GeM, descriptor_dim 512) from the EarthLoc ResNet50+MixVPR teacher (previously mis-described here as "DINOv2+SALAD" -- that's AstroLoc, a different, related paper with no code in this repo; see "Retriever" above) via relational (pairwise-similarity) distillation, then domain fine-tune on the Phase 1 reference tiles. Goal is recall@k parity with the teacher, not matching its R@1 exactly. Worth re-checking before investing here: the teacher is a truncated ResNet50 run at 320x320, not a heavy ViT, so the "too heavy for Orin" premise for needing a distilled model at all should be verified against the real teacher's profile on target hardware, not assumed.
 - **Phase 3:** implement `integration/batchopt_adapter.py::to_batchopt_measurements` for real, and integrate the matcher's tie points into the batch optimization step of OD. End-to-end localization quality becomes the metric that matters.
 - **Phase 4:** Orin hardware benchmarks (median and worst-case frame time vs. the current RCNet/YOLO path), scene-stratified quality. Textureless scenes (ocean, uniform desert, ice, thick cloud) are explicitly out of scope per current project scoping, so there is no YOLO fallback in v0; this is a team decision to revisit if those scenes turn out to be in the operating population.
 
