@@ -1,11 +1,13 @@
 """K-means clustering of reference-tile embeddings for the MuM loss.
 
 Per the AstroLoc paper: satellite images are clustered (k=50), queries are
-assigned to clusters (here: via their matched tile's cluster, since we
-already have IoU-based positive pairs -- see astroloc/data/pairing.py -- so
-there's no need for the paper's own embedding-similarity assignment), and
-clusters are sampled during training weighted by how many queries land in
-each one.
+assigned to clusters by nearest centroid, and clusters are sampled during
+training weighted by how many queries land in each one
+(astroloc/training/sampler.py::ClusterBatchSampler). `recluster()` below
+redoes this with the model's current (updating) weights, for periodic
+reclustering during training (train.py's --recluster-every-steps); the
+one-time version at training start (train.py::build_training_data) instead
+takes the shortcut of using each pair's matched tile's cluster directly.
 """
 
 import numpy as np
@@ -49,3 +51,25 @@ def assign_nearest_cluster(embeddings: np.ndarray, centroids: np.ndarray) -> np.
     index.add(centroids)
     _, assignments = index.search(embeddings, 1)
     return assignments.reshape(-1)
+
+
+def recluster(
+    retriever: DinoV2SaladRetriever, tiles: list[GeoTile], queries: list[GeoTile], k: int = 50
+) -> tuple[dict[str, int], dict[str, int]]:
+    """Re-embeds tiles and queries with the retriever's CURRENT weights,
+    re-fits k-means on the tiles (clusters are of satellite images), and
+    assigns queries to their nearest centroid -- the dynamic-batching
+    counterpart to the one-time clustering `training/train.py::build_training_data`
+    does before training starts. Returns (tile_id -> cluster_id, query_id ->
+    cluster_id) dicts. Caller is responsible for retriever.model being in
+    eval() mode and switching back to train() after.
+    """
+    tile_embeddings = embed_tiles(retriever, tiles)
+    centroids, tile_cluster_ids = kmeans_cluster(tile_embeddings, k=k)
+    tile_id_to_cluster = {t.tile_id: int(c) for t, c in zip(tiles, tile_cluster_ids)}
+
+    query_embeddings = embed_tiles(retriever, queries)
+    query_cluster_ids = assign_nearest_cluster(query_embeddings, centroids)
+    query_id_to_cluster = {q.tile_id: int(c) for q, c in zip(queries, query_cluster_ids)}
+
+    return tile_id_to_cluster, query_id_to_cluster

@@ -2,12 +2,17 @@
 checkpoint) on GAPE mlcoord queries paired with the existing Sentinel-2-derived
 reference tile mirror, using AstroLoc's two losses (L_pairs + L_MUM).
 
-Simplifications vs. the AstroLoc paper (demo-scale, documented honestly, see
-astroloc/README.md): clusters are computed once up front from the pretrained
-model's embeddings (not recomputed periodically during training), and batches
-are uniformly shuffled positive pairs rather than the paper's separate
-pairs/quadruplet batch composition -- both losses are computed on the same
-batch each step instead.
+Two batching modes, selected by --dynamic-batching:
+- Static (default, original demo simplification): clusters computed once up
+  front from the pretrained model's embeddings, batches are uniformly
+  shuffled positive pairs. Both losses computed on the same random batch.
+- Dynamic (--dynamic-batching --recluster-every-steps N): closer to the
+  paper's own scheme. astroloc/training/sampler.py::ClusterBatchSampler
+  draws half of each batch from a single cluster weighted by how many
+  queries currently land in it; every N steps, astroloc/training/
+  cluster.py::recluster() re-embeds tiles+queries with the model's CURRENT
+  weights and reassigns clusters/query labels, refreshing the sampler.
+See astroloc/README.md for the remaining differences from the paper.
 """
 
 import argparse
@@ -21,6 +26,7 @@ _REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__f
 if _REPO_ROOT not in sys.path:
     sys.path.insert(0, _REPO_ROOT)
 
+import numpy as np
 import torch
 from torch.utils.data import DataLoader
 
@@ -30,8 +36,9 @@ from astroloc.data.reference_tiles import build_reference_tiles
 from astroloc.losses.mum import mum_loss
 from astroloc.losses.pairwise import pairwise_loss
 from astroloc.models.dinov2_salad import IMAGENET_MEAN, IMAGENET_STD, DinoV2SaladModel, DinoV2SaladRetriever
-from astroloc.training.cluster import embed_tiles, kmeans_cluster
+from astroloc.training.cluster import embed_tiles, kmeans_cluster, recluster
 from astroloc.training.dataset import PairDataset
+from astroloc.training.sampler import ClusterBatchSampler
 
 TRAIN_DIR = "/mnt/sdc1/astroloc/reference_db/astroloc_train"
 CACHE_DIR = os.path.join(TRAIN_DIR, "cache")
@@ -122,6 +129,9 @@ def main():
     ap.add_argument("--lora-r", type=int, default=8)
     ap.add_argument("--lora-alpha", type=int, default=16)
     ap.add_argument("--lora-dropout", type=float, default=0.0)
+    ap.add_argument("--dynamic-batching", action="store_true", help="cluster-weighted batch sampler instead of plain shuffle")
+    ap.add_argument("--recluster-every-steps", type=int, default=0, help="0 disables periodic reclustering; only meaningful with --dynamic-batching")
+    ap.add_argument("--max-pairs", type=int, default=None, help="debug: trim to this many cached pairs, for fast smoke tests")
     args = ap.parse_args()
     checkpoint_dir = args.checkpoint_dir
 
@@ -135,19 +145,44 @@ def main():
         args.device,
         args.rebuild_cache,
     )
-    pairs, cluster_ids = data["pairs"], data["cluster_ids"]
+    pairs = data["pairs"]
+    cached_cluster_ids = data["cluster_ids"]
+    if args.max_pairs:
+        pairs = pairs[: args.max_pairs]
+        cached_cluster_ids = cached_cluster_ids[: args.max_pairs]
     print(f"Training on {len(pairs)} pairs, {data['num_clusters']} clusters")
 
-    dataset = PairDataset(pairs, cluster_ids)
-    loader = DataLoader(
-        dataset,
-        batch_size=args.batch_size,
-        shuffle=True,
-        num_workers=args.num_workers,
-        drop_last=True,
-        pin_memory=True,
-        persistent_workers=args.num_workers > 0,
-    )
+    # Main-process-owned, mutable: see dataset.py's docstring for why cluster
+    # ids are looked up here (by pair index) instead of inside PairDataset.
+    query_cluster_ids = np.array(cached_cluster_ids, dtype=np.int64)
+    tile_cluster_ids = np.array(cached_cluster_ids, dtype=np.int64)
+
+    # Unique tiles/queries for reclustering, derived straight from the pairs
+    # (each pair already carries both GeoTiles, no separate cache needed).
+    unique_tiles = list({tile.tile_id: tile for _, tile in pairs}.values())
+    unique_queries = list({query.tile_id: query for query, _ in pairs}.values())
+
+    dataset = PairDataset(pairs)
+    if args.dynamic_batching:
+        batch_sampler = ClusterBatchSampler(query_cluster_ids.tolist(), batch_size=args.batch_size)
+        loader = DataLoader(
+            dataset,
+            batch_sampler=batch_sampler,
+            num_workers=args.num_workers,
+            pin_memory=True,
+            persistent_workers=args.num_workers > 0,
+        )
+    else:
+        batch_sampler = None
+        loader = DataLoader(
+            dataset,
+            batch_size=args.batch_size,
+            shuffle=True,
+            num_workers=args.num_workers,
+            drop_last=True,
+            pin_memory=True,
+            persistent_workers=args.num_workers > 0,
+        )
 
     model = DinoV2SaladModel(
         pretrained=True,
@@ -186,11 +221,13 @@ def main():
     for epoch in range(args.epochs):
         if stop:
             break
-        for q_img, t_img, cids in loader:
+        for q_img, t_img, idx in loader:
             step_t0 = time.time()
             q = preprocess(q_img)
             t_ = preprocess(t_img)
-            cids = cids.to(args.device)
+            idx_np = idx.numpy()
+            q_cids = torch.from_numpy(query_cluster_ids[idx_np]).to(args.device)
+            t_cids = torch.from_numpy(tile_cluster_ids[idx_np]).to(args.device)
 
             optimizer.zero_grad(set_to_none=True)
             combined = torch.cat([q, t_], dim=0)
@@ -201,13 +238,36 @@ def main():
             q_emb, t_emb = embeddings[:n], embeddings[n:]
 
             l_pairs = pairwise_loss(q_emb, t_emb)
-            l_mum = mum_loss(q_emb, t_emb, cids)
+            l_mum = mum_loss(q_emb, t_emb, q_cids, t_cids)
             loss = l_pairs + l_mum
             loss.backward()
             optimizer.step()
 
             step += 1
             step_time = time.time() - step_t0
+
+            if (
+                args.recluster_every_steps
+                and step % args.recluster_every_steps == 0
+                and step < total_steps
+            ):
+                print(f"step {step}: reclustering...", flush=True)
+                t_recluster0 = time.time()
+                model.eval()
+                retriever = DinoV2SaladRetriever(model, device=args.device)
+                tile_id_to_cluster, query_id_to_cluster = recluster(
+                    retriever, unique_tiles, unique_queries, k=args.num_clusters
+                )
+                model.train()
+                tile_cluster_ids = np.array(
+                    [tile_id_to_cluster[tile.tile_id] for _, tile in pairs], dtype=np.int64
+                )
+                query_cluster_ids = np.array(
+                    [query_id_to_cluster[query.tile_id] for query, _ in pairs], dtype=np.int64
+                )
+                if batch_sampler is not None:
+                    batch_sampler.update_cluster_ids(query_cluster_ids.tolist())
+                print(f"  reclustering done in {time.time() - t_recluster0:.0f}s", flush=True)
             if step % args.log_every == 0:
                 elapsed_min = (time.time() - t_start) / 60
                 print(
