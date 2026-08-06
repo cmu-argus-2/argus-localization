@@ -84,6 +84,16 @@ def build_training_data(
     return data
 
 
+def _checkpoint_payload(model, step: int, args) -> dict:
+    return {
+        "model": model.state_dict(),
+        "step": step,
+        "use_lora": args.use_lora,
+        "lora_r": args.lora_r,
+        "lora_alpha": args.lora_alpha,
+    }
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--database-dir", default="/mnt/sdc1/astroloc/data/database")
@@ -100,13 +110,20 @@ def main():
     ap.add_argument("--num-workers", type=int, default=16)
     ap.add_argument("--device", default="cuda:0")
     ap.add_argument("--checkpoint-every", type=int, default=500)
+    ap.add_argument("--checkpoint-dir", default=CHECKPOINT_DIR)
     ap.add_argument("--log-every", type=int, default=20)
     ap.add_argument("--rebuild-cache", action="store_true")
     ap.add_argument("--wandb-project", default="astroloc-demo")
+    ap.add_argument("--wandb-run-name", default=None)
     ap.add_argument("--no-wandb", action="store_true")
     ap.add_argument("--max-hours", type=float, default=13.0)
     ap.add_argument("--dry-run-steps", type=int, default=0)
+    ap.add_argument("--use-lora", action="store_true", help="LoRA-adapt the whole frozen backbone instead of unfreezing the last few blocks")
+    ap.add_argument("--lora-r", type=int, default=8)
+    ap.add_argument("--lora-alpha", type=int, default=16)
+    ap.add_argument("--lora-dropout", type=float, default=0.0)
     args = ap.parse_args()
+    checkpoint_dir = args.checkpoint_dir
 
     data = build_training_data(
         args.database_dir,
@@ -132,8 +149,17 @@ def main():
         persistent_workers=args.num_workers > 0,
     )
 
-    model = DinoV2SaladModel(pretrained=True).to(args.device)
+    model = DinoV2SaladModel(
+        pretrained=True,
+        use_lora=args.use_lora,
+        lora_r=args.lora_r,
+        lora_alpha=args.lora_alpha,
+        lora_dropout=args.lora_dropout,
+    ).to(args.device)
     model.train()
+    n_trainable = sum(p.numel() for p in model.trainable_parameters())
+    n_total = sum(p.numel() for p in model.parameters())
+    print(f"trainable params: {n_trainable/1e6:.2f}M / total {n_total/1e6:.1f}M ({100*n_trainable/n_total:.1f}%)")
     optimizer = torch.optim.Adam(model.trainable_parameters(), lr=args.lr)
 
     mean = torch.tensor(IMAGENET_MEAN, device=args.device).view(1, 3, 1, 1)
@@ -147,9 +173,9 @@ def main():
     if use_wandb:
         import wandb
 
-        wandb.init(project=args.wandb_project, config=vars(args))
+        wandb.init(project=args.wandb_project, name=args.wandb_run_name, config=vars(args))
 
-    os.makedirs(CHECKPOINT_DIR, exist_ok=True)
+    os.makedirs(checkpoint_dir, exist_ok=True)
     step = 0
     t_start = time.time()
     steps_per_epoch = len(loader)
@@ -205,7 +231,7 @@ def main():
                     )
 
             if step % args.checkpoint_every == 0:
-                torch.save({"model": model.state_dict(), "step": step}, os.path.join(CHECKPOINT_DIR, "latest.pt"))
+                torch.save(_checkpoint_payload(model, step, args), os.path.join(checkpoint_dir, "latest.pt"))
                 print(f"checkpoint saved at step {step}", flush=True)
 
             if args.dry_run_steps and step >= args.dry_run_steps:
@@ -217,8 +243,8 @@ def main():
                 stop = True
                 break
 
-    torch.save({"model": model.state_dict(), "step": step}, os.path.join(CHECKPOINT_DIR, "final.pt"))
-    torch.save({"model": model.state_dict(), "step": step}, os.path.join(CHECKPOINT_DIR, "latest.pt"))
+    torch.save(_checkpoint_payload(model, step, args), os.path.join(checkpoint_dir, "final.pt"))
+    torch.save(_checkpoint_payload(model, step, args), os.path.join(checkpoint_dir, "latest.pt"))
     print(f"Training complete at step {step}, saved final.pt")
     if use_wandb:
         import wandb

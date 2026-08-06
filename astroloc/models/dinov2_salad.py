@@ -71,20 +71,49 @@ def _load_salad_classes():
     return DINOv2, SALAD
 
 
+NUM_BLOCKS_VITB14 = 12  # standard DINOv2 ViT-B/14 depth, needed to LoRA every block
+
+
 class DinoV2SaladModel(nn.Module):
     """Trainable network: DINOv2 backbone + SALAD aggregator + linear reduction.
 
     Attribute names `backbone`/`aggregator` are load-bearing: they must match
     the pretrained checkpoint's key prefixes exactly (see module docstring).
+
+    Two fine-tuning modes, chosen by `use_lora`:
+    - False (default): unfreeze the backbone's last `num_trainable_blocks`
+      transformer blocks outright (full fine-tune).
+    - True: freeze the entire backbone and instead wrap every nn.Linear in
+      every block with a LoRA adapter (astroloc/models/lora.py), a much
+      smaller trainable footprint that touches all 12 blocks instead of just
+      the last few. SALAD aggregator + reduction layer are fully trainable
+      either way (they're new/small, not something you'd LoRA).
     """
 
-    def __init__(self, num_trainable_blocks: int = 4, pretrained: bool = True):
+    def __init__(
+        self,
+        num_trainable_blocks: int = 4,
+        pretrained: bool = True,
+        use_lora: bool = False,
+        lora_r: int = 8,
+        lora_alpha: int = 16,
+        lora_dropout: float = 0.0,
+    ):
         super().__init__()
         DINOv2, SALAD = _load_salad_classes()
 
+        self.use_lora = use_lora
+        self.lora_r = lora_r
+        self.lora_alpha = lora_alpha
+
         self.backbone = DINOv2(
             model_name="dinov2_vitb14",
-            num_trainable_blocks=num_trainable_blocks,
+            # LoRA needs every block to run with grad tracking (DINOv2.forward()
+            # wraps blocks[:-num_trainable_blocks] in torch.no_grad(), so "all
+            # blocks trainable" here just means "none of them force no_grad" --
+            # the base weights are frozen separately below, LoRA adapters are
+            # what actually trains).
+            num_trainable_blocks=NUM_BLOCKS_VITB14 if use_lora else num_trainable_blocks,
             norm_layer=True,
             return_token=True,
         )
@@ -98,7 +127,19 @@ class DinoV2SaladModel(nn.Module):
 
         if pretrained:
             self._load_pretrained_salad()
-        self._freeze_backbone_stem()
+
+        if use_lora:
+            from astroloc.models.lora import apply_lora_to_linears
+
+            for p in self.backbone.model.parameters():
+                p.requires_grad_(False)
+            n_wrapped = apply_lora_to_linears(
+                self.backbone.model.blocks, r=lora_r, alpha=lora_alpha, dropout=lora_dropout
+            )
+            print(f"LoRA: wrapped {n_wrapped} Linear layers across {NUM_BLOCKS_VITB14} blocks "
+                  f"(r={lora_r}, alpha={lora_alpha})")
+        else:
+            self._freeze_backbone_stem()
 
     def _load_pretrained_salad(self) -> None:
         state_dict = torch.hub.load_state_dict_from_url(
@@ -159,8 +200,13 @@ class DinoV2SaladRetriever(Retriever):
 
     @classmethod
     def from_checkpoint(cls, checkpoint_path: str, device: str = "cuda") -> "DinoV2SaladRetriever":
-        model = DinoV2SaladModel(pretrained=False)
         state = torch.load(checkpoint_path, map_location=device, weights_only=False)
+        model = DinoV2SaladModel(
+            pretrained=False,
+            use_lora=state.get("use_lora", False),
+            lora_r=state.get("lora_r", 8),
+            lora_alpha=state.get("lora_alpha", 16),
+        )
         model.load_state_dict(state["model"] if "model" in state else state)
         return cls(model, device=device)
 
