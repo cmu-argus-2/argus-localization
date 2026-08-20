@@ -12,7 +12,7 @@ feature-matching problem. See repo memory astroloc_target_architecture.
 import numpy as np
 
 from core.types import GeoTile
-from scripts.evaluate import find_positive_tile_ids, footprint_bbox
+from scripts.evaluate import find_positive_tile_ids, footprint_bbox, footprint_iou
 
 
 def build_positive_pairs(
@@ -22,6 +22,16 @@ def build_positive_pairs(
     the highest-IoU tile among its positives. Queries with zero positives
     (e.g. photo falls in a training region but no reference tile happens to
     overlap it at this reference-tile density) are dropped.
+
+    Correctness note: this docstring always claimed "highest-IoU", but the
+    code used to just take positive_ids[0] -- find_positive_tile_ids returns
+    hits in tile-list order, not IoU order, so this was silently picking an
+    arbitrary (list-order-dependent) positive, not the best one. Mattered
+    little when `tiles` was single-zoom (any positive was already the only
+    game in town), but matters a lot once `tiles` spans multiple zoom levels
+    (see nano/data.py::build_reference_tiles_multi_zoom): a query could have
+    positives at two different scales, and only the tighter-matching one is
+    actually the good training signal.
     """
     tile_bboxes = np.array([footprint_bbox(t) for t in tiles])
     tiles_by_id = {t.tile_id: t for t in tiles}
@@ -30,7 +40,6 @@ def build_positive_pairs(
         positive_ids = find_positive_tile_ids(query, tiles, tile_bboxes, iou_threshold)
         if not positive_ids:
             continue
-        # find_positive_tile_ids doesn't rank by IoU, just membership above
-        # threshold; any of its hits is a valid positive, so take the first.
-        pairs.append((query, tiles_by_id[positive_ids[0]]))
+        best_id = max(positive_ids, key=lambda tid: footprint_iou(query, tiles_by_id[tid]))
+        pairs.append((query, tiles_by_id[best_id]))
     return pairs

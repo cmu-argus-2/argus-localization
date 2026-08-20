@@ -54,11 +54,12 @@ data-manager coupling) rather than resurrecting the stale glue code.
 import os
 import sys
 
-_GNC_PAYLOAD_ROOT = "/home/pvijayba/GNC-Payload"
 _REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-for p in (_GNC_PAYLOAD_ROOT, _REPO_ROOT):
-    if p not in sys.path:
-        sys.path.insert(0, p)
+if _REPO_ROOT not in sys.path:
+    sys.path.insert(0, _REPO_ROOT)
+from core.path_setup import ensure_repo_root_first
+
+ensure_repo_root_first(_REPO_ROOT)
 
 import numpy as np
 import brahe

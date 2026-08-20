@@ -53,6 +53,17 @@ TOKEN_DIM = 256
 SALAD_DESCRIPTOR_DIM = TOKEN_DIM + NUM_CLUSTERS * CLUSTER_DIM  # 256 + 8192 = 8448, matches the paper
 REDUCED_DIM = 2048  # AstroLoc paper's post-SALAD linear reduction
 
+# Token dim per backbone variant (third_party/salad/models/backbones/dinov2.py::DINOV2_ARCHS).
+# The official pretrained SALAD checkpoint (SALAD_CHECKPOINT_URL) was trained for
+# dinov2_vitb14 specifically -- its aggregator/backbone weights only fit that width,
+# so any other backbone_name requires pretrained=False (see DinoV2SaladModel).
+BACKBONE_CHANNELS = {
+    "dinov2_vits14": 384,
+    "dinov2_vitb14": 768,
+    "dinov2_vitl14": 1024,
+    "dinov2_vitg14": 1536,
+}
+
 IMAGE_SIZE = 224  # divisible by 14 (patch size); matches SALAD's own GSV-Cities training resolution
 IMAGENET_MEAN = (0.485, 0.456, 0.406)
 IMAGENET_STD = (0.229, 0.224, 0.225)
@@ -98,32 +109,43 @@ class DinoV2SaladModel(nn.Module):
         lora_r: int = 8,
         lora_alpha: int = 16,
         lora_dropout: float = 0.0,
+        backbone_name: str = "dinov2_vitb14",
+        reduced_dim: int = REDUCED_DIM,
     ):
         super().__init__()
         DINOv2, SALAD = _load_salad_classes()
 
+        if pretrained and (backbone_name != "dinov2_vitb14" or reduced_dim != REDUCED_DIM):
+            raise ValueError(
+                f"pretrained=True loads the official SALAD checkpoint, which was trained for "
+                f"dinov2_vitb14 + reduced_dim={REDUCED_DIM} only and won't shape-match "
+                f"backbone_name={backbone_name}, reduced_dim={reduced_dim}. Use pretrained=False."
+            )
+
         self.use_lora = use_lora
         self.lora_r = lora_r
         self.lora_alpha = lora_alpha
+        self.backbone_name = backbone_name
+        self.reduced_dim = reduced_dim
+        num_channels = BACKBONE_CHANNELS[backbone_name]
 
+        # DINOv2.forward() wraps blocks[:-num_trainable_blocks] in torch.no_grad(), so under
+        # LoRA "all blocks trainable" here just means "none of them force no_grad" -- the base
+        # weights are frozen separately below, LoRA adapters are what actually trains.
+        num_blocks = 12 if backbone_name in ("dinov2_vits14", "dinov2_vitb14") else 24
         self.backbone = DINOv2(
-            model_name="dinov2_vitb14",
-            # LoRA needs every block to run with grad tracking (DINOv2.forward()
-            # wraps blocks[:-num_trainable_blocks] in torch.no_grad(), so "all
-            # blocks trainable" here just means "none of them force no_grad" --
-            # the base weights are frozen separately below, LoRA adapters are
-            # what actually trains).
-            num_trainable_blocks=NUM_BLOCKS_VITB14 if use_lora else num_trainable_blocks,
+            model_name=backbone_name,
+            num_trainable_blocks=num_blocks if use_lora else num_trainable_blocks,
             norm_layer=True,
             return_token=True,
         )
         self.aggregator = SALAD(
-            num_channels=NUM_CHANNELS,
+            num_channels=num_channels,
             num_clusters=NUM_CLUSTERS,
             cluster_dim=CLUSTER_DIM,
             token_dim=TOKEN_DIM,
         )
-        self.reduction = nn.Linear(SALAD_DESCRIPTOR_DIM, REDUCED_DIM)
+        self.reduction = nn.Linear(SALAD_DESCRIPTOR_DIM, reduced_dim)
 
         if pretrained:
             self._load_pretrained_salad()
@@ -136,7 +158,7 @@ class DinoV2SaladModel(nn.Module):
             n_wrapped = apply_lora_to_linears(
                 self.backbone.model.blocks, r=lora_r, alpha=lora_alpha, dropout=lora_dropout
             )
-            print(f"LoRA: wrapped {n_wrapped} Linear layers across {NUM_BLOCKS_VITB14} blocks "
+            print(f"LoRA: wrapped {n_wrapped} Linear layers across {num_blocks} blocks "
                   f"(r={lora_r}, alpha={lora_alpha})")
         else:
             self._freeze_backbone_stem()
@@ -189,9 +211,8 @@ class DinoV2SaladRetriever(Retriever):
     like retrievers/earthloc_retriever.py::EarthLocRetriever.
     """
 
-    descriptor_dim: int = REDUCED_DIM
-
     def __init__(self, model: DinoV2SaladModel, device: str = "cuda", image_size: int = IMAGE_SIZE):
+        self.descriptor_dim = model.reduced_dim
         self.model = model.to(device).eval()
         self.device = device
         self.image_size = image_size
@@ -206,6 +227,8 @@ class DinoV2SaladRetriever(Retriever):
             use_lora=state.get("use_lora", False),
             lora_r=state.get("lora_r", 8),
             lora_alpha=state.get("lora_alpha", 16),
+            backbone_name=state.get("backbone_name", "dinov2_vitb14"),
+            reduced_dim=state.get("reduced_dim", REDUCED_DIM),
         )
         model.load_state_dict(state["model"] if "model" in state else state)
         return cls(model, device=device)
