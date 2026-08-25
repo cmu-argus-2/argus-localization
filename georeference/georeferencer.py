@@ -1,8 +1,7 @@
 """Pixel to lat/lon mapping over a reference tile's four known corners.
 
 Database tiles are nadir, so bilinear interpolation over the corner
-footprint is treated as a regular grid. Pure numpy, no model dependency.
-See docs/argus_localization_spec.md section 4 and 5.
+footprint is treated as a regular grid.
 
 Corner order (see core/types.py GeoTile.corners_latlon): bottom-left,
 top-left, top-right, bottom-right. This was verified empirically against
@@ -18,8 +17,6 @@ import cv2
 import numpy as np
 
 from core.types import GeoTile, MatchResult, TiePoint
-
-
 class Georeferencer:
     def tile_pixel_to_latlon(self, tile: GeoTile, tile_shape, pixels: np.ndarray) -> np.ndarray:
         height, width = tile_shape[:2]

@@ -87,6 +87,23 @@ def select_records(manifest_path: str, per_region_cap: int, seed: int = 0) -> li
     return selected
 
 
+def select_all_records(manifest_path: str) -> list[dict]:
+    """Every deduped manifest record, no region filter/cap -- the full
+    773,153-record harvest (see repo memory gape_mlcoord_harvest), not just
+    the training-scoped subset select_records() returns."""
+    seen_keys = set()
+    records = []
+    with open(manifest_path) as f:
+        for line in f:
+            rec = json.loads(line)
+            key = (rec["mission"], rec["roll"], rec["frame"])
+            if key in seen_keys:
+                continue
+            seen_keys.add(key)
+            records.append(rec)
+    return records
+
+
 def build_filename(rec: dict) -> str:
     lat1, lon1 = float(rec["ul_lat"]), float(rec["ul_lon"])
     lat2, lon2 = float(rec["ur_lat"]), float(rec["ur_lon"])
@@ -147,13 +164,21 @@ def main():
     ap.add_argument("--per-region-cap", type=int, default=15000)
     ap.add_argument("--workers", type=int, default=32)
     ap.add_argument("--limit", type=int, default=None, help="cap total downloads, for testing")
+    ap.add_argument(
+        "--all", action="store_true",
+        help="download every deduped manifest record (~773k), ignoring region scoping/cap",
+    )
     args = ap.parse_args()
 
     os.makedirs(args.output_dir, exist_ok=True)
 
-    print(f"Selecting records within {TRAIN_QUERY_RADIUS_KM}km of each training region "
-          f"(cap {args.per_region_cap}/region)...")
-    records = select_records(MANIFEST_PATH, args.per_region_cap)
+    if args.all:
+        print("Selecting ALL deduped manifest records (no region filter/cap)...")
+        records = select_all_records(MANIFEST_PATH)
+    else:
+        print(f"Selecting records within {TRAIN_QUERY_RADIUS_KM}km of each training region "
+              f"(cap {args.per_region_cap}/region)...")
+        records = select_records(MANIFEST_PATH, args.per_region_cap)
     if args.limit:
         records = records[: args.limit]
     total = len(records)
