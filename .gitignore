@@ -9,7 +9,11 @@ output/
 *.faiss
 *.pt
 *.ckpt
-
+*.log
+*.json
+*.wandb
+*.txt
+*.yaml
 # Vendored read-only reference copy of https://github.com/gmberton/EarthLoc,
 # not our code, not tracked.
 third_party/

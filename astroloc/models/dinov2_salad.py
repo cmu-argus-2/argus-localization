@@ -34,6 +34,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import torch.utils.checkpoint
 
 from core.interfaces import Retriever
 
@@ -83,6 +84,23 @@ def _load_salad_classes():
 
 
 NUM_BLOCKS_VITB14 = 12  # standard DINOv2 ViT-B/14 depth, needed to LoRA every block
+
+
+class _CheckpointedBlock(nn.Module):
+    """Wraps one DINOv2 transformer block with activation checkpointing (see
+    DinoV2SaladModel.__init__'s use_lora branch for why this exists). Only
+    active in training mode -- eval/inference has no backward pass to save
+    memory for, so plain forward is both correct and faster there.
+    """
+
+    def __init__(self, block: nn.Module):
+        super().__init__()
+        self.block = block
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        if self.training and x.requires_grad:
+            return torch.utils.checkpoint.checkpoint(self.block, x, use_reentrant=False)
+        return self.block(x)
 
 
 class DinoV2SaladModel(nn.Module):
@@ -160,6 +178,20 @@ class DinoV2SaladModel(nn.Module):
             )
             print(f"LoRA: wrapped {n_wrapped} Linear layers across {num_blocks} blocks "
                   f"(r={lora_r}, alpha={lora_alpha})")
+            # LoRA needs gradients through ALL num_blocks blocks (adapters touch
+            # every block, unlike full fine-tune's last-N-only), so activations
+            # for the whole backbone must survive to backward -- confirmed by
+            # direct measurement to OOM at 22-23GiB on a single 48-pair/
+            # 48-quadruplet (96+192 image) step even after minimizing peak via
+            # sequential backward() calls (train_faithful.py). Gradient
+            # checkpointing recomputes each block's activations during backward
+            # instead of storing all num_blocks of them at once -- same exact
+            # gradient, ~2x backbone compute cost, far less memory. Wrapping
+            # here (our own module) rather than editing third_party/salad's
+            # DINOv2.forward(), which iterates self.model.blocks directly.
+            self.backbone.model.blocks = nn.ModuleList(
+                _CheckpointedBlock(blk) for blk in self.backbone.model.blocks
+            )
         else:
             self._freeze_backbone_stem()
 

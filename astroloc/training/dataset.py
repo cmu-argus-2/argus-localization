@@ -41,3 +41,24 @@ class PairDataset(Dataset):
         q_img = _load_resized(query.image_path, self.image_size)
         t_img = _load_resized(tile.image_path, self.image_size)
         return q_img, t_img, idx
+
+
+class TileDataset(Dataset):
+    """Single-image dataset over a tile list, for the paper-faithful L_MUM
+    quadruplet stream (astroloc/training/quadruplet_sampler.py) -- unlike
+    PairDataset there is no query side here, just satellite tile images.
+    Returns (tile_img, idx) for the same reason PairDataset returns idx: the
+    training loop looks up this index's current cluster id in the main
+    process, not inside a forked DataLoader worker.
+    """
+
+    def __init__(self, tiles: list[GeoTile], image_size: int = IMAGE_SIZE):
+        self.tiles = tiles
+        self.image_size = image_size
+
+    def __len__(self) -> int:
+        return len(self.tiles)
+
+    def __getitem__(self, idx: int):
+        t_img = _load_resized(self.tiles[idx].image_path, self.image_size)
+        return t_img, idx

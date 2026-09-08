@@ -106,3 +106,1022 @@ Downloading 770552 images with 40 workers into /mnt/sdc1/astroloc/reference_db/a
   [103000/770552] {'fetched': 93922, 'skip_exists': 9077, 'failed': 1} rate=28.6/s eta=388.8min
   [104000/770552] {'fetched': 94836, 'skip_exists': 9163, 'failed': 1} rate=28.5/s eta=389.7min
   [105000/770552] {'fetched': 95694, 'skip_exists': 9305, 'failed': 1} rate=28.5/s eta=389.8min
+  [106000/770552] {'fetched': 96606, 'skip_exists': 9393, 'failed': 1} rate=28.4/s eta=389.9min
+  [107000/770552] {'fetched': 97425, 'skip_exists': 9574, 'failed': 1} rate=28.4/s eta=389.7min
+  [108000/770552] {'fetched': 98370, 'skip_exists': 9629, 'failed': 1} rate=28.2/s eta=391.2min
+  [109000/770552] {'fetched': 99260, 'skip_exists': 9739, 'failed': 1} rate=28.1/s eta=392.6min
+  [110000/770552] {'fetched': 100194, 'skip_exists': 9805, 'failed': 1} rate=28.0/s eta=393.7min
+  [111000/770552] {'fetched': 101149, 'skip_exists': 9850, 'failed': 1} rate=27.8/s eta=395.0min
+  [112000/770552] {'fetched': 102031, 'skip_exists': 9968, 'failed': 1} rate=27.8/s eta=395.4min
+  [113000/770552] {'fetched': 102945, 'skip_exists': 10054, 'failed': 1} rate=27.6/s eta=396.5min
+  [114000/770552] {'fetched': 103850, 'skip_exists': 10149, 'failed': 1} rate=27.5/s eta=397.6min
+  [115000/770552] {'fetched': 104739, 'skip_exists': 10260, 'failed': 1} rate=27.3/s eta=399.6min
+  [116000/770552] {'fetched': 105681, 'skip_exists': 10318, 'failed': 1} rate=27.1/s eta=402.3min
+  [117000/770552] {'fetched': 106535, 'skip_exists': 10464, 'failed': 1} rate=27.0/s eta=403.8min
+  [118000/770552] {'fetched': 107509, 'skip_exists': 10490, 'failed': 1} rate=26.8/s eta=405.8min
+  [119000/770552] {'fetched': 108459, 'skip_exists': 10540, 'failed': 1} rate=26.6/s eta=407.8min
+  FAILED ISS061-E-123208: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS061-E-131505: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS061-E-138258: float() argument must be a string or a real number, not 'NoneType'
+  [120000/770552] {'fetched': 109414, 'skip_exists': 10582, 'failed': 4} rate=26.5/s eta=409.6min
+  FAILED ISS061-E-138259: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS061-E-138262: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS061-E-138972: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS061-E-148834: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS061-E-148929: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS061-E-148972: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS061-E-149878: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS061-E-149881: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS061-E-152302: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS061-E-152815: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS061-E-152828: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS061-E-152829: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS061-E-152850: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS061-E-152932: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS061-E-157127: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS061-E-157129: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS061-E-157130: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS061-E-157131: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-11: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-40353: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-44321: float() argument must be a string or a real number, not 'NoneType'
+  [121000/770552] {'fetched': 110309, 'skip_exists': 10666, 'failed': 25} rate=26.3/s eta=410.9min
+  FAILED ISS062-E-71266: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-78991: float() argument must be a string or a real number, not 'NoneType'
+  [122000/770552] {'fetched': 111222, 'skip_exists': 10751, 'failed': 27} rate=26.2/s eta=412.5min
+  FAILED ISS062-E-142201: float() argument must be a string or a real number, not 'NoneType'
+  [123000/770552] {'fetched': 112179, 'skip_exists': 10793, 'failed': 28} rate=26.1/s eta=414.0min
+  FAILED ISS062-E-143051: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-150931: float() argument must be a string or a real number, not 'NoneType'
+  [124000/770552] {'fetched': 113153, 'skip_exists': 10817, 'failed': 30} rate=25.9/s eta=415.5min
+  FAILED ISS063-E-33108: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS064-E-6251: float() argument must be a string or a real number, not 'NoneType'
+  [125000/770552] {'fetched': 114073, 'skip_exists': 10895, 'failed': 32} rate=25.8/s eta=417.2min
+  FAILED ISS064-E-49091: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS064-E-49517: float() argument must be a string or a real number, not 'NoneType'
+  [126000/770552] {'fetched': 114928, 'skip_exists': 11038, 'failed': 34} rate=25.7/s eta=418.7min
+  FAILED ISS065-E-66742: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS065-E-258091: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS066-E-176656: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS066-E-176664: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS066-E-176709: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS066-E-176710: float() argument must be a string or a real number, not 'NoneType'
+  [127000/770552] {'fetched': 115821, 'skip_exists': 11139, 'failed': 40} rate=25.5/s eta=420.8min
+  FAILED ISS068-E-53764: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53765: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53770: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53774: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53779: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53781: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53785: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53830: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53831: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53832: float() argument must be a string or a real number, not 'NoneType'
+  [128000/770552] {'fetched': 116713, 'skip_exists': 11237, 'failed': 50} rate=25.4/s eta=421.7min
+  [129000/770552] {'fetched': 117634, 'skip_exists': 11316, 'failed': 50} rate=25.4/s eta=421.2min
+  [130000/770552] {'fetched': 118510, 'skip_exists': 11440, 'failed': 50} rate=25.4/s eta=420.3min
+  [131000/770552] {'fetched': 119369, 'skip_exists': 11581, 'failed': 50} rate=25.4/s eta=419.0min
+  [132000/770552] {'fetched': 120259, 'skip_exists': 11691, 'failed': 50} rate=25.5/s eta=417.5min
+  [133000/770552] {'fetched': 121197, 'skip_exists': 11753, 'failed': 50} rate=25.5/s eta=416.3min
+  [134000/770552] {'fetched': 122122, 'skip_exists': 11828, 'failed': 50} rate=25.6/s eta=414.9min
+  [135000/770552] {'fetched': 123033, 'skip_exists': 11917, 'failed': 50} rate=25.6/s eta=413.6min
+  [136000/770552] {'fetched': 123977, 'skip_exists': 11973, 'failed': 50} rate=25.6/s eta=412.5min
+  [137000/770552] {'fetched': 124907, 'skip_exists': 12043, 'failed': 50} rate=25.7/s eta=411.1min
+  [138000/770552] {'fetched': 125806, 'skip_exists': 12144, 'failed': 50} rate=25.7/s eta=409.8min
+  [139000/770552] {'fetched': 126628, 'skip_exists': 12322, 'failed': 50} rate=25.8/s eta=408.3min
+  [140000/770552] {'fetched': 127520, 'skip_exists': 12430, 'failed': 50} rate=25.8/s eta=406.9min
+  [141000/770552] {'fetched': 128368, 'skip_exists': 12582, 'failed': 50} rate=25.9/s eta=405.4min
+  [142000/770552] {'fetched': 129227, 'skip_exists': 12723, 'failed': 50} rate=25.9/s eta=404.1min
+  [143000/770552] {'fetched': 130136, 'skip_exists': 12814, 'failed': 50} rate=26.0/s eta=402.9min
+  [144000/770552] {'fetched': 131034, 'skip_exists': 12916, 'failed': 50} rate=26.0/s eta=402.0min
+  [145000/770552] {'fetched': 131967, 'skip_exists': 12983, 'failed': 50} rate=26.0/s eta=401.5min
+  [146000/770552] {'fetched': 132910, 'skip_exists': 13040, 'failed': 50} rate=25.9/s eta=401.2min
+  [147000/770552] {'fetched': 133852, 'skip_exists': 13098, 'failed': 50} rate=26.0/s eta=399.8min
+  [148000/770552] {'fetched': 134789, 'skip_exists': 13161, 'failed': 50} rate=26.0/s eta=398.4min
+  [149000/770552] {'fetched': 135726, 'skip_exists': 13224, 'failed': 50} rate=26.1/s eta=396.8min
+  [150000/770552] {'fetched': 136645, 'skip_exists': 13305, 'failed': 50} rate=26.2/s eta=394.4min
+  [151000/770552] {'fetched': 137605, 'skip_exists': 13345, 'failed': 50} rate=26.3/s eta=392.4min
+  [152000/770552] {'fetched': 138567, 'skip_exists': 13383, 'failed': 50} rate=26.4/s eta=390.5min
+  [153000/770552] {'fetched': 139533, 'skip_exists': 13417, 'failed': 50} rate=26.5/s eta=388.3min
+  [154000/770552] {'fetched': 140496, 'skip_exists': 13454, 'failed': 50} rate=26.4/s eta=389.8min
+  [155000/770552] {'fetched': 141461, 'skip_exists': 13489, 'failed': 50} rate=26.2/s eta=391.6min
+  [156000/770552] {'fetched': 142412, 'skip_exists': 13538, 'failed': 50} rate=26.2/s eta=390.5min
+  [157000/770552] {'fetched': 143360, 'skip_exists': 13590, 'failed': 50} rate=26.2/s eta=390.6min
+  [158000/770552] {'fetched': 144295, 'skip_exists': 13655, 'failed': 50} rate=26.1/s eta=391.3min
+  [159000/770552] {'fetched': 145109, 'skip_exists': 13841, 'failed': 50} rate=26.0/s eta=391.9min
+  [160000/770552] {'fetched': 146031, 'skip_exists': 13919, 'failed': 50} rate=25.8/s eta=394.9min
+  [161000/770552] {'fetched': 146947, 'skip_exists': 14003, 'failed': 50} rate=25.5/s eta=398.1min
+  [162000/770552] {'fetched': 147882, 'skip_exists': 14068, 'failed': 50} rate=25.4/s eta=400.1min
+  [163000/770552] {'fetched': 148797, 'skip_exists': 14153, 'failed': 50} rate=24.8/s eta=408.3min
+  [164000/770552] {'fetched': 149719, 'skip_exists': 14231, 'failed': 50} rate=24.5/s eta=412.9min
+  [165000/770552] {'fetched': 150649, 'skip_exists': 14301, 'failed': 50} rate=24.3/s eta=415.3min
+  [166000/770552] {'fetched': 151621, 'skip_exists': 14329, 'failed': 50} rate=24.2/s eta=417.0min
+  [167000/770552] {'fetched': 152586, 'skip_exists': 14364, 'failed': 50} rate=23.9/s eta=420.2min
+  [168000/770552] {'fetched': 153526, 'skip_exists': 14424, 'failed': 50} rate=23.8/s eta=421.4min
+  [169000/770552] {'fetched': 154493, 'skip_exists': 14457, 'failed': 50} rate=23.6/s eta=424.6min
+  [170000/770552] {'fetched': 155429, 'skip_exists': 14521, 'failed': 50} rate=23.4/s eta=427.6min
+  [171000/770552] {'fetched': 156379, 'skip_exists': 14571, 'failed': 50} rate=23.2/s eta=430.5min
+  [172000/770552] {'fetched': 157342, 'skip_exists': 14608, 'failed': 50} rate=22.9/s eta=435.0min
+  [173000/770552] {'fetched': 158291, 'skip_exists': 14659, 'failed': 50} rate=22.8/s eta=436.8min
+  [174000/770552] {'fetched': 159234, 'skip_exists': 14716, 'failed': 50} rate=22.7/s eta=438.8min
+  [175000/770552] {'fetched': 160177, 'skip_exists': 14773, 'failed': 50} rate=22.6/s eta=439.7min
+  [176000/770552] {'fetched': 161123, 'skip_exists': 14827, 'failed': 50} rate=22.4/s eta=442.5min
+  [177000/770552] {'fetched': 162074, 'skip_exists': 14876, 'failed': 50} rate=22.2/s eta=446.1min
+  [178000/770552] {'fetched': 162989, 'skip_exists': 14961, 'failed': 50} rate=22.0/s eta=448.4min
+  [179000/770552] {'fetched': 163894, 'skip_exists': 15056, 'failed': 50} rate=22.0/s eta=448.0min
+  [180000/770552] {'fetched': 164805, 'skip_exists': 15145, 'failed': 50} rate=21.9/s eta=448.7min
+  [181000/770552] {'fetched': 165561, 'skip_exists': 15389, 'failed': 50} rate=21.9/s eta=447.8min
+  [182000/770552] {'fetched': 166555, 'skip_exists': 15395, 'failed': 50} rate=21.3/s eta=459.8min
+  [183000/770552] {'fetched': 167452, 'skip_exists': 15498, 'failed': 50} rate=21.4/s eta=458.6min
+  [184000/770552] {'fetched': 168392, 'skip_exists': 15558, 'failed': 50} rate=21.3/s eta=459.2min
+  [185000/770552] {'fetched': 169361, 'skip_exists': 15589, 'failed': 50} rate=21.1/s eta=461.7min
+  [186000/770552] {'fetched': 170308, 'skip_exists': 15642, 'failed': 50} rate=21.0/s eta=463.2min
+  [187000/770552] {'fetched': 171134, 'skip_exists': 15816, 'failed': 50} rate=21.0/s eta=464.2min
+  [188000/770552] {'fetched': 172009, 'skip_exists': 15941, 'failed': 50} rate=20.9/s eta=463.7min
+  [189000/770552] {'fetched': 172943, 'skip_exists': 16007, 'failed': 50} rate=20.9/s eta=464.0min
+  [190000/770552] {'fetched': 173865, 'skip_exists': 16085, 'failed': 50} rate=20.9/s eta=463.5min
+  FAILED ISS015-E-25342: cannot identify image file <_io.BytesIO object at 0x78bfeac2f600>
+  [191000/770552] {'fetched': 174809, 'skip_exists': 16140, 'failed': 51} rate=20.9/s eta=463.1min
+  [192000/770552] {'fetched': 175763, 'skip_exists': 16186, 'failed': 51} rate=20.8/s eta=464.1min
+  FAILED ISS015-E-30140: cannot identify image file <_io.BytesIO object at 0x78c0342db6f0>
+  FAILED ISS015-E-30203: cannot identify image file <_io.BytesIO object at 0x78bfe54dee30>
+  [193000/770552] {'fetched': 176693, 'skip_exists': 16254, 'failed': 53} rate=20.7/s eta=464.7min
+  FAILED ISS015-E-33872: cannot identify image file <_io.BytesIO object at 0x78c00f15b880>
+  [194000/770552] {'fetched': 177611, 'skip_exists': 16335, 'failed': 54} rate=20.7/s eta=464.5min
+  [195000/770552] {'fetched': 178463, 'skip_exists': 16483, 'failed': 54} rate=20.7/s eta=463.9min
+  [196000/770552] {'fetched': 179374, 'skip_exists': 16572, 'failed': 54} rate=20.5/s eta=467.6min
+  [197000/770552] {'fetched': 180242, 'skip_exists': 16704, 'failed': 54} rate=20.3/s eta=470.4min
+  [198000/770552] {'fetched': 181141, 'skip_exists': 16805, 'failed': 54} rate=20.1/s eta=474.1min
+  [199000/770552] {'fetched': 182056, 'skip_exists': 16890, 'failed': 54} rate=20.1/s eta=474.9min
+  [200000/770552] {'fetched': 182918, 'skip_exists': 17028, 'failed': 54} rate=20.0/s eta=476.3min
+  [201000/770552] {'fetched': 183821, 'skip_exists': 17125, 'failed': 54} rate=19.8/s eta=479.9min
+  [202000/770552] {'fetched': 184619, 'skip_exists': 17327, 'failed': 54} rate=19.7/s eta=481.8min
+  [203000/770552] {'fetched': 185517, 'skip_exists': 17429, 'failed': 54} rate=19.5/s eta=486.1min
+  [204000/770552] {'fetched': 186320, 'skip_exists': 17626, 'failed': 54} rate=19.4/s eta=487.8min
+  [205000/770552] {'fetched': 187151, 'skip_exists': 17795, 'failed': 54} rate=19.4/s eta=486.9min
+  [206000/770552] {'fetched': 188115, 'skip_exists': 17831, 'failed': 54} rate=19.3/s eta=488.1min
+  [207000/770552] {'fetched': 188999, 'skip_exists': 17947, 'failed': 54} rate=19.2/s eta=489.8min
+  [208000/770552] {'fetched': 189951, 'skip_exists': 17995, 'failed': 54} rate=19.2/s eta=489.1min
+  [209000/770552] {'fetched': 190825, 'skip_exists': 18121, 'failed': 54} rate=19.2/s eta=488.1min
+  [210000/770552] {'fetched': 191720, 'skip_exists': 18226, 'failed': 54} rate=19.2/s eta=486.6min
+  [211000/770552] {'fetched': 192588, 'skip_exists': 18358, 'failed': 54} rate=19.2/s eta=485.3min
+  [212000/770552] {'fetched': 193438, 'skip_exists': 18508, 'failed': 54} rate=19.2/s eta=484.4min
+  [213000/770552] {'fetched': 194278, 'skip_exists': 18668, 'failed': 54} rate=19.2/s eta=484.0min
+  [214000/770552] {'fetched': 195105, 'skip_exists': 18841, 'failed': 54} rate=19.2/s eta=482.8min
+  [215000/770552] {'fetched': 196016, 'skip_exists': 18930, 'failed': 54} rate=19.2/s eta=481.5min
+  [216000/770552] {'fetched': 196877, 'skip_exists': 19069, 'failed': 54} rate=19.2/s eta=480.2min
+  [217000/770552] {'fetched': 197810, 'skip_exists': 19136, 'failed': 54} rate=19.3/s eta=478.9min
+  [218000/770552] {'fetched': 198750, 'skip_exists': 19196, 'failed': 54} rate=19.3/s eta=477.6min
+  [219000/770552] {'fetched': 199699, 'skip_exists': 19247, 'failed': 54} rate=19.3/s eta=476.5min
+  [220000/770552] {'fetched': 200492, 'skip_exists': 19454, 'failed': 54} rate=19.3/s eta=475.0min
+  [221000/770552] {'fetched': 201419, 'skip_exists': 19527, 'failed': 54} rate=19.3/s eta=473.6min
+  [222000/770552] {'fetched': 202340, 'skip_exists': 19606, 'failed': 54} rate=19.4/s eta=472.3min
+  [223000/770552] {'fetched': 203291, 'skip_exists': 19655, 'failed': 54} rate=19.4/s eta=470.9min
+  [224000/770552] {'fetched': 204160, 'skip_exists': 19786, 'failed': 54} rate=19.4/s eta=469.2min
+  [225000/770552] {'fetched': 205073, 'skip_exists': 19873, 'failed': 54} rate=19.4/s eta=467.8min
+  [226000/770552] {'fetched': 206022, 'skip_exists': 19924, 'failed': 54} rate=19.4/s eta=467.7min
+  [227000/770552] {'fetched': 206877, 'skip_exists': 20069, 'failed': 54} rate=19.4/s eta=466.2min
+  [228000/770552] {'fetched': 207729, 'skip_exists': 20217, 'failed': 54} rate=19.5/s eta=464.9min
+  [229000/770552] {'fetched': 208574, 'skip_exists': 20372, 'failed': 54} rate=19.5/s eta=463.2min
+  [230000/770552] {'fetched': 209166, 'skip_exists': 20780, 'failed': 54} rate=19.5/s eta=461.3min
+  [231000/770552] {'fetched': 210134, 'skip_exists': 20812, 'failed': 54} rate=19.5/s eta=461.3min
+  [232000/770552] {'fetched': 210988, 'skip_exists': 20958, 'failed': 54} rate=19.5/s eta=459.9min
+  [233000/770552] {'fetched': 211892, 'skip_exists': 21054, 'failed': 54} rate=19.5/s eta=458.8min
+  [234000/770552] {'fetched': 212809, 'skip_exists': 21137, 'failed': 54} rate=19.5/s eta=457.4min
+  [235000/770552] {'fetched': 213727, 'skip_exists': 21219, 'failed': 54} rate=19.6/s eta=456.3min
+  [236000/770552] {'fetched': 214649, 'skip_exists': 21297, 'failed': 54} rate=19.6/s eta=455.2min
+  [237000/770552] {'fetched': 215541, 'skip_exists': 21405, 'failed': 54} rate=19.6/s eta=454.1min
+  [238000/770552] {'fetched': 216436, 'skip_exists': 21510, 'failed': 54} rate=19.6/s eta=452.7min
+  [239000/770552] {'fetched': 217381, 'skip_exists': 21565, 'failed': 54} rate=19.6/s eta=451.8min
+  [240000/770552] {'fetched': 218276, 'skip_exists': 21670, 'failed': 54} rate=19.6/s eta=450.7min
+  [241000/770552] {'fetched': 219184, 'skip_exists': 21762, 'failed': 54} rate=19.6/s eta=449.8min
+  [242000/770552] {'fetched': 220119, 'skip_exists': 21827, 'failed': 54} rate=19.6/s eta=448.8min
+  [243000/770552] {'fetched': 221059, 'skip_exists': 21887, 'failed': 54} rate=19.6/s eta=447.9min
+  [244000/770552] {'fetched': 221939, 'skip_exists': 22007, 'failed': 54} rate=19.6/s eta=446.9min
+  [245000/770552] {'fetched': 222849, 'skip_exists': 22097, 'failed': 54} rate=19.6/s eta=446.8min
+  [246000/770552] {'fetched': 223698, 'skip_exists': 22248, 'failed': 54} rate=19.6/s eta=445.6min
+  [247000/770552] {'fetched': 224572, 'skip_exists': 22374, 'failed': 54} rate=19.6/s eta=444.7min
+  [248000/770552] {'fetched': 225402, 'skip_exists': 22544, 'failed': 54} rate=19.6/s eta=443.6min
+  [249000/770552] {'fetched': 226289, 'skip_exists': 22657, 'failed': 54} rate=19.6/s eta=442.8min
+  [250000/770552] {'fetched': 227206, 'skip_exists': 22740, 'failed': 54} rate=19.6/s eta=441.7min
+  [251000/770552] {'fetched': 228048, 'skip_exists': 22898, 'failed': 54} rate=19.6/s eta=441.4min
+  [252000/770552] {'fetched': 228948, 'skip_exists': 22998, 'failed': 54} rate=19.6/s eta=442.0min
+  [253000/770552] {'fetched': 229695, 'skip_exists': 23251, 'failed': 54} rate=19.6/s eta=441.1min
+  [254000/770552] {'fetched': 230397, 'skip_exists': 23549, 'failed': 54} rate=19.6/s eta=439.7min
+  [255000/770552] {'fetched': 231119, 'skip_exists': 23827, 'failed': 54} rate=19.6/s eta=438.3min
+  [256000/770552] {'fetched': 231859, 'skip_exists': 24087, 'failed': 54} rate=19.6/s eta=437.1min
+  [257000/770552] {'fetched': 232658, 'skip_exists': 24288, 'failed': 54} rate=19.6/s eta=435.8min
+  [258000/770552] {'fetched': 233555, 'skip_exists': 24391, 'failed': 54} rate=19.7/s eta=434.6min
+  [259000/770552] {'fetched': 234392, 'skip_exists': 24554, 'failed': 54} rate=19.7/s eta=433.4min
+  [260000/770552] {'fetched': 235271, 'skip_exists': 24675, 'failed': 54} rate=19.7/s eta=432.2min
+  [261000/770552] {'fetched': 236175, 'skip_exists': 24771, 'failed': 54} rate=19.7/s eta=431.0min
+  [262000/770552] {'fetched': 237086, 'skip_exists': 24860, 'failed': 54} rate=19.7/s eta=430.0min
+  [263000/770552] {'fetched': 238004, 'skip_exists': 24942, 'failed': 54} rate=19.7/s eta=429.1min
+  [264000/770552] {'fetched': 238858, 'skip_exists': 25088, 'failed': 54} rate=19.7/s eta=428.1min
+  [265000/770552] {'fetched': 239731, 'skip_exists': 25215, 'failed': 54} rate=19.7/s eta=427.2min
+  [266000/770552] {'fetched': 240633, 'skip_exists': 25313, 'failed': 54} rate=19.7/s eta=427.0min
+  [267000/770552] {'fetched': 241517, 'skip_exists': 25429, 'failed': 54} rate=19.7/s eta=426.8min
+  [268000/770552] {'fetched': 242401, 'skip_exists': 25545, 'failed': 54} rate=19.7/s eta=425.8min
+  [269000/770552] {'fetched': 243316, 'skip_exists': 25630, 'failed': 54} rate=19.7/s eta=424.9min
+  [270000/770552] {'fetched': 244173, 'skip_exists': 25773, 'failed': 54} rate=19.7/s eta=424.0min
+  [271000/770552] {'fetched': 245067, 'skip_exists': 25879, 'failed': 54} rate=19.7/s eta=423.1min
+  [272000/770552] {'fetched': 245956, 'skip_exists': 25990, 'failed': 54} rate=19.7/s eta=422.2min
+  [273000/770552] {'fetched': 246802, 'skip_exists': 26144, 'failed': 54} rate=19.7/s eta=421.2min
+  [274000/770552] {'fetched': 247662, 'skip_exists': 26284, 'failed': 54} rate=19.7/s eta=420.2min
+  [275000/770552] {'fetched': 248531, 'skip_exists': 26415, 'failed': 54} rate=19.7/s eta=419.2min
+  [276000/770552] {'fetched': 249353, 'skip_exists': 26593, 'failed': 54} rate=19.7/s eta=418.2min
+  [277000/770552] {'fetched': 250145, 'skip_exists': 26801, 'failed': 54} rate=19.7/s eta=417.5min
+  [278000/770552] {'fetched': 251001, 'skip_exists': 26945, 'failed': 54} rate=19.7/s eta=416.7min
+  [279000/770552] {'fetched': 251882, 'skip_exists': 27064, 'failed': 54} rate=19.7/s eta=415.8min
+  [280000/770552] {'fetched': 252735, 'skip_exists': 27211, 'failed': 54} rate=19.7/s eta=414.9min
+  [281000/770552] {'fetched': 253549, 'skip_exists': 27397, 'failed': 54} rate=19.7/s eta=413.7min
+  [282000/770552] {'fetched': 254400, 'skip_exists': 27546, 'failed': 54} rate=19.7/s eta=412.6min
+  [283000/770552] {'fetched': 255265, 'skip_exists': 27681, 'failed': 54} rate=19.7/s eta=411.7min
+  [284000/770552] {'fetched': 256122, 'skip_exists': 27824, 'failed': 54} rate=19.7/s eta=411.3min
+  [285000/770552] {'fetched': 257028, 'skip_exists': 27918, 'failed': 54} rate=19.7/s eta=410.4min
+  [286000/770552] {'fetched': 257967, 'skip_exists': 27979, 'failed': 54} rate=19.7/s eta=409.9min
+  [287000/770552] {'fetched': 258912, 'skip_exists': 28034, 'failed': 54} rate=19.7/s eta=409.5min
+  [288000/770552] {'fetched': 259856, 'skip_exists': 28090, 'failed': 54} rate=19.7/s eta=408.9min
+  [289000/770552] {'fetched': 260777, 'skip_exists': 28169, 'failed': 54} rate=19.6/s eta=408.5min
+  [290000/770552] {'fetched': 261717, 'skip_exists': 28229, 'failed': 54} rate=19.6/s eta=408.5min
+  [291000/770552] {'fetched': 262629, 'skip_exists': 28317, 'failed': 54} rate=19.6/s eta=407.4min
+  [292000/770552] {'fetched': 263561, 'skip_exists': 28385, 'failed': 54} rate=19.6/s eta=406.5min
+  [293000/770552] {'fetched': 264355, 'skip_exists': 28591, 'failed': 54} rate=19.6/s eta=406.0min
+  [294000/770552] {'fetched': 265157, 'skip_exists': 28789, 'failed': 54} rate=19.6/s eta=405.8min
+  [295000/770552] {'fetched': 266070, 'skip_exists': 28876, 'failed': 54} rate=19.5/s eta=405.4min
+  [296000/770552] {'fetched': 266977, 'skip_exists': 28969, 'failed': 54} rate=19.5/s eta=404.6min
+  [297000/770552] {'fetched': 267856, 'skip_exists': 29090, 'failed': 54} rate=19.5/s eta=403.9min
+  [298000/770552] {'fetched': 268794, 'skip_exists': 29152, 'failed': 54} rate=19.5/s eta=403.2min
+  [299000/770552] {'fetched': 269721, 'skip_exists': 29225, 'failed': 54} rate=19.5/s eta=402.3min
+  [300000/770552] {'fetched': 270521, 'skip_exists': 29425, 'failed': 54} rate=19.6/s eta=401.1min
+  [301000/770552] {'fetched': 271386, 'skip_exists': 29560, 'failed': 54} rate=19.6/s eta=400.0min
+  [302000/770552] {'fetched': 272234, 'skip_exists': 29712, 'failed': 54} rate=19.6/s eta=398.8min
+  [303000/770552] {'fetched': 272956, 'skip_exists': 29990, 'failed': 54} rate=19.6/s eta=397.5min
+  [304000/770552] {'fetched': 273797, 'skip_exists': 30149, 'failed': 54} rate=19.6/s eta=396.3min
+  [305000/770552] {'fetched': 274648, 'skip_exists': 30298, 'failed': 54} rate=19.6/s eta=395.1min
+  [306000/770552] {'fetched': 275496, 'skip_exists': 30450, 'failed': 54} rate=19.7/s eta=394.0min
+  [307000/770552] {'fetched': 276428, 'skip_exists': 30518, 'failed': 54} rate=19.7/s eta=392.9min
+  [308000/770552] {'fetched': 277404, 'skip_exists': 30542, 'failed': 54} rate=19.7/s eta=392.1min
+  [309000/770552] {'fetched': 278338, 'skip_exists': 30608, 'failed': 54} rate=19.7/s eta=391.0min
+  [310000/770552] {'fetched': 279141, 'skip_exists': 30805, 'failed': 54} rate=19.7/s eta=389.8min
+  [311000/770552] {'fetched': 280041, 'skip_exists': 30905, 'failed': 54} rate=19.7/s eta=388.8min
+  [312000/770552] {'fetched': 280996, 'skip_exists': 30950, 'failed': 54} rate=19.7/s eta=387.9min
+  [313000/770552] {'fetched': 281935, 'skip_exists': 31011, 'failed': 54} rate=19.7/s eta=387.1min
+  [314000/770552] {'fetched': 282841, 'skip_exists': 31105, 'failed': 54} rate=19.7/s eta=386.2min
+  [315000/770552] {'fetched': 283773, 'skip_exists': 31173, 'failed': 54} rate=19.7/s eta=385.3min
+  [316000/770552] {'fetched': 284680, 'skip_exists': 31266, 'failed': 54} rate=19.7/s eta=384.3min
+  [317000/770552] {'fetched': 285538, 'skip_exists': 31408, 'failed': 54} rate=19.7/s eta=383.2min
+  [318000/770552] {'fetched': 286424, 'skip_exists': 31522, 'failed': 54} rate=19.7/s eta=382.2min
+  [319000/770552] {'fetched': 287310, 'skip_exists': 31636, 'failed': 54} rate=19.7/s eta=381.2min
+  [320000/770552] {'fetched': 288244, 'skip_exists': 31702, 'failed': 54} rate=19.7/s eta=380.4min
+  [321000/770552] {'fetched': 289158, 'skip_exists': 31788, 'failed': 54} rate=19.7/s eta=379.4min
+  [322000/770552] {'fetched': 290011, 'skip_exists': 31935, 'failed': 54} rate=19.8/s eta=378.4min
+  [323000/770552] {'fetched': 290898, 'skip_exists': 32048, 'failed': 54} rate=19.7/s eta=377.8min
+  [324000/770552] {'fetched': 291819, 'skip_exists': 32127, 'failed': 54} rate=19.7/s eta=377.0min
+  [325000/770552] {'fetched': 292745, 'skip_exists': 32201, 'failed': 54} rate=19.7/s eta=376.2min
+  [326000/770552] {'fetched': 293682, 'skip_exists': 32264, 'failed': 54} rate=19.7/s eta=375.3min
+  [327000/770552] {'fetched': 294512, 'skip_exists': 32434, 'failed': 54} rate=19.8/s eta=374.1min
+  [328000/770552] {'fetched': 295355, 'skip_exists': 32591, 'failed': 54} rate=19.8/s eta=373.2min
+  [329000/770552] {'fetched': 296285, 'skip_exists': 32661, 'failed': 54} rate=19.8/s eta=372.3min
+  [330000/770552] {'fetched': 297232, 'skip_exists': 32714, 'failed': 54} rate=19.8/s eta=371.5min
+  [331000/770552] {'fetched': 298097, 'skip_exists': 32849, 'failed': 54} rate=19.8/s eta=370.5min
+  [332000/770552] {'fetched': 299014, 'skip_exists': 32932, 'failed': 54} rate=19.8/s eta=369.5min
+  [333000/770552] {'fetched': 299882, 'skip_exists': 33064, 'failed': 54} rate=19.8/s eta=368.4min
+  [334000/770552] {'fetched': 300773, 'skip_exists': 33173, 'failed': 54} rate=19.8/s eta=367.4min
+  [335000/770552] {'fetched': 301671, 'skip_exists': 33275, 'failed': 54} rate=19.8/s eta=366.4min
+  [336000/770552] {'fetched': 302554, 'skip_exists': 33392, 'failed': 54} rate=19.8/s eta=365.2min
+  [337000/770552] {'fetched': 303436, 'skip_exists': 33510, 'failed': 54} rate=19.8/s eta=364.1min
+  [338000/770552] {'fetched': 304270, 'skip_exists': 33676, 'failed': 54} rate=19.9/s eta=363.2min
+  [339000/770552] {'fetched': 305074, 'skip_exists': 33872, 'failed': 54} rate=19.9/s eta=362.1min
+  [340000/770552] {'fetched': 305957, 'skip_exists': 33989, 'failed': 54} rate=19.9/s eta=361.0min
+  [341000/770552] {'fetched': 306814, 'skip_exists': 34132, 'failed': 54} rate=19.9/s eta=359.8min
+  [342000/770552] {'fetched': 307712, 'skip_exists': 34234, 'failed': 54} rate=19.9/s eta=358.9min
+  [343000/770552] {'fetched': 308643, 'skip_exists': 34303, 'failed': 54} rate=19.9/s eta=358.0min
+  [344000/770552] {'fetched': 309574, 'skip_exists': 34372, 'failed': 54} rate=19.9/s eta=357.1min
+  [345000/770552] {'fetched': 310516, 'skip_exists': 34430, 'failed': 54} rate=19.9/s eta=356.2min
+  FAILED ISS034-E-54783: float() argument must be a string or a real number, not 'NoneType'
+  [346000/770552] {'fetched': 311403, 'skip_exists': 34542, 'failed': 55} rate=19.9/s eta=355.3min
+  [347000/770552] {'fetched': 312340, 'skip_exists': 34605, 'failed': 55} rate=19.9/s eta=354.6min
+  [348000/770552] {'fetched': 313103, 'skip_exists': 34842, 'failed': 55} rate=19.9/s eta=353.5min
+  [349000/770552] {'fetched': 313956, 'skip_exists': 34989, 'failed': 55} rate=19.9/s eta=352.5min
+  [350000/770552] {'fetched': 314919, 'skip_exists': 35026, 'failed': 55} rate=19.9/s eta=351.6min
+  [351000/770552] {'fetched': 315845, 'skip_exists': 35100, 'failed': 55} rate=19.9/s eta=350.7min
+  [352000/770552] {'fetched': 316579, 'skip_exists': 35366, 'failed': 55} rate=19.9/s eta=349.8min
+  [353000/770552] {'fetched': 317447, 'skip_exists': 35498, 'failed': 55} rate=19.9/s eta=349.0min
+  [354000/770552] {'fetched': 318259, 'skip_exists': 35686, 'failed': 55} rate=19.9/s eta=348.1min
+  [355000/770552] {'fetched': 319156, 'skip_exists': 35789, 'failed': 55} rate=19.9/s eta=347.2min
+  [356000/770552] {'fetched': 320145, 'skip_exists': 35800, 'failed': 55} rate=20.0/s eta=346.3min
+  [357000/770552] {'fetched': 321104, 'skip_exists': 35841, 'failed': 55} rate=20.0/s eta=345.3min
+  [358000/770552] {'fetched': 322005, 'skip_exists': 35940, 'failed': 55} rate=20.0/s eta=344.3min
+  [359000/770552] {'fetched': 322935, 'skip_exists': 36010, 'failed': 55} rate=20.0/s eta=343.3min
+  [360000/770552] {'fetched': 323879, 'skip_exists': 36066, 'failed': 55} rate=20.0/s eta=342.3min
+  [361000/770552] {'fetched': 324815, 'skip_exists': 36130, 'failed': 55} rate=20.0/s eta=341.3min
+  [362000/770552] {'fetched': 325760, 'skip_exists': 36185, 'failed': 55} rate=20.0/s eta=340.3min
+  [363000/770552] {'fetched': 326677, 'skip_exists': 36268, 'failed': 55} rate=20.0/s eta=339.3min
+  [364000/770552] {'fetched': 327522, 'skip_exists': 36423, 'failed': 55} rate=20.0/s eta=338.3min
+  [365000/770552] {'fetched': 328418, 'skip_exists': 36527, 'failed': 55} rate=20.0/s eta=337.3min
+  [366000/770552] {'fetched': 329380, 'skip_exists': 36565, 'failed': 55} rate=20.0/s eta=336.5min
+  [367000/770552] {'fetched': 330231, 'skip_exists': 36714, 'failed': 55} rate=20.0/s eta=335.8min
+  [368000/770552] {'fetched': 331143, 'skip_exists': 36802, 'failed': 55} rate=20.0/s eta=335.2min
+  [369000/770552] {'fetched': 332034, 'skip_exists': 36911, 'failed': 55} rate=20.0/s eta=334.5min
+  [370000/770552] {'fetched': 332854, 'skip_exists': 37091, 'failed': 55} rate=20.0/s eta=333.6min
+  [371000/770552] {'fetched': 333761, 'skip_exists': 37184, 'failed': 55} rate=20.0/s eta=332.9min
+  [372000/770552] {'fetched': 334534, 'skip_exists': 37411, 'failed': 55} rate=20.0/s eta=331.9min
+  [373000/770552] {'fetched': 335295, 'skip_exists': 37650, 'failed': 55} rate=20.0/s eta=331.1min
+  [374000/770552] {'fetched': 336247, 'skip_exists': 37698, 'failed': 55} rate=20.0/s eta=330.3min
+  [375000/770552] {'fetched': 337194, 'skip_exists': 37751, 'failed': 55} rate=20.0/s eta=329.7min
+  [376000/770552] {'fetched': 338033, 'skip_exists': 37912, 'failed': 55} rate=20.0/s eta=329.0min
+  [377000/770552] {'fetched': 338848, 'skip_exists': 38097, 'failed': 55} rate=20.0/s eta=328.2min
+  [378000/770552] {'fetched': 339633, 'skip_exists': 38312, 'failed': 55} rate=20.0/s eta=327.3min
+  [379000/770552] {'fetched': 340429, 'skip_exists': 38516, 'failed': 55} rate=20.0/s eta=326.6min
+  [380000/770552] {'fetched': 341260, 'skip_exists': 38685, 'failed': 55} rate=20.0/s eta=325.8min
+  [381000/770552] {'fetched': 342117, 'skip_exists': 38828, 'failed': 55} rate=20.0/s eta=325.0min
+  [382000/770552] {'fetched': 343004, 'skip_exists': 38941, 'failed': 55} rate=20.0/s eta=324.1min
+  [383000/770552] {'fetched': 343904, 'skip_exists': 39041, 'failed': 55} rate=20.0/s eta=323.2min
+  [384000/770552] {'fetched': 344847, 'skip_exists': 39098, 'failed': 55} rate=20.0/s eta=322.6min
+  [385000/770552] {'fetched': 345792, 'skip_exists': 39153, 'failed': 55} rate=20.0/s eta=322.0min
+  [386000/770552] {'fetched': 346688, 'skip_exists': 39257, 'failed': 55} rate=19.9/s eta=321.4min
+  [387000/770552] {'fetched': 347569, 'skip_exists': 39376, 'failed': 55} rate=19.9/s eta=320.7min
+  [388000/770552] {'fetched': 348454, 'skip_exists': 39491, 'failed': 55} rate=19.9/s eta=320.0min
+  [389000/770552] {'fetched': 349384, 'skip_exists': 39561, 'failed': 55} rate=19.9/s eta=319.2min
+  [390000/770552] {'fetched': 350310, 'skip_exists': 39635, 'failed': 55} rate=19.9/s eta=318.4min
+  [391000/770552] {'fetched': 351242, 'skip_exists': 39703, 'failed': 55} rate=19.9/s eta=317.5min
+  [392000/770552] {'fetched': 352188, 'skip_exists': 39757, 'failed': 55} rate=19.9/s eta=316.7min
+  [393000/770552] {'fetched': 353127, 'skip_exists': 39818, 'failed': 55} rate=19.9/s eta=315.8min
+  [394000/770552] {'fetched': 354074, 'skip_exists': 39871, 'failed': 55} rate=19.9/s eta=315.0min
+  [395000/770552] {'fetched': 355027, 'skip_exists': 39918, 'failed': 55} rate=19.9/s eta=314.2min
+  [396000/770552] {'fetched': 355945, 'skip_exists': 40000, 'failed': 55} rate=19.9/s eta=313.4min
+  [397000/770552] {'fetched': 356865, 'skip_exists': 40080, 'failed': 55} rate=19.9/s eta=312.6min
+  [398000/770552] {'fetched': 357820, 'skip_exists': 40125, 'failed': 55} rate=19.9/s eta=311.7min
+  [399000/770552] {'fetched': 358776, 'skip_exists': 40169, 'failed': 55} rate=19.9/s eta=310.9min
+  [400000/770552] {'fetched': 359730, 'skip_exists': 40215, 'failed': 55} rate=19.9/s eta=310.0min
+  [401000/770552] {'fetched': 360660, 'skip_exists': 40285, 'failed': 55} rate=19.9/s eta=309.2min
+  [402000/770552] {'fetched': 361571, 'skip_exists': 40374, 'failed': 55} rate=19.9/s eta=308.4min
+  [403000/770552] {'fetched': 362500, 'skip_exists': 40445, 'failed': 55} rate=19.9/s eta=307.7min
+  [404000/770552] {'fetched': 363429, 'skip_exists': 40516, 'failed': 55} rate=19.9/s eta=307.3min
+  [405000/770552] {'fetched': 364338, 'skip_exists': 40607, 'failed': 55} rate=19.9/s eta=306.8min
+  [406000/770552] {'fetched': 365254, 'skip_exists': 40691, 'failed': 55} rate=19.8/s eta=306.3min
+  [407000/770552] {'fetched': 366181, 'skip_exists': 40764, 'failed': 55} rate=19.8/s eta=305.6min
+  [408000/770552] {'fetched': 367124, 'skip_exists': 40821, 'failed': 55} rate=19.8/s eta=305.0min
+  [409000/770552] {'fetched': 368066, 'skip_exists': 40879, 'failed': 55} rate=19.8/s eta=304.4min
+  [410000/770552] {'fetched': 368971, 'skip_exists': 40974, 'failed': 55} rate=19.8/s eta=303.7min
+  [411000/770552] {'fetched': 369858, 'skip_exists': 41087, 'failed': 55} rate=19.8/s eta=303.1min
+  [412000/770552] {'fetched': 370674, 'skip_exists': 41271, 'failed': 55} rate=19.8/s eta=302.5min
+  [413000/770552] {'fetched': 371591, 'skip_exists': 41354, 'failed': 55} rate=19.7/s eta=302.0min
+  [414000/770552] {'fetched': 372485, 'skip_exists': 41460, 'failed': 55} rate=19.7/s eta=301.7min
+  [415000/770552] {'fetched': 373404, 'skip_exists': 41541, 'failed': 55} rate=19.7/s eta=301.2min
+  [416000/770552] {'fetched': 374257, 'skip_exists': 41688, 'failed': 55} rate=19.7/s eta=300.7min
+  [417000/770552] {'fetched': 375163, 'skip_exists': 41782, 'failed': 55} rate=19.6/s eta=300.0min
+  [418000/770552] {'fetched': 376065, 'skip_exists': 41880, 'failed': 55} rate=19.6/s eta=299.4min
+  [419000/770552] {'fetched': 376955, 'skip_exists': 41990, 'failed': 55} rate=19.6/s eta=298.7min
+  [420000/770552] {'fetched': 377747, 'skip_exists': 42198, 'failed': 55} rate=19.6/s eta=298.5min
+  [421000/770552] {'fetched': 378427, 'skip_exists': 42518, 'failed': 55} rate=19.6/s eta=297.7min
+  [422000/770552] {'fetched': 379025, 'skip_exists': 42920, 'failed': 55} rate=19.6/s eta=296.8min
+  [423000/770552] {'fetched': 379615, 'skip_exists': 43330, 'failed': 55} rate=19.6/s eta=295.9min
+  [424000/770552] {'fetched': 380160, 'skip_exists': 43785, 'failed': 55} rate=19.6/s eta=294.9min
+  [425000/770552] {'fetched': 380906, 'skip_exists': 44039, 'failed': 55} rate=19.6/s eta=294.2min
+  [426000/770552] {'fetched': 381540, 'skip_exists': 44405, 'failed': 55} rate=19.6/s eta=293.2min
+  [427000/770552] {'fetched': 382092, 'skip_exists': 44853, 'failed': 55} rate=19.6/s eta=292.2min
+  [428000/770552] {'fetched': 382773, 'skip_exists': 45172, 'failed': 55} rate=19.6/s eta=291.4min
+  [429000/770552] {'fetched': 383590, 'skip_exists': 45355, 'failed': 55} rate=19.6/s eta=290.7min
+  [430000/770552] {'fetched': 384357, 'skip_exists': 45588, 'failed': 55} rate=19.6/s eta=290.0min
+  [431000/770552] {'fetched': 385085, 'skip_exists': 45860, 'failed': 55} rate=19.6/s eta=289.2min
+  [432000/770552] {'fetched': 385819, 'skip_exists': 46126, 'failed': 55} rate=19.6/s eta=288.4min
+  [433000/770552] {'fetched': 386604, 'skip_exists': 46341, 'failed': 55} rate=19.6/s eta=287.6min
+  [434000/770552] {'fetched': 387507, 'skip_exists': 46438, 'failed': 55} rate=19.5/s eta=286.9min
+  [435000/770552] {'fetched': 388229, 'skip_exists': 46716, 'failed': 55} rate=19.5/s eta=286.2min
+  [436000/770552] {'fetched': 388925, 'skip_exists': 47020, 'failed': 55} rate=19.5/s eta=285.4min
+  [437000/770552] {'fetched': 389717, 'skip_exists': 47228, 'failed': 55} rate=19.5/s eta=284.8min
+  [438000/770552] {'fetched': 390541, 'skip_exists': 47404, 'failed': 55} rate=19.5/s eta=284.2min
+  [439000/770552] {'fetched': 391385, 'skip_exists': 47560, 'failed': 55} rate=19.5/s eta=283.7min
+  [440000/770552] {'fetched': 392287, 'skip_exists': 47658, 'failed': 55} rate=19.5/s eta=283.2min
+  [441000/770552] {'fetched': 393202, 'skip_exists': 47743, 'failed': 55} rate=19.4/s eta=282.6min
+  [442000/770552] {'fetched': 394085, 'skip_exists': 47860, 'failed': 55} rate=19.4/s eta=281.9min
+  [443000/770552] {'fetched': 395011, 'skip_exists': 47934, 'failed': 55} rate=19.4/s eta=281.1min
+  [444000/770552] {'fetched': 395904, 'skip_exists': 48041, 'failed': 55} rate=19.4/s eta=280.2min
+  [445000/770552] {'fetched': 396759, 'skip_exists': 48186, 'failed': 55} rate=19.4/s eta=279.4min
+  [446000/770552] {'fetched': 397659, 'skip_exists': 48286, 'failed': 55} rate=19.4/s eta=278.7min
+  [447000/770552] {'fetched': 398519, 'skip_exists': 48426, 'failed': 55} rate=19.4/s eta=277.9min
+  [448000/770552] {'fetched': 399486, 'skip_exists': 48459, 'failed': 55} rate=19.4/s eta=277.2min
+  [449000/770552] {'fetched': 400440, 'skip_exists': 48505, 'failed': 55} rate=19.4/s eta=276.5min
+  [450000/770552] {'fetched': 401303, 'skip_exists': 48642, 'failed': 55} rate=19.4/s eta=275.7min
+  [451000/770552] {'fetched': 402065, 'skip_exists': 48880, 'failed': 55} rate=19.4/s eta=274.9min
+  [452000/770552] {'fetched': 402866, 'skip_exists': 49079, 'failed': 55} rate=19.4/s eta=274.1min
+  [453000/770552] {'fetched': 403810, 'skip_exists': 49135, 'failed': 55} rate=19.4/s eta=273.3min
+  [454000/770552] {'fetched': 404745, 'skip_exists': 49200, 'failed': 55} rate=19.4/s eta=272.6min
+  [455000/770552] {'fetched': 405647, 'skip_exists': 49298, 'failed': 55} rate=19.4/s eta=271.8min
+  [456000/770552] {'fetched': 406556, 'skip_exists': 49389, 'failed': 55} rate=19.3/s eta=271.0min
+  [457000/770552] {'fetched': 407407, 'skip_exists': 49538, 'failed': 55} rate=19.3/s eta=270.3min
+  [458000/770552] {'fetched': 408355, 'skip_exists': 49590, 'failed': 55} rate=19.3/s eta=269.6min
+  [459000/770552] {'fetched': 409277, 'skip_exists': 49668, 'failed': 55} rate=19.3/s eta=269.0min
+  [460000/770552] {'fetched': 410172, 'skip_exists': 49773, 'failed': 55} rate=19.3/s eta=268.3min
+  [461000/770552] {'fetched': 411039, 'skip_exists': 49906, 'failed': 55} rate=19.3/s eta=267.6min
+  [462000/770552] {'fetched': 411980, 'skip_exists': 49965, 'failed': 55} rate=19.3/s eta=266.9min
+  [463000/770552] {'fetched': 412875, 'skip_exists': 50070, 'failed': 55} rate=19.3/s eta=266.2min
+  [464000/770552] {'fetched': 413800, 'skip_exists': 50145, 'failed': 55} rate=19.2/s eta=265.5min
+  [465000/770552] {'fetched': 414684, 'skip_exists': 50261, 'failed': 55} rate=19.2/s eta=264.7min
+  [466000/770552] {'fetched': 415583, 'skip_exists': 50362, 'failed': 55} rate=19.2/s eta=264.0min
+  [467000/770552] {'fetched': 416505, 'skip_exists': 50440, 'failed': 55} rate=19.2/s eta=263.6min
+  [468000/770552] {'fetched': 417432, 'skip_exists': 50513, 'failed': 55} rate=19.2/s eta=263.2min
+  [469000/770552] {'fetched': 418355, 'skip_exists': 50590, 'failed': 55} rate=19.1/s eta=262.8min
+  [470000/770552] {'fetched': 419274, 'skip_exists': 50671, 'failed': 55} rate=19.1/s eta=262.5min
+  [471000/770552] {'fetched': 420208, 'skip_exists': 50737, 'failed': 55} rate=19.0/s eta=262.3min
+  [472000/770552] {'fetched': 421126, 'skip_exists': 50819, 'failed': 55} rate=19.0/s eta=261.9min
+  [473000/770552] {'fetched': 422048, 'skip_exists': 50897, 'failed': 55} rate=19.0/s eta=261.6min
+  [474000/770552] {'fetched': 422997, 'skip_exists': 50948, 'failed': 55} rate=18.9/s eta=261.4min
+  [475000/770552] {'fetched': 423939, 'skip_exists': 51006, 'failed': 55} rate=18.9/s eta=260.9min
+  [476000/770552] {'fetched': 424875, 'skip_exists': 51070, 'failed': 55} rate=18.8/s eta=260.4min
+  [477000/770552] {'fetched': 425790, 'skip_exists': 51155, 'failed': 55} rate=18.8/s eta=260.0min
+  [478000/770552] {'fetched': 426726, 'skip_exists': 51219, 'failed': 55} rate=18.8/s eta=259.5min
+  [479000/770552] {'fetched': 427683, 'skip_exists': 51262, 'failed': 55} rate=18.7/s eta=259.2min
+  [480000/770552] {'fetched': 428646, 'skip_exists': 51299, 'failed': 55} rate=18.7/s eta=258.9min
+  [481000/770552] {'fetched': 429559, 'skip_exists': 51386, 'failed': 55} rate=18.7/s eta=258.6min
+  [482000/770552] {'fetched': 430444, 'skip_exists': 51501, 'failed': 55} rate=18.6/s eta=258.1min
+  [483000/770552] {'fetched': 431377, 'skip_exists': 51568, 'failed': 55} rate=18.6/s eta=257.8min
+  [484000/770552] {'fetched': 432317, 'skip_exists': 51628, 'failed': 55} rate=18.6/s eta=257.3min
+  [485000/770552] {'fetched': 433262, 'skip_exists': 51683, 'failed': 55} rate=18.5/s eta=257.0min
+  [486000/770552] {'fetched': 434184, 'skip_exists': 51761, 'failed': 55} rate=18.5/s eta=256.5min
+  [487000/770552] {'fetched': 435115, 'skip_exists': 51830, 'failed': 55} rate=18.4/s eta=256.2min
+  [488000/770552] {'fetched': 436051, 'skip_exists': 51894, 'failed': 55} rate=18.4/s eta=255.8min
+  [489000/770552] {'fetched': 436998, 'skip_exists': 51947, 'failed': 55} rate=18.4/s eta=255.4min
+  [490000/770552] {'fetched': 437949, 'skip_exists': 51996, 'failed': 55} rate=18.3/s eta=255.0min
+  [491000/770552] {'fetched': 438879, 'skip_exists': 52066, 'failed': 55} rate=18.3/s eta=254.6min
+  [492000/770552] {'fetched': 439836, 'skip_exists': 52109, 'failed': 55} rate=18.3/s eta=254.2min
+  [493000/770552] {'fetched': 440766, 'skip_exists': 52179, 'failed': 55} rate=18.2/s eta=253.8min
+  [494000/770552] {'fetched': 441714, 'skip_exists': 52231, 'failed': 55} rate=18.2/s eta=253.4min
+  [495000/770552] {'fetched': 442670, 'skip_exists': 52275, 'failed': 55} rate=18.2/s eta=253.0min
+  [496000/770552] {'fetched': 443627, 'skip_exists': 52318, 'failed': 55} rate=18.1/s eta=252.6min
+  [497000/770552] {'fetched': 444568, 'skip_exists': 52377, 'failed': 55} rate=18.1/s eta=252.1min
+  [498000/770552] {'fetched': 445516, 'skip_exists': 52429, 'failed': 55} rate=18.0/s eta=251.7min
+  [499000/770552] {'fetched': 446450, 'skip_exists': 52495, 'failed': 55} rate=18.0/s eta=251.1min
+  [500000/770552] {'fetched': 447403, 'skip_exists': 52542, 'failed': 55} rate=18.0/s eta=250.7min
+  [501000/770552] {'fetched': 448370, 'skip_exists': 52575, 'failed': 55} rate=18.0/s eta=250.1min
+  [502000/770552] {'fetched': 449343, 'skip_exists': 52602, 'failed': 55} rate=17.9/s eta=249.5min
+  [503000/770552] {'fetched': 450314, 'skip_exists': 52631, 'failed': 55} rate=17.9/s eta=248.7min
+  [504000/770552] {'fetched': 451277, 'skip_exists': 52668, 'failed': 55} rate=17.9/s eta=247.8min
+  [505000/770552] {'fetched': 452224, 'skip_exists': 52721, 'failed': 55} rate=17.9/s eta=247.1min
+  [506000/770552] {'fetched': 453166, 'skip_exists': 52779, 'failed': 55} rate=17.9/s eta=246.4min
+  [507000/770552] {'fetched': 454132, 'skip_exists': 52813, 'failed': 55} rate=17.9/s eta=245.5min
+  [508000/770552] {'fetched': 455091, 'skip_exists': 52854, 'failed': 55} rate=17.9/s eta=244.6min
+  [509000/770552] {'fetched': 456044, 'skip_exists': 52901, 'failed': 55} rate=17.9/s eta=243.8min
+  [510000/770552] {'fetched': 456992, 'skip_exists': 52953, 'failed': 55} rate=17.9/s eta=243.0min
+  [511000/770552] {'fetched': 457952, 'skip_exists': 52993, 'failed': 55} rate=17.9/s eta=242.3min
+  [512000/770552] {'fetched': 458914, 'skip_exists': 53031, 'failed': 55} rate=17.8/s eta=241.5min
+  [513000/770552] {'fetched': 459861, 'skip_exists': 53084, 'failed': 55} rate=17.8/s eta=240.6min
+  [514000/770552] {'fetched': 460805, 'skip_exists': 53140, 'failed': 55} rate=17.8/s eta=239.9min
+  [515000/770552] {'fetched': 461733, 'skip_exists': 53212, 'failed': 55} rate=17.8/s eta=239.1min
+  [516000/770552] {'fetched': 462603, 'skip_exists': 53342, 'failed': 55} rate=17.8/s eta=238.2min
+  [517000/770552] {'fetched': 463432, 'skip_exists': 53513, 'failed': 55} rate=17.8/s eta=237.3min
+  [518000/770552] {'fetched': 464231, 'skip_exists': 53714, 'failed': 55} rate=17.8/s eta=236.4min
+  [519000/770552] {'fetched': 465065, 'skip_exists': 53880, 'failed': 55} rate=17.8/s eta=235.6min
+  [520000/770552] {'fetched': 465935, 'skip_exists': 54010, 'failed': 55} rate=17.8/s eta=234.6min
+  [521000/770552] {'fetched': 466801, 'skip_exists': 54144, 'failed': 55} rate=17.8/s eta=233.7min
+  [522000/770552] {'fetched': 467716, 'skip_exists': 54229, 'failed': 55} rate=17.8/s eta=232.8min
+  [523000/770552] {'fetched': 468614, 'skip_exists': 54331, 'failed': 55} rate=17.8/s eta=232.0min
+  [524000/770552] {'fetched': 469507, 'skip_exists': 54438, 'failed': 55} rate=17.8/s eta=231.0min
+  [525000/770552] {'fetched': 470423, 'skip_exists': 54522, 'failed': 55} rate=17.8/s eta=230.2min
+  [526000/770552] {'fetched': 471285, 'skip_exists': 54660, 'failed': 55} rate=17.8/s eta=229.4min
+  [527000/770552] {'fetched': 472167, 'skip_exists': 54778, 'failed': 55} rate=17.8/s eta=228.7min
+  [528000/770552] {'fetched': 473034, 'skip_exists': 54911, 'failed': 55} rate=17.7/s eta=227.9min
+  [529000/770552] {'fetched': 473984, 'skip_exists': 54961, 'failed': 55} rate=17.7/s eta=227.3min
+  [530000/770552] {'fetched': 474927, 'skip_exists': 55018, 'failed': 55} rate=17.7/s eta=226.6min
+  [531000/770552] {'fetched': 475847, 'skip_exists': 55098, 'failed': 55} rate=17.7/s eta=225.9min
+  [532000/770552] {'fetched': 476735, 'skip_exists': 55210, 'failed': 55} rate=17.7/s eta=225.2min
+  [533000/770552] {'fetched': 477637, 'skip_exists': 55308, 'failed': 55} rate=17.6/s eta=224.3min
+  [534000/770552] {'fetched': 478568, 'skip_exists': 55377, 'failed': 55} rate=17.6/s eta=223.6min
+  [535000/770552] {'fetched': 479494, 'skip_exists': 55451, 'failed': 55} rate=17.6/s eta=222.8min
+  [536000/770552] {'fetched': 480434, 'skip_exists': 55511, 'failed': 55} rate=17.6/s eta=222.0min
+  [537000/770552] {'fetched': 481398, 'skip_exists': 55547, 'failed': 55} rate=17.6/s eta=221.2min
+  [538000/770552] {'fetched': 482366, 'skip_exists': 55579, 'failed': 55} rate=17.6/s eta=220.3min
+  [539000/770552] {'fetched': 483275, 'skip_exists': 55670, 'failed': 55} rate=17.6/s eta=219.5min
+  [540000/770552] {'fetched': 484216, 'skip_exists': 55729, 'failed': 55} rate=17.6/s eta=218.6min
+  [541000/770552] {'fetched': 485170, 'skip_exists': 55775, 'failed': 55} rate=17.6/s eta=217.7min
+  [542000/770552] {'fetched': 486056, 'skip_exists': 55889, 'failed': 55} rate=17.6/s eta=216.8min
+  [543000/770552] {'fetched': 486922, 'skip_exists': 56023, 'failed': 55} rate=17.6/s eta=215.9min
+  [544000/770552] {'fetched': 487853, 'skip_exists': 56092, 'failed': 55} rate=17.5/s eta=215.2min
+  [545000/770552] {'fetched': 488742, 'skip_exists': 56203, 'failed': 55} rate=17.5/s eta=214.5min
+  [546000/770552] {'fetched': 489657, 'skip_exists': 56288, 'failed': 55} rate=17.5/s eta=213.7min
+  [547000/770552] {'fetched': 490512, 'skip_exists': 56433, 'failed': 55} rate=17.5/s eta=212.9min
+  [548000/770552] {'fetched': 491413, 'skip_exists': 56532, 'failed': 55} rate=17.5/s eta=212.2min
+  [549000/770552] {'fetched': 492330, 'skip_exists': 56615, 'failed': 55} rate=17.5/s eta=211.4min
+  [550000/770552] {'fetched': 493285, 'skip_exists': 56660, 'failed': 55} rate=17.4/s eta=210.7min
+  [551000/770552] {'fetched': 494256, 'skip_exists': 56689, 'failed': 55} rate=17.4/s eta=210.0min
+  [552000/770552] {'fetched': 495177, 'skip_exists': 56768, 'failed': 55} rate=17.4/s eta=209.4min
+  [553000/770552] {'fetched': 496125, 'skip_exists': 56820, 'failed': 55} rate=17.4/s eta=208.6min
+  [554000/770552] {'fetched': 497037, 'skip_exists': 56908, 'failed': 55} rate=17.4/s eta=207.9min
+  [555000/770552] {'fetched': 497960, 'skip_exists': 56985, 'failed': 55} rate=17.3/s eta=207.1min
+  [556000/770552] {'fetched': 498924, 'skip_exists': 57021, 'failed': 55} rate=17.3/s eta=206.3min
+  [557000/770552] {'fetched': 499907, 'skip_exists': 57038, 'failed': 55} rate=17.3/s eta=205.6min
+  [558000/770552] {'fetched': 500887, 'skip_exists': 57058, 'failed': 55} rate=17.3/s eta=205.0min
+  [559000/770552] {'fetched': 501852, 'skip_exists': 57093, 'failed': 55} rate=17.2/s eta=204.5min
+  [560000/770552] {'fetched': 502787, 'skip_exists': 57158, 'failed': 55} rate=17.2/s eta=203.8min
+  [561000/770552] {'fetched': 503745, 'skip_exists': 57200, 'failed': 55} rate=17.2/s eta=203.0min
+  [562000/770552] {'fetched': 504705, 'skip_exists': 57240, 'failed': 55} rate=17.2/s eta=202.3min
+  [563000/770552] {'fetched': 505634, 'skip_exists': 57311, 'failed': 55} rate=17.2/s eta=201.5min
+  [564000/770552] {'fetched': 506592, 'skip_exists': 57353, 'failed': 55} rate=17.1/s eta=200.8min
+  [565000/770552] {'fetched': 507555, 'skip_exists': 57390, 'failed': 55} rate=17.1/s eta=200.1min
+  [566000/770552] {'fetched': 508529, 'skip_exists': 57416, 'failed': 55} rate=17.1/s eta=199.4min
+  [567000/770552] {'fetched': 509446, 'skip_exists': 57499, 'failed': 55} rate=17.1/s eta=198.6min
+  FAILED ISS062-E-39552: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-39490: float() argument must be a string or a real number, not 'NoneType'
+  [568000/770552] {'fetched': 510403, 'skip_exists': 57540, 'failed': 57} rate=17.1/s eta=198.0min
+  FAILED ISS062-E-38244: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-40362: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-39859: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-40553: float() argument must be a string or a real number, not 'NoneType'
+  [569000/770552] {'fetched': 511338, 'skip_exists': 57601, 'failed': 61} rate=17.0/s eta=197.2min
+  FAILED ISS062-E-46353: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-53442: float() argument must be a string or a real number, not 'NoneType'
+  [570000/770552] {'fetched': 512218, 'skip_exists': 57719, 'failed': 63} rate=17.0/s eta=196.4min
+  FAILED ISS062-E-45552: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-69633: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-69910: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-940: float() argument must be a string or a real number, not 'NoneType'
+  [571000/770552] {'fetched': 513140, 'skip_exists': 57793, 'failed': 67} rate=17.0/s eta=195.7min
+  FAILED ISS062-E-106170: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-115652: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-117044: float() argument must be a string or a real number, not 'NoneType'
+  [572000/770552] {'fetched': 514033, 'skip_exists': 57897, 'failed': 70} rate=17.0/s eta=194.9min
+  FAILED ISS062-E-96503: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-71574: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-96373: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-118033: float() argument must be a string or a real number, not 'NoneType'
+  [573000/770552] {'fetched': 514926, 'skip_exists': 58000, 'failed': 74} rate=17.0/s eta=194.1min
+  FAILED ISS062-E-118035: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-103148: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-125307: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-120815: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-124587: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-143037: float() argument must be a string or a real number, not 'NoneType'
+  [574000/770552] {'fetched': 515875, 'skip_exists': 58045, 'failed': 80} rate=16.9/s eta=193.3min
+  FAILED ISS062-E-120817: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-124682: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-124370: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-124055: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-124553: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-125101: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-142972: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-121129: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-139273: float() argument must be a string or a real number, not 'NoneType'
+  [575000/770552] {'fetched': 516816, 'skip_exists': 58095, 'failed': 89} rate=16.9/s eta=192.5min
+  FAILED ISS062-E-125032: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-143160: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-124582: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-141052: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS062-E-149248: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS063-E-563: float() argument must be a string or a real number, not 'NoneType'
+  [576000/770552] {'fetched': 517760, 'skip_exists': 58145, 'failed': 95} rate=16.9/s eta=191.6min
+  FAILED ISS063-E-2729: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS063-E-17522: float() argument must be a string or a real number, not 'NoneType'
+  [577000/770552] {'fetched': 518730, 'skip_exists': 58173, 'failed': 97} rate=16.9/s eta=190.9min
+  FAILED ISS063-E-17595: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS063-E-19430: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS063-E-5416: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS063-E-19436: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS063-E-17514: float() argument must be a string or a real number, not 'NoneType'
+  [578000/770552] {'fetched': 519713, 'skip_exists': 58185, 'failed': 102} rate=16.9/s eta=190.1min
+  FAILED ISS063-E-22288: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS063-E-28268: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS063-E-31701: float() argument must be a string or a real number, not 'NoneType'
+  [579000/770552] {'fetched': 520672, 'skip_exists': 58223, 'failed': 105} rate=16.8/s eta=189.5min
+  FAILED ISS063-E-32152: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS063-E-26849: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS063-E-34439: float() argument must be a string or a real number, not 'NoneType'
+  [580000/770552] {'fetched': 521649, 'skip_exists': 58243, 'failed': 108} rate=16.8/s eta=188.7min
+  FAILED ISS063-E-37692: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS063-E-36979: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS063-E-37302: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS063-E-37260: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS063-E-37442: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS063-E-50583: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS063-E-37541: float() argument must be a string or a real number, not 'NoneType'
+  [581000/770552] {'fetched': 522625, 'skip_exists': 58260, 'failed': 115} rate=16.8/s eta=187.9min
+  FAILED ISS063-E-37131: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS063-E-41504: float() argument must be a string or a real number, not 'NoneType'
+  [582000/770552] {'fetched': 523612, 'skip_exists': 58271, 'failed': 117} rate=16.8/s eta=187.1min
+  [583000/770552] {'fetched': 524572, 'skip_exists': 58311, 'failed': 117} rate=16.8/s eta=186.2min
+  [584000/770552] {'fetched': 525513, 'skip_exists': 58370, 'failed': 117} rate=16.8/s eta=185.5min
+  [585000/770552] {'fetched': 526316, 'skip_exists': 58567, 'failed': 117} rate=16.8/s eta=184.6min
+  FAILED ISS063-E-97981: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS063-E-98199: float() argument must be a string or a real number, not 'NoneType'
+  [586000/770552] {'fetched': 527242, 'skip_exists': 58639, 'failed': 119} rate=16.7/s eta=183.7min
+  [587000/770552] {'fetched': 528178, 'skip_exists': 58703, 'failed': 119} rate=16.7/s eta=183.0min
+  [588000/770552] {'fetched': 529033, 'skip_exists': 58848, 'failed': 119} rate=16.7/s eta=182.2min
+  FAILED ISS064-E-27633: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS064-E-29738: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS064-E-31381: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS064-E-33040: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS064-E-36800: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS064-E-28981: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS064-E-37861: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS064-E-37879: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS064-E-53229: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS064-E-53230: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS064-E-53232: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS064-E-38806: float() argument must be a string or a real number, not 'NoneType'
+  [589000/770552] {'fetched': 529823, 'skip_exists': 59046, 'failed': 131} rate=16.7/s eta=181.5min
+  FAILED ISS064-E-43706: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS064-E-55903: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS065-E-6042: float() argument must be a string or a real number, not 'NoneType'
+  [590000/770552] {'fetched': 530739, 'skip_exists': 59127, 'failed': 134} rate=16.7/s eta=180.6min
+  FAILED ISS064-E-57261: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS064-E-59146: float() argument must be a string or a real number, not 'NoneType'
+  [591000/770552] {'fetched': 531595, 'skip_exists': 59269, 'failed': 136} rate=16.6/s eta=179.9min
+  FAILED ISS065-E-1401: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS065-E-3526: float() argument must be a string or a real number, not 'NoneType'
+  [592000/770552] {'fetched': 532511, 'skip_exists': 59351, 'failed': 138} rate=16.6/s eta=179.1min
+  FAILED ISS065-E-29741: float() argument must be a string or a real number, not 'NoneType'
+  [593000/770552] {'fetched': 533382, 'skip_exists': 59479, 'failed': 139} rate=16.6/s eta=178.4min
+  FAILED ISS065-E-30053: float() argument must be a string or a real number, not 'NoneType'
+  [594000/770552] {'fetched': 534198, 'skip_exists': 59662, 'failed': 140} rate=16.6/s eta=177.7min
+  [595000/770552] {'fetched': 535089, 'skip_exists': 59771, 'failed': 140} rate=16.5/s eta=176.9min
+  [596000/770552] {'fetched': 536008, 'skip_exists': 59852, 'failed': 140} rate=16.5/s eta=176.1min
+  [597000/770552] {'fetched': 536879, 'skip_exists': 59981, 'failed': 140} rate=16.5/s eta=175.4min
+  [598000/770552] {'fetched': 537743, 'skip_exists': 60117, 'failed': 140} rate=16.4/s eta=174.8min
+  [599000/770552] {'fetched': 538648, 'skip_exists': 60212, 'failed': 140} rate=16.4/s eta=174.1min
+  FAILED ISS065-E-83504: float() argument must be a string or a real number, not 'NoneType'
+  [600000/770552] {'fetched': 539553, 'skip_exists': 60306, 'failed': 141} rate=16.4/s eta=173.2min
+  FAILED ISS065-E-85773: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS065-E-86039: float() argument must be a string or a real number, not 'NoneType'
+  [601000/770552] {'fetched': 540464, 'skip_exists': 60393, 'failed': 143} rate=16.4/s eta=172.4min
+  [602000/770552] {'fetched': 541404, 'skip_exists': 60453, 'failed': 143} rate=16.4/s eta=171.7min
+  FAILED ISS065-E-92470: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS065-E-95680: float() argument must be a string or a real number, not 'NoneType'
+  [603000/770552] {'fetched': 542322, 'skip_exists': 60533, 'failed': 145} rate=16.3/s eta=171.0min
+  FAILED ISS065-E-94420: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS065-E-100179: float() argument must be a string or a real number, not 'NoneType'
+  [604000/770552] {'fetched': 543234, 'skip_exists': 60619, 'failed': 147} rate=16.3/s eta=170.2min
+  FAILED ISS065-E-95684: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS065-E-111166: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS065-E-111122: float() argument must be a string or a real number, not 'NoneType'
+  [605000/770552] {'fetched': 544184, 'skip_exists': 60666, 'failed': 150} rate=16.3/s eta=169.4min
+  [606000/770552] {'fetched': 545125, 'skip_exists': 60725, 'failed': 150} rate=16.3/s eta=168.6min
+  FAILED ISS065-E-123642: float() argument must be a string or a real number, not 'NoneType'
+  [607000/770552] {'fetched': 546071, 'skip_exists': 60778, 'failed': 151} rate=16.2/s eta=167.9min
+  [608000/770552] {'fetched': 546971, 'skip_exists': 60878, 'failed': 151} rate=16.2/s eta=167.1min
+  FAILED ISS065-E-140911: float() argument must be a string or a real number, not 'NoneType'
+  [609000/770552] {'fetched': 547875, 'skip_exists': 60973, 'failed': 152} rate=16.2/s eta=166.4min
+  FAILED ISS065-E-110824: float() argument must be a string or a real number, not 'NoneType'
+  [610000/770552] {'fetched': 548788, 'skip_exists': 61059, 'failed': 153} rate=16.2/s eta=165.7min
+  FAILED ISS065-E-157828: float() argument must be a string or a real number, not 'NoneType'
+  [611000/770552] {'fetched': 549706, 'skip_exists': 61140, 'failed': 154} rate=16.1/s eta=164.9min
+  [612000/770552] {'fetched': 550590, 'skip_exists': 61256, 'failed': 154} rate=16.1/s eta=164.1min
+  FAILED ISS065-E-178691: float() argument must be a string or a real number, not 'NoneType'
+  [613000/770552] {'fetched': 551460, 'skip_exists': 61385, 'failed': 155} rate=16.1/s eta=163.5min
+  FAILED ISS065-E-206001: float() argument must be a string or a real number, not 'NoneType'
+  [614000/770552] {'fetched': 552328, 'skip_exists': 61516, 'failed': 156} rate=16.0/s eta=162.7min
+  FAILED ISS065-E-212631: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS065-E-238105: float() argument must be a string or a real number, not 'NoneType'
+  [615000/770552] {'fetched': 553256, 'skip_exists': 61586, 'failed': 158} rate=16.0/s eta=161.8min
+  FAILED ISS065-E-237752: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS065-E-237753: float() argument must be a string or a real number, not 'NoneType'
+  [616000/770552] {'fetched': 554203, 'skip_exists': 61637, 'failed': 160} rate=16.0/s eta=161.0min
+  FAILED ISS065-E-241885: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS065-E-220418: float() argument must be a string or a real number, not 'NoneType'
+  [617000/770552] {'fetched': 555084, 'skip_exists': 61754, 'failed': 162} rate=16.0/s eta=160.2min
+  FAILED ISS065-E-214627: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS065-E-235176: float() argument must be a string or a real number, not 'NoneType'
+  [618000/770552] {'fetched': 555988, 'skip_exists': 61848, 'failed': 164} rate=16.0/s eta=159.3min
+  FAILED ISS065-E-216171: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS065-E-220443: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS065-E-214622: float() argument must be a string or a real number, not 'NoneType'
+  [619000/770552] {'fetched': 556893, 'skip_exists': 61940, 'failed': 167} rate=15.9/s eta=158.5min
+  FAILED ISS065-E-290538: float() argument must be a string or a real number, not 'NoneType'
+  [620000/770552] {'fetched': 557733, 'skip_exists': 62099, 'failed': 168} rate=15.9/s eta=157.6min
+  [621000/770552] {'fetched': 558646, 'skip_exists': 62186, 'failed': 168} rate=15.9/s eta=156.8min
+  FAILED ISS065-E-258086: float() argument must be a string or a real number, not 'NoneType'
+  [622000/770552] {'fetched': 559552, 'skip_exists': 62279, 'failed': 169} rate=15.9/s eta=156.0min
+  [623000/770552] {'fetched': 560504, 'skip_exists': 62327, 'failed': 169} rate=15.9/s eta=155.1min
+  [624000/770552] {'fetched': 561477, 'skip_exists': 62354, 'failed': 169} rate=15.8/s eta=154.4min
+  [625000/770552] {'fetched': 562369, 'skip_exists': 62462, 'failed': 169} rate=15.8/s eta=153.6min
+  [626000/770552] {'fetched': 563128, 'skip_exists': 62703, 'failed': 169} rate=15.8/s eta=152.7min
+  [627000/770552] {'fetched': 563927, 'skip_exists': 62904, 'failed': 169} rate=15.8/s eta=151.8min
+  FAILED ISS065-E-430850: float() argument must be a string or a real number, not 'NoneType'
+  [628000/770552] {'fetched': 564830, 'skip_exists': 63000, 'failed': 170} rate=15.7/s eta=151.0min
+  [629000/770552] {'fetched': 565793, 'skip_exists': 63037, 'failed': 170} rate=15.7/s eta=150.1min
+  [630000/770552] {'fetched': 566736, 'skip_exists': 63094, 'failed': 170} rate=15.7/s eta=149.1min
+  [631000/770552] {'fetched': 567618, 'skip_exists': 63212, 'failed': 170} rate=15.7/s eta=148.2min
+  FAILED ISS066-E-12486: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS066-E-12414: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS065-E-458146: float() argument must be a string or a real number, not 'NoneType'
+  [632000/770552] {'fetched': 568502, 'skip_exists': 63325, 'failed': 173} rate=15.7/s eta=147.3min
+  [633000/770552] {'fetched': 569355, 'skip_exists': 63472, 'failed': 173} rate=15.7/s eta=146.4min
+  FAILED ISS065-E-442328: float() argument must be a string or a real number, not 'NoneType'
+  [634000/770552] {'fetched': 570182, 'skip_exists': 63644, 'failed': 174} rate=15.6/s eta=145.5min
+  FAILED ISS066-E-10583: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS066-E-8262: float() argument must be a string or a real number, not 'NoneType'
+  [635000/770552] {'fetched': 571008, 'skip_exists': 63816, 'failed': 176} rate=15.6/s eta=144.5min
+  FAILED ISS065-E-471090: float() argument must be a string or a real number, not 'NoneType'
+  [636000/770552] {'fetched': 571855, 'skip_exists': 63968, 'failed': 177} rate=15.6/s eta=143.7min
+  FAILED ISS066-E-10571: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS065-E-443555: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS066-E-10346: float() argument must be a string or a real number, not 'NoneType'
+  [637000/770552] {'fetched': 572719, 'skip_exists': 64101, 'failed': 180} rate=15.6/s eta=142.8min
+  FAILED ISS066-E-43229: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS066-E-43236: float() argument must be a string or a real number, not 'NoneType'
+  [638000/770552] {'fetched': 573460, 'skip_exists': 64358, 'failed': 182} rate=15.6/s eta=141.8min
+  FAILED ISS066-E-84202: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS066-E-84264: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS066-E-91655: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS066-E-95878: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS066-E-97584: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS066-E-97722: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS066-E-84654: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS066-E-97759: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS066-E-101530: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS066-E-98080: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS066-E-98104: float() argument must be a string or a real number, not 'NoneType'
+  [639000/770552] {'fetched': 574284, 'skip_exists': 64523, 'failed': 193} rate=15.6/s eta=140.8min
+  FAILED ISS066-E-98301: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS066-E-101926: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS066-E-98241: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS066-E-97437: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS066-E-99686: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS066-E-101234: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS066-E-98016: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS066-E-101049: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS066-E-97885: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS066-E-98102: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS066-E-98942: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS066-E-108709: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS066-E-101224: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS066-E-99730: float() argument must be a string or a real number, not 'NoneType'
+  [640000/770552] {'fetched': 575208, 'skip_exists': 64585, 'failed': 207} rate=15.6/s eta=139.8min
+  FAILED ISS066-E-104037: float() argument must be a string or a real number, not 'NoneType'
+  [641000/770552] {'fetched': 576035, 'skip_exists': 64757, 'failed': 208} rate=15.5/s eta=139.0min
+  [642000/770552] {'fetched': 576634, 'skip_exists': 65158, 'failed': 208} rate=15.5/s eta=138.0min
+  [643000/770552] {'fetched': 577500, 'skip_exists': 65292, 'failed': 208} rate=15.5/s eta=137.1min
+  [644000/770552] {'fetched': 578447, 'skip_exists': 65345, 'failed': 208} rate=15.4/s eta=136.6min
+  [645000/770552] {'fetched': 579356, 'skip_exists': 65436, 'failed': 208} rate=15.4/s eta=135.9min
+  [646000/770552] {'fetched': 580279, 'skip_exists': 65513, 'failed': 208} rate=15.3/s eta=135.2min
+  [647000/770552] {'fetched': 581218, 'skip_exists': 65574, 'failed': 208} rate=15.3/s eta=134.3min
+  [648000/770552] {'fetched': 582182, 'skip_exists': 65610, 'failed': 208} rate=15.3/s eta=133.3min
+  [649000/770552] {'fetched': 583154, 'skip_exists': 65638, 'failed': 208} rate=15.3/s eta=132.3min
+  [650000/770552] {'fetched': 584098, 'skip_exists': 65694, 'failed': 208} rate=15.3/s eta=131.4min
+  [651000/770552] {'fetched': 585049, 'skip_exists': 65743, 'failed': 208} rate=15.3/s eta=130.4min
+  [652000/770552] {'fetched': 585953, 'skip_exists': 65839, 'failed': 208} rate=15.3/s eta=129.5min
+  [653000/770552] {'fetched': 586527, 'skip_exists': 66265, 'failed': 208} rate=15.3/s eta=128.4min
+  [654000/770552] {'fetched': 587002, 'skip_exists': 66790, 'failed': 208} rate=15.3/s eta=127.3min
+  [655000/770552] {'fetched': 587785, 'skip_exists': 67007, 'failed': 208} rate=15.2/s eta=126.5min
+  [656000/770552] {'fetched': 588677, 'skip_exists': 67115, 'failed': 208} rate=15.2/s eta=125.6min
+  [657000/770552] {'fetched': 589566, 'skip_exists': 67226, 'failed': 208} rate=15.2/s eta=124.8min
+  [658000/770552] {'fetched': 590464, 'skip_exists': 67328, 'failed': 208} rate=15.2/s eta=123.8min
+  [659000/770552] {'fetched': 591293, 'skip_exists': 67499, 'failed': 208} rate=15.1/s eta=122.9min
+  [660000/770552] {'fetched': 592200, 'skip_exists': 67592, 'failed': 208} rate=15.1/s eta=121.9min
+  [661000/770552] {'fetched': 593124, 'skip_exists': 67668, 'failed': 208} rate=15.1/s eta=120.9min
+  [662000/770552] {'fetched': 594077, 'skip_exists': 67715, 'failed': 208} rate=15.1/s eta=119.9min
+  [663000/770552] {'fetched': 595010, 'skip_exists': 67782, 'failed': 208} rate=15.1/s eta=118.9min
+  [664000/770552] {'fetched': 595962, 'skip_exists': 67830, 'failed': 208} rate=15.0/s eta=118.0min
+  [665000/770552] {'fetched': 596889, 'skip_exists': 67903, 'failed': 208} rate=15.0/s eta=117.1min
+  [666000/770552] {'fetched': 597837, 'skip_exists': 67955, 'failed': 208} rate=15.0/s eta=116.1min
+  [667000/770552] {'fetched': 598773, 'skip_exists': 68019, 'failed': 208} rate=15.0/s eta=115.1min
+  [668000/770552] {'fetched': 599716, 'skip_exists': 68076, 'failed': 208} rate=15.0/s eta=114.1min
+  [669000/770552] {'fetched': 600667, 'skip_exists': 68125, 'failed': 208} rate=15.0/s eta=113.1min
+  [670000/770552] {'fetched': 601619, 'skip_exists': 68173, 'failed': 208} rate=15.0/s eta=112.0min
+  [671000/770552] {'fetched': 602549, 'skip_exists': 68243, 'failed': 208} rate=14.9/s eta=111.0min
+  [672000/770552] {'fetched': 603478, 'skip_exists': 68314, 'failed': 208} rate=14.9/s eta=110.1min
+  [673000/770552] {'fetched': 604383, 'skip_exists': 68409, 'failed': 208} rate=14.9/s eta=109.2min
+  [674000/770552] {'fetched': 605317, 'skip_exists': 68475, 'failed': 208} rate=14.9/s eta=108.2min
+  [675000/770552] {'fetched': 606219, 'skip_exists': 68573, 'failed': 208} rate=14.9/s eta=107.1min
+  [676000/770552] {'fetched': 607151, 'skip_exists': 68641, 'failed': 208} rate=14.9/s eta=106.1min
+  [677000/770552] {'fetched': 608096, 'skip_exists': 68696, 'failed': 208} rate=14.8/s eta=105.0min
+  [678000/770552] {'fetched': 609002, 'skip_exists': 68790, 'failed': 208} rate=14.8/s eta=103.9min
+  [679000/770552] {'fetched': 609886, 'skip_exists': 68906, 'failed': 208} rate=14.8/s eta=102.9min
+  [680000/770552] {'fetched': 610792, 'skip_exists': 69000, 'failed': 208} rate=14.8/s eta=101.9min
+  [681000/770552] {'fetched': 611736, 'skip_exists': 69056, 'failed': 208} rate=14.8/s eta=100.9min
+  [682000/770552] {'fetched': 612659, 'skip_exists': 69133, 'failed': 208} rate=14.8/s eta=99.9min
+  [683000/770552] {'fetched': 613578, 'skip_exists': 69214, 'failed': 208} rate=14.8/s eta=98.8min
+  [684000/770552] {'fetched': 614497, 'skip_exists': 69295, 'failed': 208} rate=14.8/s eta=97.7min
+  [685000/770552] {'fetched': 615369, 'skip_exists': 69423, 'failed': 208} rate=14.8/s eta=96.6min
+  FAILED ISS068-E-6694: float() argument must be a string or a real number, not 'NoneType'
+  [686000/770552] {'fetched': 616230, 'skip_exists': 69561, 'failed': 209} rate=14.8/s eta=95.5min
+  FAILED ISS068-E-14662: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-14668: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-14676: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-14694: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-8883: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-9127: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-14665: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-14681: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-14683: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-14693: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-14663: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-14669: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-14673: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-14695: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-17498: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-14679: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-14697: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-8885: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-14680: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-14698: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-14699: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-8347: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-14678: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-14684: float() argument must be a string or a real number, not 'NoneType'
+  [687000/770552] {'fetched': 617073, 'skip_exists': 69694, 'failed': 233} rate=14.8/s eta=94.4min
+  FAILED ISS068-E-14675: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-14682: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-8884: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-14664: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-14672: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-14660: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-14671: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-14674: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-8886: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-14670: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-14701: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-14696: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-14700: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-14677: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-14691: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-17497: float() argument must be a string or a real number, not 'NoneType'
+  [688000/770552] {'fetched': 617913, 'skip_exists': 69838, 'failed': 249} rate=14.8/s eta=93.3min
+  FAILED ISS068-E-25550: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-33073: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-33076: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-33793: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-30320: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-33090: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-33056: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-33078: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-33091: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-33079: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-33071: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-33074: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-33080: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-33058: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-33089: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-30323: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-33075: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-33081: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-33085: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-33054: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-33055: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-33077: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-33086: float() argument must be a string or a real number, not 'NoneType'
+  [689000/770552] {'fetched': 618778, 'skip_exists': 69950, 'failed': 272} rate=14.7/s eta=92.2min
+  FAILED ISS068-E-33087: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-33057: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-33072: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-33807: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-33053: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-33059: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-33082: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-33083: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-33088: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-46093: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-46097: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-47201: float() argument must be a string or a real number, not 'NoneType'
+  [690000/770552] {'fetched': 619612, 'skip_exists': 70104, 'failed': 284} rate=14.7/s eta=91.2min
+  FAILED ISS068-E-53631: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53713: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53715: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53717: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53724: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53725: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53727: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53728: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53730: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53742: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53743: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53744: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53746: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53760: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53763: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53768: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53769: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53788: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53798: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53799: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53800: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53804: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53810: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53812: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53816: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53817: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53818: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53819: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53820: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53821: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53822: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53823: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53824: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53825: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53826: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53827: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53828: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-53829: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-61415: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-61483: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-56885: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-56889: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-56890: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-56891: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-56892: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-56893: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-56894: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-56895: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-56896: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-56897: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-56898: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-56899: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-56900: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-56904: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-56905: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-56906: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-56907: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-56908: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-56909: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-56916: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-56917: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-56918: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-57315: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-57328: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-59010: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-59011: float() argument must be a string or a real number, not 'NoneType'
+  [691000/770552] {'fetched': 620352, 'skip_exists': 70298, 'failed': 350} rate=14.7/s eta=90.1min
+  FAILED ISS068-E-76262: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-76337: float() argument must be a string or a real number, not 'NoneType'
+  FAILED ISS068-E-76339: float() argument must be a string or a real number, not 'NoneType'
+  [692000/770552] {'fetched': 621299, 'skip_exists': 70348, 'failed': 353} rate=14.7/s eta=89.0min
+  [693000/770552] {'fetched': 622232, 'skip_exists': 70415, 'failed': 353} rate=14.7/s eta=87.9min
+  [694000/770552] {'fetched': 623128, 'skip_exists': 70519, 'failed': 353} rate=14.7/s eta=86.9min
+  [695000/770552] {'fetched': 623917, 'skip_exists': 70730, 'failed': 353} rate=14.7/s eta=85.7min
+  [696000/770552] {'fetched': 624828, 'skip_exists': 70819, 'failed': 353} rate=14.7/s eta=84.7min
+  [697000/770552] {'fetched': 625790, 'skip_exists': 70857, 'failed': 353} rate=14.7/s eta=83.6min
+  [698000/770552] {'fetched': 626740, 'skip_exists': 70907, 'failed': 353} rate=14.7/s eta=82.5min
+  [699000/770552] {'fetched': 627662, 'skip_exists': 70985, 'failed': 353} rate=14.7/s eta=81.3min
+  [700000/770552] {'fetched': 628554, 'skip_exists': 71093, 'failed': 353} rate=14.7/s eta=80.2min
+  [701000/770552] {'fetched': 629453, 'skip_exists': 71194, 'failed': 353} rate=14.7/s eta=79.1min
+  [702000/770552] {'fetched': 630278, 'skip_exists': 71369, 'failed': 353} rate=14.7/s eta=78.0min
+  [703000/770552] {'fetched': 631063, 'skip_exists': 71584, 'failed': 353} rate=14.7/s eta=76.8min
+  [704000/770552] {'fetched': 631869, 'skip_exists': 71778, 'failed': 353} rate=14.7/s eta=75.7min
+  [705000/770552] {'fetched': 632683, 'skip_exists': 71964, 'failed': 353} rate=14.7/s eta=74.6min
+  [706000/770552] {'fetched': 633522, 'skip_exists': 72125, 'failed': 353} rate=14.7/s eta=73.4min
+  [707000/770552] {'fetched': 634330, 'skip_exists': 72317, 'failed': 353} rate=14.7/s eta=72.3min
+  [708000/770552] {'fetched': 635210, 'skip_exists': 72437, 'failed': 353} rate=14.6/s eta=71.2min
+  [709000/770552] {'fetched': 636129, 'skip_exists': 72518, 'failed': 353} rate=14.6/s eta=70.1min
+  [710000/770552] {'fetched': 637025, 'skip_exists': 72622, 'failed': 353} rate=14.6/s eta=69.0min
+  [711000/770552] {'fetched': 637979, 'skip_exists': 72668, 'failed': 353} rate=14.6/s eta=68.0min
+  [712000/770552] {'fetched': 638953, 'skip_exists': 72694, 'failed': 353} rate=14.5/s eta=67.1min
+  [713000/770552] {'fetched': 639932, 'skip_exists': 72715, 'failed': 353} rate=14.5/s eta=66.1min
+  [714000/770552] {'fetched': 640885, 'skip_exists': 72762, 'failed': 353} rate=14.5/s eta=65.0min
+  [715000/770552] {'fetched': 641836, 'skip_exists': 72811, 'failed': 353} rate=14.5/s eta=64.0min
+  [716000/770552] {'fetched': 642802, 'skip_exists': 72845, 'failed': 353} rate=14.4/s eta=63.0min
+  [717000/770552] {'fetched': 643785, 'skip_exists': 72862, 'failed': 353} rate=14.4/s eta=62.0min
+  [718000/770552] {'fetched': 644743, 'skip_exists': 72904, 'failed': 353} rate=14.4/s eta=61.0min
+  [719000/770552] {'fetched': 645694, 'skip_exists': 72953, 'failed': 353} rate=14.3/s eta=59.9min
+  [720000/770552] {'fetched': 646672, 'skip_exists': 72975, 'failed': 353} rate=14.3/s eta=58.9min
+  [721000/770552] {'fetched': 647651, 'skip_exists': 72996, 'failed': 353} rate=14.3/s eta=57.8min
+  [722000/770552] {'fetched': 648625, 'skip_exists': 73022, 'failed': 353} rate=14.3/s eta=56.7min
+  [723000/770552] {'fetched': 649594, 'skip_exists': 73053, 'failed': 353} rate=14.2/s eta=55.7min
+  [724000/770552] {'fetched': 650519, 'skip_exists': 73128, 'failed': 353} rate=14.2/s eta=54.6min
+  [725000/770552] {'fetched': 651443, 'skip_exists': 73204, 'failed': 353} rate=14.2/s eta=53.5min
+  [726000/770552] {'fetched': 652386, 'skip_exists': 73261, 'failed': 353} rate=14.1/s eta=52.5min
+  [727000/770552] {'fetched': 653333, 'skip_exists': 73314, 'failed': 353} rate=14.1/s eta=51.5min
+  [728000/770552] {'fetched': 654284, 'skip_exists': 73363, 'failed': 353} rate=14.1/s eta=50.5min
+  [729000/770552] {'fetched': 655217, 'skip_exists': 73430, 'failed': 353} rate=14.0/s eta=49.4min
+  [730000/770552] {'fetched': 656147, 'skip_exists': 73500, 'failed': 353} rate=14.0/s eta=48.3min
+  [731000/770552] {'fetched': 657079, 'skip_exists': 73568, 'failed': 353} rate=13.9/s eta=47.3min
+  [732000/770552] {'fetched': 658022, 'skip_exists': 73625, 'failed': 353} rate=13.9/s eta=46.2min
+  [733000/770552] {'fetched': 658956, 'skip_exists': 73691, 'failed': 353} rate=13.9/s eta=45.1min
+  [734000/770552] {'fetched': 659888, 'skip_exists': 73759, 'failed': 353} rate=13.9/s eta=44.0min
+  [735000/770552] {'fetched': 660836, 'skip_exists': 73811, 'failed': 353} rate=13.8/s eta=42.8min
+  [736000/770552] {'fetched': 661800, 'skip_exists': 73847, 'failed': 353} rate=13.8/s eta=41.7min
+  [737000/770552] {'fetched': 662739, 'skip_exists': 73908, 'failed': 353} rate=13.8/s eta=40.6min
+  [738000/770552] {'fetched': 663723, 'skip_exists': 73924, 'failed': 353} rate=13.7/s eta=39.5min
+  [739000/770552] {'fetched': 664676, 'skip_exists': 73971, 'failed': 353} rate=13.7/s eta=38.4min
+  [740000/770552] {'fetched': 665600, 'skip_exists': 74047, 'failed': 353} rate=13.7/s eta=37.3min
+  [741000/770552] {'fetched': 666544, 'skip_exists': 74103, 'failed': 353} rate=13.6/s eta=36.1min
+  [742000/770552] {'fetched': 667518, 'skip_exists': 74129, 'failed': 353} rate=13.6/s eta=35.0min
+  [743000/770552] {'fetched': 668511, 'skip_exists': 74136, 'failed': 353} rate=13.6/s eta=33.9min
+  [744000/770552] {'fetched': 669477, 'skip_exists': 74170, 'failed': 353} rate=13.5/s eta=32.8min
+  [745000/770552] {'fetched': 670432, 'skip_exists': 74215, 'failed': 353} rate=13.5/s eta=31.6min
+  [746000/770552] {'fetched': 671392, 'skip_exists': 74255, 'failed': 353} rate=13.5/s eta=30.4min
+  [747000/770552] {'fetched': 672340, 'skip_exists': 74307, 'failed': 353} rate=13.4/s eta=29.2min
+  [748000/770552] {'fetched': 673273, 'skip_exists': 74374, 'failed': 353} rate=13.4/s eta=28.0min
+  [749000/770552] {'fetched': 674222, 'skip_exists': 74425, 'failed': 353} rate=13.4/s eta=26.8min
+  [750000/770552] {'fetched': 675194, 'skip_exists': 74453, 'failed': 353} rate=13.3/s eta=25.7min
+  [751000/770552] {'fetched': 675930, 'skip_exists': 74717, 'failed': 353} rate=13.3/s eta=24.5min
+  [752000/770552] {'fetched': 676763, 'skip_exists': 74884, 'failed': 353} rate=13.3/s eta=23.3min
+  [753000/770552] {'fetched': 677702, 'skip_exists': 74945, 'failed': 353} rate=13.2/s eta=22.1min
+  [754000/770552] {'fetched': 678605, 'skip_exists': 75042, 'failed': 353} rate=13.2/s eta=20.9min
+  [755000/770552] {'fetched': 679543, 'skip_exists': 75104, 'failed': 353} rate=13.2/s eta=19.7min
+  [756000/770552] {'fetched': 680486, 'skip_exists': 75161, 'failed': 353} rate=13.1/s eta=18.5min
+  [757000/770552] {'fetched': 681411, 'skip_exists': 75236, 'failed': 353} rate=13.1/s eta=17.2min
+  [758000/770552] {'fetched': 682327, 'skip_exists': 75320, 'failed': 353} rate=13.1/s eta=16.0min
+  [759000/770552] {'fetched': 683292, 'skip_exists': 75355, 'failed': 353} rate=13.0/s eta=14.8min
+  [760000/770552] {'fetched': 684262, 'skip_exists': 75385, 'failed': 353} rate=13.0/s eta=13.5min
+  [761000/770552] {'fetched': 685196, 'skip_exists': 75451, 'failed': 353} rate=13.0/s eta=12.3min
+  [762000/770552] {'fetched': 686127, 'skip_exists': 75520, 'failed': 353} rate=13.0/s eta=11.0min
+  [763000/770552] {'fetched': 687055, 'skip_exists': 75592, 'failed': 353} rate=12.9/s eta=9.7min
+  [764000/770552] {'fetched': 687990, 'skip_exists': 75657, 'failed': 353} rate=12.9/s eta=8.5min
+  [765000/770552] {'fetched': 688933, 'skip_exists': 75714, 'failed': 353} rate=12.9/s eta=7.2min
+  [766000/770552] {'fetched': 689843, 'skip_exists': 75804, 'failed': 353} rate=12.8/s eta=5.9min
+  [767000/770552] {'fetched': 690729, 'skip_exists': 75918, 'failed': 353} rate=12.8/s eta=4.6min
+  [768000/770552] {'fetched': 691624, 'skip_exists': 76023, 'failed': 353} rate=12.8/s eta=3.3min
+  [769000/770552] {'fetched': 692527, 'skip_exists': 76120, 'failed': 353} rate=12.8/s eta=2.0min
+  [770000/770552] {'fetched': 693414, 'skip_exists': 76233, 'failed': 353} rate=12.8/s eta=0.7min
+  [770552/770552] {'fetched': 693913, 'skip_exists': 76286, 'failed': 353} rate=12.7/s eta=0.0min
+Done: {'fetched': 693913, 'skip_exists': 76286, 'failed': 353}
