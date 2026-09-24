@@ -88,13 +88,18 @@ def main():
     train_pairs = shuffled[n_val + n_test :]
     print(f"split: {len(train_pairs)} train / {len(val_pairs)} val / {len(test_pairs)} test", flush=True)
 
-    print("Embedding train-split reference tiles with the pretrained checkpoint for initial clustering...", flush=True)
+    # Cluster over the FULL eligible tile pool, not just the tiles that happen
+    # to have won a query match (only ~52,844/391,890, ~13.5%, in the prior
+    # run -- most reference tiles never get photographed by an astronaut, but
+    # L_MUM's job is embedding-space geometry over the reference DB itself,
+    # same as the paper's 5.3M-tile clustering pool, so it should see that
+    # full breadth rather than only query-adjacent tiles.
+    print(f"Embedding ALL {len(tiles)} eligible reference tiles with the pretrained checkpoint for clustering...", flush=True)
     pretrained_model = DinoV2SaladModel(pretrained=True)
     retriever = DinoV2SaladRetriever(pretrained_model, device=args.device)
-    unique_train_tiles = list({tile.tile_id: tile for _, tile in train_pairs}.values())
-    tile_embeddings = embed_tiles(retriever, unique_train_tiles)
+    tile_embeddings = embed_tiles(retriever, tiles)
     _, tile_cluster_ids = kmeans_cluster(tile_embeddings, k=args.num_clusters)
-    tile_id_to_cluster = {t.tile_id: int(c) for t, c in zip(unique_train_tiles, tile_cluster_ids)}
+    tile_id_to_cluster = {t.tile_id: int(c) for t, c in zip(tiles, tile_cluster_ids)}
     cluster_ids = [tile_id_to_cluster[tile.tile_id] for _, tile in train_pairs]
     del pretrained_model, retriever
     torch.cuda.empty_cache()
@@ -104,6 +109,8 @@ def main():
         "val_pairs": val_pairs,
         "test_pairs": test_pairs,
         "cluster_ids": cluster_ids,  # per TRAIN pair, matched tile's cluster id
+        "all_tiles": tiles,  # full eligible tile pool, for L_MUM quadruplets/clustering
+        "all_tile_cluster_ids": [tile_id_to_cluster[t.tile_id] for t in tiles],
         "num_clusters": args.num_clusters,
         "num_eligible_queries": len(queries),
         "num_eligible_tiles": len(tiles),

@@ -89,13 +89,14 @@ def main():
     print(f"Training on {len(train_pairs)} train pairs / {len(val_pairs)} val pairs, {num_clusters} clusters", flush=True)
 
     query_cluster_ids = np.array(cached_cluster_ids, dtype=np.int64)
-    unique_tiles = list({tile.tile_id: tile for _, tile in train_pairs}.values())
-    tile_id_to_idx = {t.tile_id: i for i, t in enumerate(unique_tiles)}
-    tile_cluster_ids = np.zeros(len(unique_tiles), dtype=np.int64)
-    for (_, tile), c in zip(train_pairs, cached_cluster_ids):
-        tile_cluster_ids[tile_id_to_idx[tile.tile_id]] = c
+    # L_MUM draws from the full eligible tile pool (build_full_data.py's
+    # "all_tiles"), not just the tiles that won a query match -- see that
+    # script's comment for why query-matched tiles alone under-represent the
+    # reference DB's real geographic diversity.
+    all_tiles = data["all_tiles"]
+    tile_cluster_ids = np.array(data["all_tile_cluster_ids"], dtype=np.int64)
     unique_queries = list({q.tile_id: q for q, _ in train_pairs}.values())
-    print(f"{len(unique_tiles)} unique train tiles, {len(unique_queries)} unique train queries", flush=True)
+    print(f"{len(all_tiles)} reference tiles for L_MUM, {len(unique_queries)} unique train queries", flush=True)
 
     # --- L_pairs stream ---
     pair_dataset = PairDataset(train_pairs)
@@ -113,7 +114,7 @@ def main():
         )
 
     # --- L_MUM stream (quadruplets) ---
-    tile_dataset = TileDataset(unique_tiles)
+    tile_dataset = TileDataset(all_tiles)
     quad_sampler = QuadrupletBatchSampler(
         tile_cluster_ids.tolist(), query_cluster_ids.tolist(), num_quadruplets=args.num_quadruplets,
     )
@@ -208,9 +209,9 @@ def main():
             t_r0 = time.time()
             model.eval()
             retriever = DinoV2SaladRetriever(model, device=args.device)
-            tile_id_to_cluster, query_id_to_cluster = recluster(retriever, unique_tiles, unique_queries, k=num_clusters)
+            tile_id_to_cluster, query_id_to_cluster = recluster(retriever, all_tiles, unique_queries, k=num_clusters)
             model.train()
-            tile_cluster_ids = np.array([tile_id_to_cluster[t.tile_id] for t in unique_tiles], dtype=np.int64)
+            tile_cluster_ids = np.array([tile_id_to_cluster[t.tile_id] for t in all_tiles], dtype=np.int64)
             query_cluster_ids = np.array([query_id_to_cluster[q.tile_id] for q, _ in train_pairs], dtype=np.int64)
             pair_sampler.update_cluster_ids(query_cluster_ids.tolist())
             quad_sampler.update_cluster_ids(tile_cluster_ids.tolist(), query_cluster_ids.tolist())
