@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Argus · Where on Earth?</title>
+<meta name="description" content="Pick a spot on Earth, grab a real astronaut photo, and watch a vision pipeline figure out exactly where it was taken. No GPS.">
+<meta property="og:title" content="Argus · Where on Earth?">
+<meta property="og:description" content="Vision-based localization from orbit: astronaut photo in, lat/lon out. No GPS.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='11' fill='none' stroke='%235ef2ff' stroke-width='2.5'/><circle cx='16' cy='16' r='4' fill='%235ef2ff'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ BOOT ============ -->
+<div id="boot">
+  <div class="boot-inner">
+    <div class="boot-logo">
+      <svg viewBox="0 0 64 64" class="eye"><circle cx="32" cy="32" r="22"/><circle cx="32" cy="32" r="8" class="pupil"/><path d="M32 2v10M32 52v10M2 32h10M52 32h10"/></svg>
+      <span>ARGUS</span>
+    </div>
+    <pre id="boot-log"></pre>
+    <div class="boot-bar"><i id="boot-fill"></i></div>
+  </div>
+</div>
+
+<!-- ============ GLOBE ============ -->
+<div id="globe"></div>
+<div id="globe-hint" class="hint">Click anywhere on Earth</div>
+
+<!-- ============ HEADER ============ -->
+<header id="brand">
+  <div class="logo">
+    <svg viewBox="0 0 64 64" class="eye small"><circle cx="32" cy="32" r="22"/><circle cx="32" cy="32" r="8" class="pupil"/></svg>
+    <div>
+      <h1>ARGUS <span>// where on Earth?</span></h1>
+      <p>Astronaut photo in. Coordinates out. <b>No GPS.</b></p>
+    </div>
+  </div>
+  <nav>
+    <button class="ghost" id="btn-mission">The mission</button>
+    <button class="ghost" id="btn-hood">Under the hood</button>
+  </nav>
+</header>
+
+<!-- ============ PANEL ============ -->
+<aside id="panel">
+  <!-- idle -->
+  <section class="state" data-state="idle">
+    <div class="kicker">STEP 1 · PICK A PLACE</div>
+    <h2>Pick a spot on the planet</h2>
+    <p class="muted">Click the globe and I'll grab the closest real photo astronauts took from the International Space Station. Then Argus has to work out exactly where it is, using <em>only the pixels</em>.</p>
+    <div class="btn-row">
+      <button id="btn-random" class="primary">🎲 Surprise me</button>
+      <button id="btn-mystery" class="accent">🕵️ Beat the AI</button>
+    </div>
+    <p class="tiny">Glowing rings mark the six regions Argus has a reference map for. Each dot is a real ISS photo.</p>
+    <div id="scoreboard" class="scoreboard hidden"></div>
+  </section>
+
+  <!-- selected / running / result share this -->
+  <section class="state" data-state="photo">
+    <div class="topline">
+      <button class="link" id="btn-back">← new spot</button>
+      <span class="kicker" id="kicker">STEP 2 · LOCALIZE</span>
+    </div>
+
+    <div class="photo-wrap" id="photo-wrap">
+      <img id="q-img" alt="Astronaut photo" referrerpolicy="no-referrer">
+      <div class="patches" id="patches"></div>
+      <div class="scanline"></div>
+      <div class="corners"><i></i><i></i><i></i><i></i></div>
+      <div class="photo-tag" id="photo-tag"></div>
+    </div>
+    <div class="meta" id="q-meta"></div>
+
+    <div id="mystery-banner" class="mystery hidden">
+      <b>🕵️ Mystery mode.</b> The location is hidden. <span id="guess-status">Click the globe to drop your guess, then hit Localize.</span>
+    </div>
+
+    <button id="btn-localize" class="primary big">
+      <span class="lbl">Localize ▸</span>
+      <span class="spin"></span>
+    </button>
+
+    <!-- pipeline -->
+    <div id="pipeline" class="hidden">
+      <ol class="stepper" id="stepper">
+        <li data-step="embed"><b>01</b> Embed<small>DINOv2 + SALAD</small></li>
+        <li data-step="search"><b>02</b> Retrieve<small>FAISS top-15</small></li>
+        <li data-step="match"><b>03</b> Match<small>SIFT + LightGlue</small></li>
+        <li data-step="geo"><b>04</b> Georeference<small>homography</small></li>
+      </ol>
+      <div class="status-line"><span id="status-text">…</span><button class="link" id="btn-skip">skip ⏭</button></div>
+      <div class="descriptor" id="descriptor"></div>
+      <div class="counter hidden" id="search-counter"></div>
+      <div class="cands" id="cands"></div>
+    </div>
+
+    <!-- result -->
+    <div id="result" class="hidden">
+      <div class="verdict" id="verdict"></div>
+      <div class="coords" id="coords"></div>
+      <div class="kpis" id="kpis"></div>
+      <div class="matchviz" id="matchviz">
+        <img id="mv-q" alt="" referrerpolicy="no-referrer"><div id="mv-t"></div>
+        <svg id="mv-svg" viewBox="0 0 210 100" preserveAspectRatio="none"></svg>
+        <span class="mv-l">your photo</span><span class="mv-r" id="mv-r-label">reference tile</span>
+      </div>
+      <p class="tiny" id="mv-caption"></p>
+      <div id="detail-map"></div>
+      <div class="legend"><span class="lg truth"></span>where it really is <span class="lg pred"></span>where Argus says <span class="lg tile"></span>matched tile</div>
+      <div class="btn-row">
+        <button class="ghost" id="btn-fromme">📍 How far is this from me?</button>
+        <button class="primary" id="btn-next">Next photo ▸</button>
+      </div>
+      <p class="tiny" id="fromme"></p>
+      <p class="tiny" id="realtime"></p>
+    </div>
+  </section>
+</aside>
+
+<!-- ============ TICKER ============ -->
+<footer id="ticker"><div id="ticker-inner"></div></footer>
+
+<!-- ============ MODALS ============ -->
+<div class="modal hidden" id="modal-mission">
+  <div class="card">
+    <button class="close" data-close>×</button>
+    <div class="kicker">THE MISSION</div>
+    <h2>A spacecraft that knows where it is by looking</h2>
+    <p><b>Argus</b> is a small satellite whose camera looks down at Earth. To work out its own orbit, it needs to know <em>exactly what ground it is looking at</em>: which pixels sit on which latitude and longitude. Those tie points go straight into orbit determination.</p>
+    <p>The old approach was closed-set: a classifier guesses a region, then landmark detectors hunt for features they were trained on. If it sees something new, it still guesses, and the wrong answer slides quietly into the orbit solution.</p>
+    <p>This project swaps that for an <b>open-set, retrieve-then-match</b> pipeline:</p>
+    <ul>
+      <li><b>Retrieve:</b> a fine-tuned DINOv2 + SALAD network turns the frame into one descriptor and pulls the 15 most similar tiles out of a map of hundreds of thousands.</li>
+      <li><b>Match:</b> SIFT + LightGlue lines up actual features, and RANSAC keeps the geometry that holds together.</li>
+      <li><b>Verify:</b> fewer than 30 inliers means it <em>refuses to answer</em>. A frame with no answer is safer for orbit determination than a confident wrong one.</li>
+    </ul>
+    <p class="muted">Every result on this site is a real output of that pipeline, run on the lab GPU and replayed here. The astronaut photos are harder than the real job: handheld, oblique, and rotated. Argus's own camera points much closer to straight down.</p>
+  </div>
+</div>
+
+<div class="modal hidden" id="modal-hood">
+  <div class="card wide">
+    <button class="close" data-close>×</button>
+    <div class="kicker">UNDER THE HOOD</div>
+    <h2>The numbers</h2>
+    <div class="kpis big" id="hood-kpis"></div>
+    <h3>Retrieval recall by region <span class="muted">(correct tile in top-k)</span></h3>
+    <table class="recall" id="recall-table"></table>
+    <h3>Pipeline</h3>
+    <div class="flow">
+      <div><b>ISS photo</b><small>oblique, handheld</small></div><i>→</i>
+      <div><b>DINOv2-B + SALAD</b><small>LoRA fine-tuned, 2048-d</small></div><i>→</i>
+      <div><b>FAISS</b><small>tiles × 4 rotations</small></div><i>→</i>
+      <div><b>SIFT + LightGlue</b><small>MAGSAC homography</small></div><i>→</i>
+      <div><b>lat / lon</b><small>tie points → OD</small></div>
+    </div>
+    <p class="muted tiny">The retrieval model follows AstroLoc (Berton et al., 2025): paired + clustered multi-similarity losses, trained on NASA GAPE astronaut photos with machine-labeled footprints. Nothing is re-hosted here: each astronaut photo loads live from <a href="https://eol.jsc.nasa.gov/" target="_blank" rel="noopener">NASA's Gateway to Astronaut Photography of Earth</a> (courtesy of the Earth Science and Remote Sensing Unit, NASA Johnson Space Center), and each reference tile is rebuilt from <a href="https://s2maps.eu" target="_blank" rel="noopener">Sentinel-2 cloudless 2021 by EOX</a> (CC BY-NC-SA 4.0), the same imagery the reference map was built from. This site only ships the pipeline's outputs. The gallery on this site is a seeded random sample that keeps every fix and some of the no-fixes. The headline numbers above come from the full unfiltered run.</p>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/globe.gl@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

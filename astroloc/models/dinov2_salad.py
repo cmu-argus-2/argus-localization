@@ -21,6 +21,7 @@ key remapping.
 """
 
 import os
+import re
 import sys
 
 # Must be set before any torch.hub.load call (DINOv2 backbone construction pulls
@@ -101,6 +102,27 @@ class _CheckpointedBlock(nn.Module):
         if self.training and x.requires_grad:
             return torch.utils.checkpoint.checkpoint(self.block, x, use_reentrant=False)
         return self.block(x)
+
+
+def _remap_pre_checkpointing_lora_keys(sd: dict, model: nn.Module) -> dict:
+    """LoRA checkpoints saved before commit cc75c2b (2026-09-08, which added
+    _CheckpointedBlock) have flat keys like
+    "backbone.model.blocks.0.attn.qkv.lora_A", but a freshly-constructed
+    use_lora=True model now always wraps each block in _CheckpointedBlock,
+    which expects "backbone.model.blocks.0.block.attn.qkv.lora_A" instead --
+    confirmed directly: checkpoints_lora, checkpoints_lora_v2 (astroloc) and
+    checkpoints_v2 (nano) all predate this and fail to load unmodified,
+    while checkpoints_faithful_lora(_v2) already have the new key names.
+    Detects the mismatch from the live model's own state_dict keys (not a
+    hardcoded date/version check) and inserts the missing ".block." segment
+    only when needed, so both checkpoint eras load unchanged.
+    """
+    if not any(".block." in k for k in model.state_dict()):
+        return sd  # not a _CheckpointedBlock-wrapped model (use_lora=False)
+    if any(".block." in k for k in sd):
+        return sd  # already in the new format
+    pattern = re.compile(r"^(backbone\.model\.blocks\.\d+)\.")
+    return {pattern.sub(r"\1.block.", k): v for k, v in sd.items()}
 
 
 class DinoV2SaladModel(nn.Module):
@@ -262,7 +284,9 @@ class DinoV2SaladRetriever(Retriever):
             backbone_name=state.get("backbone_name", "dinov2_vitb14"),
             reduced_dim=state.get("reduced_dim", REDUCED_DIM),
         )
-        model.load_state_dict(state["model"] if "model" in state else state)
+        sd = state["model"] if "model" in state else state
+        sd = _remap_pre_checkpointing_lora_keys(sd, model)
+        model.load_state_dict(sd)
         return cls(model, device=device)
 
     def _preprocess(self, images: list[np.ndarray]) -> torch.Tensor:
