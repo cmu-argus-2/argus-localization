@@ -53,6 +53,8 @@ def _checkpoint_payload(model, step: int, args) -> dict:
         "lora_alpha": args.lora_alpha,
         "faithful_batching": True,
         "dynamic_batching": args.dynamic_batching,
+        "backbone_name": args.backbone_name,
+        "reduced_dim": args.reduced_dim,
     }
 
 
@@ -78,6 +80,10 @@ def main():
     ap.add_argument("--lora-dropout", type=float, default=0.0)
     ap.add_argument("--dynamic-batching", action="store_true")
     ap.add_argument("--recluster-every-steps", type=int, default=0)
+    # dinov2_vits14 + 512 = AstroLoc-tiny (nano/). Only the vitb14/2048 default
+    # has an official SALAD checkpoint, so anything else starts SALAD from scratch.
+    ap.add_argument("--backbone-name", default="dinov2_vitb14")
+    ap.add_argument("--reduced-dim", type=int, default=2048)
     args = ap.parse_args()
 
     with open(args.data_cache, "rb") as f:
@@ -129,8 +135,10 @@ def main():
         val_dataset = PairDataset(val_pairs)
         val_loader = DataLoader(val_dataset, batch_size=args.batch_size, shuffle=True, num_workers=2, drop_last=True)
 
+    pretrained = args.backbone_name == "dinov2_vitb14" and args.reduced_dim == 2048
     model = DinoV2SaladModel(
-        pretrained=True, use_lora=args.use_lora, lora_r=args.lora_r,
+        pretrained=pretrained, backbone_name=args.backbone_name, reduced_dim=args.reduced_dim,
+        use_lora=args.use_lora, lora_r=args.lora_r,
         lora_alpha=args.lora_alpha, lora_dropout=args.lora_dropout,
     ).to(args.device)
     model.train()
