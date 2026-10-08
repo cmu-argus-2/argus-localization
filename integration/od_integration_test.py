@@ -51,6 +51,7 @@ residuals/residual_jac formulas, fed manually instead of through the broken
 data-manager coupling) rather than resurrecting the stale glue code.
 """
 
+import json
 import os
 import sys
 
@@ -135,18 +136,180 @@ def make_circular_orbit_truth(n_steps: int, dt: float, altitude_m: float = 420e3
     return states, period
 
 
-def simulate_bearing_measurements(states, angular_noise_std_rad, rng, landmarks_per_frame=1):
+def load_empirical_angular_noise_pool_rad(
+    model_name: str, range_km: float,
+    dataset_path: str = "output/error_dataset/combined.jsonl",
+) -> np.ndarray:
+    """Real per-measurement angular noise magnitudes, bootstrapped from
+    scripts/collect_error_dataset.py's actual full-pipeline error_km values
+    for one model's "fix" rows (900+/model) -- the alternative to assuming a
+    single Gaussian sigma. Deliberately NOT the fitted log(error_km) ~
+    num_inliers + retrieval_similarity regression from scripts/fit_error_model.py:
+    that regression's R^2 was 0.008-0.032 (confirmed, not a modeling-effort
+    gap -- confidence signals genuinely don't predict error magnitude below
+    ~200 inliers), so forcing a clean parametric curve onto it would be less
+    honest than resampling the real, heavy-tailed, non-Gaussian distribution
+    directly. See repo memory current_model_numbers / the error-modeling
+    session for the full finding.
+    """
+    angular_noise_rad, _inliers = load_empirical_noise_and_confidence(model_name, range_km, dataset_path)
+    return angular_noise_rad
+
+
+def load_empirical_noise_and_confidence(
+    model_name: str, range_km: float,
+    dataset_path: str = "output/error_dataset/combined.jsonl",
+) -> tuple[np.ndarray, np.ndarray]:
+    """Real (angular_noise_rad, num_inliers) PAIRS for one model's fix rows --
+    kept joint (not two independent pools) so bootstrapping preserves
+    whatever real relationship exists between confidence and error, including
+    the one real structure found (outlier risk only drops above ~200
+    inliers; flat/noisy below that -- see fit_error_model.py's binned
+    diagnostic), for weighted least squares (confidence_tier_sigma_rad below).
+    """
+    angular_noise_rad, inliers, _sim = load_empirical_full_pool(model_name, range_km, dataset_path)
+    return angular_noise_rad, inliers
+
+
+def load_empirical_full_pool(
+    model_name: str, range_km: float,
+    dataset_path: str = "output/error_dataset/combined.jsonl",
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Real (angular_noise_rad, num_inliers, retrieval_similarity) TRIPLES for
+    one model's fix rows, kept joint for bootstrapping. Adds
+    retrieval_similarity on top of load_empirical_noise_and_confidence so
+    regression_sigma_rad can evaluate scripts/fit_error_model.py's actual
+    fitted model (which uses both covariates), not just the num_inliers-only
+    2-tier split.
+    """
+    import json
+
+    errors_km, inliers, sims = [], [], []
+    for line in open(dataset_path):
+        row = json.loads(line)
+        if row["model"] == model_name and row["status"] == "fix" and row["error_km"]:
+            errors_km.append(row["error_km"])
+            inliers.append(row["num_inliers"])
+            sims.append(row["retrieval_similarity"])
+    errors_km = np.array(errors_km)
+    return np.arctan(errors_km / range_km), np.array(inliers), np.array(sims)
+
+
+def load_fitted_error_regression(
+    model_name: str, error_model_path: str = "output/error_dataset/error_model.json",
+) -> dict:
+    """The actual scripts/fit_error_model.py output for one model: log(error_km)
+    = b0 + b1*num_inliers + b2*retrieval_similarity. R^2 was 0.008-0.032 across
+    all 3 models (confirmed weak, not a modeling-effort gap -- see that
+    script's docstring and the error-modeling session), so regression_sigma_rad
+    uses it anyway on request, but it predicts error far less reliably than
+    the empirical 2-tier split in confidence_tier_sigma_rad.
+    """
+    import json
+
+    with open(error_model_path) as f:
+        return json.load(f)[model_name]
+
+
+def load_svr_error_model(model_name: str, model_dir: str = "output/error_dataset") -> dict:
+    """Loads scripts/fit_error_model_svr.py's fitted SVR + scaler for one
+    model. 5-fold CV R^2 was -0.005 to 0.021 across all 3 models (confirmed:
+    at or below the "just predict the mean" baseline, worse than even the
+    weak linear fit's 0.008-0.032) -- included for the requested head-to-head
+    comparison, not because it's expected to help.
+    """
+    import pickle
+
+    with open(f"{model_dir}/svr_model_{model_name}.pkl", "rb") as f:
+        return pickle.load(f)
+
+
+def svr_sigma_rad(inliers: np.ndarray, similarity: np.ndarray, svr_bundle: dict, range_km: float) -> np.ndarray:
+    """Per-measurement angular sigma predicted by the fitted SVR (log_sigma_km
+    = svr.predict on scaled [num_inliers, retrieval_similarity]), converted to
+    radians at range_km -- the SVR analog of regression_sigma_rad."""
+    X = np.column_stack([inliers, similarity])
+    X_scaled = svr_bundle["scaler"].transform(X)
+    log_sigma_km = svr_bundle["svr"].predict(X_scaled)
+    sigma_km = np.exp(log_sigma_km)
+    return np.arctan(sigma_km / range_km)
+
+
+def regression_sigma_rad(inliers: np.ndarray, similarity: np.ndarray, coefs: dict, range_km: float) -> np.ndarray:
+    """Per-measurement angular sigma predicted directly by the fitted
+    log(error_km) ~ num_inliers + retrieval_similarity regression (coefs from
+    load_fitted_error_regression), converted to radians at range_km. This is
+    the continuous alternative to confidence_tier_sigma_rad's 2-tier split --
+    weaker-grounded (R^2 0.008-0.032) but uses the actual least-squares fit
+    the user asked for, not a post-hoc binned heuristic.
+    """
+    log_sigma_km = coefs["b0_intercept"] + coefs["b1_num_inliers"] * inliers + coefs["b2_retrieval_similarity"] * similarity
+    sigma_km = np.exp(log_sigma_km)
+    return np.arctan(sigma_km / range_km)
+
+
+def confidence_tier_sigma_rad(
+    angular_noise_rad: np.ndarray, inliers: np.ndarray, high_confidence_inlier_threshold: float = 200.0,
+) -> tuple[float, float]:
+    """Two-tier angular noise sigma (low-confidence, high-confidence), split
+    at high_confidence_inlier_threshold -- the binned diagnostic found outlier
+    probability is flat/noisy for num_inliers below ~200 and drops sharply
+    above it, not a smooth function, so a 2-tier split is the honest
+    granularity here (not a continuous confidence-weighted curve, which the
+    R^2~0.01-0.03 regression showed doesn't exist). Returns (sigma_low_rad,
+    sigma_high_rad), each the real population std of that tier's angular
+    noise -- a priori calibrated values, not read off the live sample being
+    weighted.
+    """
+    high_mask = inliers >= high_confidence_inlier_threshold
+    sigma_low = float(np.std(angular_noise_rad[~high_mask]))
+    sigma_high = float(np.std(angular_noise_rad[high_mask])) if high_mask.any() else sigma_low
+    return sigma_low, sigma_high
+
+
+def simulate_bearing_measurements(
+    states, angular_noise_std_rad, rng, landmarks_per_frame=1,
+    empirical_noise_pool_rad=None, confidence_pool=None, tier_sigma_rad=None,
+    regression_pool=None, regression_coefs=None, range_km=None,
+    svr_pool=None, svr_bundle=None,
+):
     """`landmarks_per_frame` bearing measurements per state, spread across a
     ~66deg half-cone around nadir (matching Argus's own CameraModel.HORIZONTAL_FOV
     and, more importantly, matching what our REAL pipeline actually produces --
     ~137 simultaneous tie points spread across one image, not one nadir-only
     bearing per frame). Returns per-measurement (bearing_body_noisy, landmark_eci,
-    frame_index)."""
+    frame_index, weight_sigma_rad).
+
+    If `empirical_noise_pool_rad` is given, each measurement's noise MAGNITUDE
+    is bootstrapped (sampled with replacement) from that real, measured pool
+    instead of drawn from a single fixed-sigma Gaussian (angular_noise_std_rad
+    is then ignored) -- see load_empirical_angular_noise_pool_rad. weight_sigma_rad
+    is all-ones in this mode (equal weighting).
+
+    If `confidence_pool` ((angular_noise_rad, num_inliers) arrays from
+    load_empirical_noise_and_confidence) and `tier_sigma_rad` ((sigma_low,
+    sigma_high) from confidence_tier_sigma_rad) are both given, noise is
+    bootstrapped JOINTLY with num_inliers (same sampled index for both, so
+    the real -- weak but real -- relationship is preserved) and
+    weight_sigma_rad[i] is set to the pre-calibrated tier sigma matching that
+    measurement's bootstrapped num_inliers, for weighted least squares
+    (fit_orbit_manual divides each bearing residual by its weight_sigma_rad).
+    This is NOT the per-sample noise magnitude itself -- using that would be
+    circular (the optimizer wouldn't know the true error, only the tier a
+    real num_inliers value would put it in).
+
+    If `regression_pool` ((angular_noise_rad, num_inliers, retrieval_similarity)
+    from load_empirical_full_pool), `regression_coefs` (from
+    load_fitted_error_regression) and `range_km` are all given, weight_sigma_rad
+    is instead the CONTINUOUS value regression_sigma_rad predicts from the
+    bootstrapped num_inliers/similarity -- the actual least-squares fit, as
+    opposed to confidence_tier_sigma_rad's 2-tier split.
+    """
     n = states.shape[0]
     positions = states[:, :3]
     nadir = -positions / np.linalg.norm(positions, axis=1, keepdims=True)
 
-    all_bearings, all_landmarks, all_frame_idx = [], [], []
+    all_bearings, all_landmarks, all_frame_idx, all_weight_sigma = [], [], [], []
     half_cone_rad = np.radians(66.1) / 2  # Argus CameraModel.HORIZONTAL_FOV / 2
     for i in range(n):
         # basis for the plane perpendicular to nadir at this step
@@ -174,7 +337,29 @@ def simulate_bearing_measurements(states, angular_noise_std_rad, rng, landmarks_
         noise_axis = rng.normal(size=(landmarks_per_frame, 3))
         noise_axis -= np.sum(noise_axis * bearing_true, axis=1, keepdims=True) * bearing_true
         noise_axis /= np.linalg.norm(noise_axis, axis=1, keepdims=True)
-        noise_angle = rng.normal(scale=angular_noise_std_rad, size=landmarks_per_frame)
+        if svr_pool is not None:
+            pool_noise_rad, pool_inliers, pool_sim = svr_pool
+            boot_idx = rng.integers(0, len(pool_noise_rad), size=landmarks_per_frame)
+            noise_angle = pool_noise_rad[boot_idx] * rng.choice([-1.0, 1.0], size=landmarks_per_frame)
+            weight_sigma = svr_sigma_rad(pool_inliers[boot_idx], pool_sim[boot_idx], svr_bundle, range_km)
+        elif regression_pool is not None:
+            pool_noise_rad, pool_inliers, pool_sim = regression_pool
+            boot_idx = rng.integers(0, len(pool_noise_rad), size=landmarks_per_frame)
+            noise_angle = pool_noise_rad[boot_idx] * rng.choice([-1.0, 1.0], size=landmarks_per_frame)
+            weight_sigma = regression_sigma_rad(pool_inliers[boot_idx], pool_sim[boot_idx], regression_coefs, range_km)
+        elif confidence_pool is not None:
+            pool_noise_rad, pool_inliers = confidence_pool
+            sigma_low, sigma_high = tier_sigma_rad
+            boot_idx = rng.integers(0, len(pool_noise_rad), size=landmarks_per_frame)
+            noise_angle = pool_noise_rad[boot_idx] * rng.choice([-1.0, 1.0], size=landmarks_per_frame)
+            weight_sigma = np.where(pool_inliers[boot_idx] >= 200.0, sigma_high, sigma_low)
+        elif empirical_noise_pool_rad is not None:
+            noise_angle = rng.choice(empirical_noise_pool_rad, size=landmarks_per_frame, replace=True)
+            noise_angle *= rng.choice([-1.0, 1.0], size=landmarks_per_frame)  # pool is |angle|, randomize sign
+            weight_sigma = np.ones(landmarks_per_frame)
+        else:
+            noise_angle = rng.normal(scale=angular_noise_std_rad, size=landmarks_per_frame)
+            weight_sigma = np.ones(landmarks_per_frame)
         bearing_noisy = (
             bearing_true * np.cos(noise_angle)[:, None] + noise_axis * np.sin(noise_angle)[:, None]
         )
@@ -183,15 +368,33 @@ def simulate_bearing_measurements(states, angular_noise_std_rad, rng, landmarks_
         all_bearings.append(bearing_noisy)
         all_landmarks.append(landmark)
         all_frame_idx.append(np.full(landmarks_per_frame, i))
+        all_weight_sigma.append(weight_sigma)
 
-    return np.concatenate(all_bearings), np.concatenate(all_landmarks), np.concatenate(all_frame_idx)
+    return (
+        np.concatenate(all_bearings), np.concatenate(all_landmarks),
+        np.concatenate(all_frame_idx), np.concatenate(all_weight_sigma),
+    )
 
 
-def fit_orbit_manual(dt, measurement_indices, bearing_unit_vectors_wf, landmarks, N, semi_major_axis_guess):
+def fit_orbit_manual(
+    dt, measurement_indices, bearing_unit_vectors_wf, landmarks, N, semi_major_axis_guess,
+    weight_sigma=None,
+):
     """Reimplements nonlinear_least_squares_od.py::fit_orbit's residuals()/
     residual_jac() (that math is correct) fed from plain arrays instead of
     the broken ODSimulationDataManager.eci_Rs_body coupling (see module
-    docstring)."""
+    docstring).
+
+    `weight_sigma`, if given, is a per-measurement angular sigma (radians)
+    from confidence_tier_sigma_rad -- each bearing residual is divided by its
+    own sigma before being squared and summed by least_squares, which is
+    exactly weighted least squares (minimizing sum((r_i/sigma_i)^2) instead
+    of sum(r_i^2)): a low-confidence measurement contributes less to the
+    cost for the same raw angular error. The dynamics-consistency block is
+    left unweighted (sigma=1) -- this is reweighting trust in the SENSOR
+    model only, not in the propagated dynamics. None means equal-weighted
+    (every sigma=1), matching the original unweighted behavior.
+    """
     M = len(measurement_indices)
 
     def residuals(X):
@@ -205,7 +408,10 @@ def fit_orbit_manual(dt, measurement_indices, bearing_unit_vectors_wf, landmarks
             cubesat_position = states[t, :3]
             pred = landmark - cubesat_position
             pred_u = pred / np.linalg.norm(pred)
-            res[idx:idx + 3] = pred_u - bearing_unit_vectors_wf[i]
+            r = pred_u - bearing_unit_vectors_wf[i]
+            if weight_sigma is not None:
+                r = r / weight_sigma[i]
+            res[idx:idx + 3] = r
             idx += 3
         return res
 
@@ -230,39 +436,82 @@ def fit_orbit_manual(dt, measurement_indices, bearing_unit_vectors_wf, landmarks
 
 def run_od_solve():
     """Part 2: synthetic trajectory + calibrated bearing noise -> OD solve."""
-    rng = np.random.default_rng(0)
     dt = 30.0  # s
     n_steps = 30
     states_true, period = make_circular_orbit_truth(n_steps, dt)
     print(f"Synthetic circular orbit: altitude=420km, period={period/60:.1f} min, "
           f"{n_steps} steps @ dt={dt}s ({n_steps*dt/60:.1f} min of track)")
 
-    # Angular noise calibrated from this repo's own measured matcher accuracy
-    # (README: 3.0km median localization error on Alps at ISS-orbit range).
     iss_range_km = 400.0
-    localization_error_km = 3.0
-    angular_noise_rad = np.arctan(localization_error_km / iss_range_km)
-    print(f"Bearing noise calibrated from measured pipeline accuracy: "
-          f"{localization_error_km}km @ {iss_range_km}km range -> "
-          f"{np.degrees(angular_noise_rad):.3f} deg ({angular_noise_rad*1e3:.2f} mrad) 1-sigma")
+    # OLD calibration: single fixed Gaussian sigma from one stale number
+    # (3.0km median on Alps, 50 queries, pre-error-modeling-session).
+    legacy_localization_error_km = 3.0
+    legacy_angular_noise_rad = np.arctan(legacy_localization_error_km / iss_range_km)
+    print(f"[legacy] fixed-Gaussian noise calibrated from one old number: "
+          f"{legacy_localization_error_km}km @ {iss_range_km}km range -> "
+          f"{np.degrees(legacy_angular_noise_rad):.3f} deg 1-sigma")
 
-    for landmarks_per_frame, label in [(1, "1 nadir-only bearing/frame"),
-                                        (137, "137 bearings/frame (matches our real matcher's yield)")]:
-        bearing_noisy, landmarks, measurement_indices = simulate_bearing_measurements(
-            states_true, angular_noise_rad, np.random.default_rng(0), landmarks_per_frame
-        )
-        estimated_states, result = fit_orbit_manual(
-            dt, measurement_indices, bearing_noisy, landmarks, n_steps,
-            semi_major_axis_guess=R_EARTH + 420e3,
-        )
-        pos_errors_km = np.linalg.norm(states_true[:, :3] - estimated_states[:, :3], axis=1) / 1e3
-        vel_errors_ms = np.linalg.norm(states_true[:, 3:] - estimated_states[:, 3:], axis=1)
-        print(f"\n--- {label} ({len(measurement_indices)} total measurements) ---")
-        print(f"solver: success={result.success} status={result.status} "
-              f"cost={result.cost:.4e} nfev={result.nfev}")
-        print(f"RMS position error: {np.sqrt(np.mean(pos_errors_km**2)):.3f} km")
-        print(f"max position error: {pos_errors_km.max():.3f} km")
-        print(f"RMS velocity error: {np.sqrt(np.mean(vel_errors_ms**2)):.3f} m/s")
+    # NEW calibration: bootstrap real per-measurement angular noise from the
+    # actual 900+-fix error dataset (scripts/collect_error_dataset.py),
+    # faithful_lora_v2 (current best model) -- heavy-tailed and non-Gaussian,
+    # not forced into a single-sigma assumption.
+    model_name = "faithful_lora_v2"
+    empirical_pool_rad = load_empirical_angular_noise_pool_rad(model_name, iss_range_km)
+    print(f"[empirical] {model_name}: bootstrapping from {len(empirical_pool_rad)} real measured errors, "
+          f"median={np.degrees(np.median(empirical_pool_rad)):.3f} deg, "
+          f"p90={np.degrees(np.percentile(empirical_pool_rad, 90)):.3f} deg")
+
+    # CONFIDENCE-WEIGHTED calibration: same real noise realizations, but the
+    # solver downweights low-confidence measurements using the one real
+    # structure found (outlier risk only drops above ~200 inliers).
+    confidence_pool = load_empirical_noise_and_confidence(model_name, iss_range_km)
+    tier_sigma = confidence_tier_sigma_rad(*confidence_pool)
+    print(f"[confidence-weighted, 2-tier] {model_name}: tier sigma low={np.degrees(tier_sigma[0]):.3f} deg "
+          f"(<200 inliers), high={np.degrees(tier_sigma[1]):.3f} deg (>=200 inliers)")
+
+    # REGRESSION-weighted: the actual scripts/fit_error_model.py least-squares
+    # fit (log(error_km) ~ num_inliers + retrieval_similarity), used directly
+    # as the per-measurement sigma instead of the 2-tier heuristic above.
+    regression_pool = load_empirical_full_pool(model_name, iss_range_km)
+    regression_coefs = load_fitted_error_regression(model_name)
+    print(f"[confidence-weighted, regression] {model_name}: using fit_error_model.py's fit "
+          f"(R^2={regression_coefs['r_squared']:.3f}) directly as per-measurement sigma")
+
+    svr_bundle = load_svr_error_model(model_name)
+    svr_summary = json.load(open("output/error_dataset/error_model_svr.json"))[model_name]
+    print(f"[confidence-weighted, SVR] {model_name}: using fit_error_model_svr.py's fit "
+          f"(5-fold CV R^2={svr_summary['cv_r_squared']:.3f}) directly as per-measurement sigma")
+
+    for noise_label, noise_kwargs, weighted in [
+        ("legacy fixed-Gaussian", dict(angular_noise_std_rad=legacy_angular_noise_rad), False),
+        ("empirical bootstrap, unweighted", dict(angular_noise_std_rad=0.0, empirical_noise_pool_rad=empirical_pool_rad), False),
+        ("empirical bootstrap, 2-tier confidence-weighted",
+         dict(angular_noise_std_rad=0.0, confidence_pool=confidence_pool, tier_sigma_rad=tier_sigma), True),
+        ("empirical bootstrap, regression confidence-weighted",
+         dict(angular_noise_std_rad=0.0, regression_pool=regression_pool, regression_coefs=regression_coefs,
+              range_km=iss_range_km), True),
+        ("empirical bootstrap, SVR confidence-weighted",
+         dict(angular_noise_std_rad=0.0, svr_pool=regression_pool, svr_bundle=svr_bundle,
+              range_km=iss_range_km), True),
+    ]:
+        for landmarks_per_frame, label in [(1, "1 nadir-only bearing/frame"),
+                                            (137, "137 bearings/frame (matches our real matcher's yield)")]:
+            bearing_noisy, landmarks, measurement_indices, weight_sigma = simulate_bearing_measurements(
+                states_true, rng=np.random.default_rng(0), landmarks_per_frame=landmarks_per_frame, **noise_kwargs
+            )
+            estimated_states, result = fit_orbit_manual(
+                dt, measurement_indices, bearing_noisy, landmarks, n_steps,
+                semi_major_axis_guess=R_EARTH + 420e3,
+                weight_sigma=weight_sigma if weighted else None,
+            )
+            pos_errors_km = np.linalg.norm(states_true[:, :3] - estimated_states[:, :3], axis=1) / 1e3
+            vel_errors_ms = np.linalg.norm(states_true[:, 3:] - estimated_states[:, 3:], axis=1)
+            print(f"\n--- [{noise_label}] {label} ({len(measurement_indices)} total measurements) ---")
+            print(f"solver: success={result.success} status={result.status} "
+                  f"cost={result.cost:.4e} nfev={result.nfev}")
+            print(f"RMS position error: {np.sqrt(np.mean(pos_errors_km**2)):.3f} km")
+            print(f"max position error: {pos_errors_km.max():.3f} km")
+            print(f"RMS velocity error: {np.sqrt(np.mean(vel_errors_ms**2)):.3f} m/s")
 
     return pos_errors_km, vel_errors_ms, result
 
