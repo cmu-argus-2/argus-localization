@@ -54,6 +54,7 @@ data-manager coupling) rather than resurrecting the stale glue code.
 import json
 import os
 import sys
+import time
 
 _REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if _REPO_ROOT not in sys.path:
@@ -378,7 +379,7 @@ def simulate_bearing_measurements(
 
 def fit_orbit_manual(
     dt, measurement_indices, bearing_unit_vectors_wf, landmarks, N, semi_major_axis_guess,
-    weight_sigma=None,
+    weight_sigma=None, solver="lm",
 ):
     """Reimplements nonlinear_least_squares_od.py::fit_orbit's residuals()/
     residual_jac() (that math is correct) fed from plain arrays instead of
@@ -430,12 +431,111 @@ def fit_orbit_manual(
     initial_guess[:, 3:] = 0.0
     initial_guess = initial_guess.flatten()
 
-    result = least_squares(residuals, initial_guess, method="lm", max_nfev=20000)
+    if solver == "lm":
+        result = least_squares(residuals, initial_guess, method="lm", max_nfev=20000)
+    elif solver == "clarabel":
+        result = clarabel_trust_region_gn(residuals, initial_guess)
+    else:
+        raise ValueError(f"unknown solver {solver!r} (expected 'lm' or 'clarabel')")
     return result.x.reshape(N, 6), result
 
 
-def run_od_solve():
-    """Part 2: synthetic trajectory + calibrated bearing noise -> OD solve."""
+def clarabel_trust_region_gn(residuals, x0, max_iter=200, ftol=1e-8, xtol=1e-8, gtol=1e-8):
+    """Trust-region Gauss-Newton where each step's convex subproblem is solved
+    by Clarabel. Clarabel is a conic (QP/SOCP) solver, so it cannot take the
+    nonlinear residuals directly; instead each iteration linearizes at x and
+    solves
+
+        min_dx  0.5 ||J dx + r||^2   s.t.  ||D dx||_2 <= delta
+
+    as a QP with one second-order-cone constraint, then accepts/rejects the
+    step with the usual actual/predicted reduction ratio. D is MINPACK-style
+    column-norm scaling (running max of ||J[:, j]||), same as method="lm", so
+    the two are comparable. J is forward finite differences, also matching
+    what least_squares does when no jac is passed.
+
+    Returns a scipy OptimizeResult with the fields run_od_solve prints.
+    """
+    import clarabel
+    from scipy import sparse
+    from scipy.optimize import OptimizeResult
+    from scipy.optimize._numdiff import approx_derivative
+
+    n = x0.size
+    x = x0.copy()
+    r = residuals(x)
+    cost = 0.5 * r @ r
+    nfev, njev = 1, 0
+    delta = None
+    col_scale = np.zeros(n)
+    status, message = 0, "max_iter reached"
+
+    settings = clarabel.DefaultSettings()
+    settings.verbose = False
+
+    # SOC constraint: s = b - A dx = [delta; D dx] in SOC(n+1)
+    for it in range(max_iter):
+        J = approx_derivative(residuals, x, method="2-point", f0=r)
+        nfev += n
+        njev += 1
+        col_scale = np.maximum(col_scale, np.linalg.norm(J, axis=0))
+        D = np.where(col_scale > 0, col_scale, 1.0)
+        g = J.T @ r
+        if np.linalg.norm(g, np.inf) < gtol:
+            status, message = 1, "gtol satisfied"
+            break
+        if delta is None:
+            delta = 100.0 * max(np.linalg.norm(D * x), 1.0)
+
+        P = sparse.triu(sparse.csc_matrix(J.T @ J), format="csc")
+        A = sparse.vstack([sparse.csc_matrix((1, n)), sparse.diags(-D)], format="csc")
+        cones = [clarabel.SecondOrderConeT(n + 1)]
+
+        while True:
+            b = np.concatenate([[delta], np.zeros(n)])
+            sol = clarabel.DefaultSolver(P, g, A, b, cones, settings).solve()
+            dx = np.asarray(sol.x)
+            predicted = -(g @ dx + 0.5 * np.sum((J @ dx) ** 2))
+            x_new = x + dx
+            r_new = residuals(x_new)
+            nfev += 1
+            cost_new = 0.5 * r_new @ r_new
+            actual = cost - cost_new
+            rho = actual / predicted if predicted > 0 else -1.0
+            step_norm = np.linalg.norm(D * dx)
+            if rho < 0.25:
+                delta = 0.25 * step_norm
+            elif rho > 0.75 and step_norm > 0.99 * delta:
+                delta = 2.0 * delta
+            if rho > 1e-4:
+                break
+            if delta < xtol * (np.linalg.norm(D * x) + xtol):
+                break
+
+        if rho <= 1e-4:
+            status, message = 2, "trust region collapsed"
+            break
+        converged_f = actual < ftol * cost
+        converged_x = step_norm < xtol * (np.linalg.norm(D * x) + xtol)
+        x, r, cost = x_new, r_new, cost_new
+        if converged_f and converged_x:
+            status, message = 4, "ftol and xtol satisfied"
+            break
+        if converged_f:
+            status, message = 2, "ftol satisfied"
+            break
+        if converged_x:
+            status, message = 3, "xtol satisfied"
+            break
+
+    return OptimizeResult(x=x, cost=cost, fun=r, success=status > 0, status=status,
+                          message=message, nfev=nfev, njev=njev, nit=it + 1)
+
+
+def run_od_solve(solver="lm"):
+    """Part 2: synthetic trajectory + calibrated bearing noise -> OD solve.
+    `solver` is "lm" (scipy least_squares) or "clarabel" (see
+    clarabel_trust_region_gn)."""
     dt = 30.0  # s
     n_steps = 30
     states_true, period = make_circular_orbit_truth(n_steps, dt)
@@ -499,16 +599,19 @@ def run_od_solve():
             bearing_noisy, landmarks, measurement_indices, weight_sigma = simulate_bearing_measurements(
                 states_true, rng=np.random.default_rng(0), landmarks_per_frame=landmarks_per_frame, **noise_kwargs
             )
+            t0 = time.perf_counter()
             estimated_states, result = fit_orbit_manual(
                 dt, measurement_indices, bearing_noisy, landmarks, n_steps,
                 semi_major_axis_guess=R_EARTH + 420e3,
                 weight_sigma=weight_sigma if weighted else None,
+                solver=solver,
             )
+            solve_s = time.perf_counter() - t0
             pos_errors_km = np.linalg.norm(states_true[:, :3] - estimated_states[:, :3], axis=1) / 1e3
             vel_errors_ms = np.linalg.norm(states_true[:, 3:] - estimated_states[:, 3:], axis=1)
             print(f"\n--- [{noise_label}] {label} ({len(measurement_indices)} total measurements) ---")
             print(f"solver: success={result.success} status={result.status} "
-                  f"cost={result.cost:.4e} nfev={result.nfev}")
+                  f"cost={result.cost:.4e} nfev={result.nfev} time={solve_s:.1f}s")
             print(f"RMS position error: {np.sqrt(np.mean(pos_errors_km**2)):.3f} km")
             print(f"max position error: {pos_errors_km.max():.3f} km")
             print(f"RMS velocity error: {np.sqrt(np.mean(vel_errors_ms**2)):.3f} m/s")
@@ -526,4 +629,4 @@ if __name__ == "__main__":
     print("=" * 70)
     print("PART 2: OD batch least-squares solve (synthetic trajectory, calibrated noise)")
     print("=" * 70)
-    run_od_solve()
+    run_od_solve(solver=sys.argv[1] if len(sys.argv) > 1 else "lm")
