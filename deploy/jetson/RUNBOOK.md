@@ -237,7 +237,6 @@ The GPU has no separate memory; it shares the board's 7.6 GB.
 | One photo | 3.3 J (0.0009 Wh) | ~0.001% |
 | 100 photos, back to back | 330 J (0.09 Wh) | ~0.1% |
 | One pass as planned: 2 photos | ~7 J (0.002 Wh) | ~0.003% |
-| Our simulated OD pass: 34 photos | ~112 J (0.03 Wh) | ~0.04% |
 | Localizing nonstop for 10 min | ~1.3 Wh | ~1.7% |
 | Localizing nonstop for 1 h | ~7.6 Wh | ~10% |
 
