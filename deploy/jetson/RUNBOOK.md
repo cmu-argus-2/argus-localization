@@ -156,7 +156,7 @@ OD needs at least two photos from the same pass. These are real consecutive phot
 The same pass, but the tie points come from the real pipeline on the Jetson:
 
 1. `simulate_pass.py --poses-only` writes each frame's position and attitude.
-2. `od/render_pass.py` (workstation) ray-casts every pixel of each 1024 × 1024 frame to the ground and samples Priyanka's Landsat GeoTIFFs. Frames are true perspective views; frames more than 20% empty are skipped.
+2. `od/render_pass.py` (workstation) ray-casts every pixel of each 1024 × 1024 frame to the ground and samples the Landsat GeoTIFFs. Frames are true perspective views; frames more than 20% empty are skipped.
 3. The Jetson runs the default setup with `--save-tie-points`.
 4. `simulate_pass.py --tie-points-from` feeds those tie points to OD.
 
@@ -174,7 +174,7 @@ Pass: 600 km, 97.8°, from Libya (31.5° N, 13.5° E) north over Tunisia, Sicily
 - **The logged fix error overstates the real error.** It extrapolates the homography from the matched tile (~60 km) to the corners of the whole ~440 km frame. When the tie points sit in a small part of the frame (t40, t50: a strip at the top) that extrapolation is far off, even though the points themselves are right. A least-squares homography on the tie points, mapped at the centre pixel, gives 1.2 km median (31 km on t50). On rendered frames the truth "centre" (mean of the 4 corners) is also 2–4 km from the centre pixel's ground point.
 - **OD uses the tie points, so it was never affected;** only the point sigma was set too loose. `od/check_tie_points.py` prints these per-frame numbers.
 - Same on the 208 Argus-like frames: tie points 0.7 km median against 6.5 km logged (see *Square Argus-like frames*).
-- **Fix rate is lower than on Priyanka's frames (38% vs 60%) because of where the pass goes, not the rendering:** the southern half (Libya–Sicily, zones 32S/33S) fixes most frames; northern Italy and the Alps (32T/33T) fix 1 of 12. Priyanka's own 32T frames fix 3 of 13 for the same reason: snow and winter scenes in the GeoTIFFs vs a summer-looking database (see Known issues).
+- **Fix rate is lower than on the 208 Argus-like frames (38% vs 60%) because of where the pass goes, not the rendering:** the southern half (Libya–Sicily, zones 32S/33S) fixes most frames; northern Italy and the Alps (32T/33T) fix 1 of 12. The 208-frame set's own 32T frames fix 3 of 13 for the same reason: snow and winter scenes in the GeoTIFFs vs a summer-looking database (see Known issues).
 - Files: `od/runs/real_eu/` (`match_results_pass.json`, `od_pass.png`, `od_summary.json`).
 
 ## Where the time goes
@@ -432,9 +432,9 @@ python3 visualize_trace.py --trace walkthrough/pipeline_walkthrough/data --out w
 7. **The Jetson's PyTorch needs numpy ≥ 1.23**; the system has 1.21.5, so `pydeps` carries its own numpy.
 8. **LightGlue's `__init__.py` imports every extractor**, and one needs torchvision. The copy in `pydeps` imports only `LightGlue` and `SIFT`.
 9. **Image shape: square images.**
-   - The team uses square images (Priyanka's decision), so our square test photos (1024 × 1024) match the flight input.
+   - The team uses square images, so our square test photos (1024 × 1024) match the flight input.
    - The Argus camera sensor is 4608 × 2592.
-   - Priyanka's GeoTIFF evaluation (`/mnt/sdc1/astroloc/reference_db/argus_geotiff_eval`) supports the square choice. With a centre square crop, R@1 is 71.1% against 55.0% squashing the whole frame. With the matcher, the crop gives a fix on 68.8% of frames and a 5.4 km median error.
+   - The GeoTIFF evaluation (`/mnt/sdc1/astroloc/reference_db/argus_geotiff_eval`) supports the square choice. With a centre square crop, R@1 is 71.1% against 55.0% squashing the whole frame. With the matcher, the crop gives a fix on 68.8% of frames and a 5.4 km median error.
 10. **Snow / winter imagery fails to match (paused, come back to later).** Northern GeoTIFF zones (~40–48° N) fix 0–7 of 13 frames against 12–13 in the south, because their Landsat mosaics include snow-covered and winter scenes while the database tiles look like summer. A real Argus photo over snow in winter would hit the same problem. Options when we return: a winter database (the other years 2018–2020 may differ in season; unchecked), or reporting north and south separately. For now we go with the current database.
 
 ## Next steps
@@ -442,4 +442,4 @@ python3 visualize_trace.py --trace walkthrough/pipeline_walkthrough/data --out w
 1. **OD** — chain runs on real localization (1.4 km; tie points ~1.2 km). Next: OD with 2 photos per pass, combined over several passes (the planned operation).
 2. **Default setup: top 10 tiles, search on the GPU, packed tile features, TensorRT LightGlue (1,024 points), stop at the first tile with ≥ 30 inliers** (0.44 s per photo on average). Remaining speed options: see *What would make it faster*.
 3. **Reject wrong fixes** — 3 of 108 astronaut-photo fixes are more than 50 km off; none on Argus-like frames.
-4. **Coordinate error for OD** — being modelled by Priyanka and Pedro.
+4. **Coordinate error for OD** — error models for OD weighting are in progress (`od/make_dataset.py` on master).

@@ -27,7 +27,7 @@ The **localization model = retriever + matcher**, same as the AstroLoc paper.
 | **DINOv2-base** (retriever backbone) | Neural network (vision transformer): cuts the image into patches and describes each | Off the shelf (Meta, pretrained); its last layers are fine-tuned with small add-on weights (LoRA) |
 | **SALAD** (retriever pooling) | Neural network layer: groups the patch descriptions into one vector, discarding clouds/ocean | Published design; trained as part of AstroLoc |
 | **Linear layer** (retriever output) | One neural network layer: squeezes to 2,048 numbers | Trained as part of AstroLoc |
-| → **AstroLoc retriever** = the three above | | **Trained by the team** (Priyanka's rebuild of the paper, checkpoint `faithful_lora_v2`; the paper released no code or weights) |
+| → **AstroLoc retriever** = the three above | | **Trained by the team** (the team's rebuild of the paper, checkpoint `faithful_lora_v2`; the paper released no code or weights) |
 | **Search** | Plain math: dot product against stored tile fingerprints | No learning |
 | **SIFT** | Classical algorithm: finds distinctive points (blob corners) and describes each with 128 numbers | Not learned (OpenCV) |
 | **LightGlue** | Neural network (transformer with attention): decides which SIFT points in the photo and tile are the same place | Off the shelf: the authors' pretrained SIFT weights, not retrained by us |
@@ -45,7 +45,7 @@ Two papers from the same group. AstroLoc (2025) is the newer, better one.
 | | EarthLoc | AstroLoc |
 |---|---|---|
 | Retriever | ResNet50 + MixVPR, 4096 numbers | DINOv2 + SALAD, 2048 or 512 numbers |
-| In our repo | authors' released weights, used as a baseline | **Priyanka's rebuild from the paper** — no code was released |
+| In our repo | authors' released weights, used as a baseline | **the team's rebuild from the paper** — no code was released |
 | Key idea | trained on satellite tiles | also trains on real astronaut photos, which look different from clean maps |
 
 ## 3. What runs on the Jetson
@@ -86,7 +86,7 @@ The matcher works on each candidate tile's feature points, so besides the finger
 
 **Validation status:**
 - **Argus-like imagery:** tested on 208 Landsat frames (`/mnt/sda2/geotiffs`): 60% fix, matched points within 0.7 km. Northern zones with snow/winter imagery fix much less often.
-- **Coordinate error in km:** measured per matched point (above). Priyanka and Pedro are modelling the error for OD.
+- **Coordinate error in km:** measured per matched point (above). Error models for OD weighting are in progress.
 - **OD:** localization → FSW-Payload OD runs end to end on a simulated pass (~1.4 km).
 
 ## 6. The three repos

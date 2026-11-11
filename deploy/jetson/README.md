@@ -80,7 +80,7 @@ The setup is: top 10 tiles, search on the GPU, tile features precomputed and pac
 
 **Lab workstation** (`172.24.58.65`, 2× RTX 4090, Ubuntu)
 - You need the CMU VPN when off campus: `ssh <you>@172.24.58.65`.
-- **Rules (Priyanka):** no personal data, no downloaded executables (pip into your own env is fine), **never reboot**, **no sudo**, and never interrupt other people's jobs.
+- **Rules:** no personal data, no downloaded executables (pip into your own env is fine), **never reboot**, **no sudo**, and never interrupt other people's jobs.
 - Check `nvidia-smi` and use a free GPU with `CUDA_VISIBLE_DEVICES` (lately GPU 0 has someone else's job, so use 1).
 - The home disk is ~97% full, so delete large scratch files when you're done.
 
@@ -211,7 +211,7 @@ The installer wheels are kept in `~/Desktop/astroloc/wheels/`. To rebuild from s
 | Map tiles, 2021 zoom 9 | `data/database/2021_09/` (folders are `{year}_{zoom}`) | `tiles/2021_09/` (720 MB) |
 | Astronaut photos (17,763) | `data/queries/` | — |
 | Simulated Argus frames | `/mnt/sda2/geotiffs/` (4609 × 2593 Landsat) | — |
-| Priyanka's GeoTIFF results | `reference_db/argus_geotiff_eval/` | — |
+| GeoTIFF evaluation results | `reference_db/argus_geotiff_eval/` | — |
 | TensorRT engines | — | `astroloc_full_fp32.trt`, `nano_v2_fp32.trt` |
 | 200-photo test set | `/home/soham/e2e_alps_full/` (readable only to its Unix group; otherwise rebuild with §5.2) | `e2e_alps_full/` |
 | Tile features | — | `tile_feats_2021_09/` (per tile), `tile_feats_pack/` (packed) |
@@ -362,10 +362,10 @@ Every fix also logs `tie_error_km` (tie points vs truth from the photo's four co
 
 ## 7. Known issues and open questions
 
-- **Image shape:** the team uses square images (Priyanka's decision), so the square 1024 × 1024 test photos match the flight input. Her GeoTIFF evaluation also favours a centre square crop over squashing the 4608 × 2592 frame (R@1 71% vs 55%).
-- **Training overlap:** a photo counts as "unseen" if it is within 2,000 km of a held-out region. Whether the GAPE training photos overlap the 17k photo set elsewhere is an open question for Priyanka.
+- **Image shape:** the team uses square images, so the square 1024 × 1024 test photos match the flight input. The GeoTIFF evaluation also favours a centre square crop over squashing the 4608 × 2592 frame (R@1 71% vs 55%).
+- **Training overlap:** a photo counts as "unseen" if it is within 2,000 km of a held-out region. Whether the GAPE training photos overlap the 17k photo set elsewhere is an open question.
 - **Wrong fixes:** on astronaut photos 3 of 108 fixes are more than 50 km off, and a high inlier count doesn't rule this out (one 245-inlier fix was 90 km off). None on the Argus-like frames. OD should still filter them.
 - **Snow / winter imagery:** northern GeoTIFF zones (~40–48° N) fix 0–7 of 13 frames against 12–13 in the south; their Landsat mosaics include snowy and winter scenes while the database tiles look like summer. Paused for now.
-- **OD:** `od/simulate_pass.py` writes FSW-Payload's own OD input files directly. The repo's `integration/batchopt_adapter.py` is not used: it imports GNC-Payload through a path in Priyanka's home and rescales pixels to 4608 × 2592, which doesn't fit square frames.
+- **OD:** `od/simulate_pass.py` writes FSW-Payload's own OD input files directly. The repo's `integration/batchopt_adapter.py` is not used: it imports GNC-Payload through a hardcoded home-folder path and rescales pixels to 4608 × 2592, which doesn't fit square frames.
 - **Checkpoints:** 10 full-size runs exist; `faithful_lora_v2` is the one named current. Nano v1 scores 3% top-1, so don't use it.
 - **Loading old LoRA checkpoints:** those saved before commit `cc75c2b` need their weight names remapped. Our scripts and the repo (from `d92f5bc` on) both do this.
