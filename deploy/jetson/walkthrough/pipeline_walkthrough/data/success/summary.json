@@ -1,0 +1,264 @@
+{
+ "label": "success",
+ "photo": "@17.366867@9.608082@19.371439@10.212404@19.514276@8.592777@17.509704@7.988454@ISS062-E-53421@20200224@25.0@10.7@39179@150.9@.jpg",
+ "photo_shape": [
+  1024,
+  1024,
+  3
+ ],
+ "truth_centre": [
+  18.440571499999997,
+  9.10042925
+ ],
+ "nadir": [
+  25.0,
+  10.7
+ ],
+ "fingerprint_dim": 2048,
+ "fingerprint_norm": 1.0,
+ "db_tiles": 7602,
+ "candidates": [
+  {
+   "rank": 0,
+   "tile_id": "09_0228_0268@2021",
+   "score": 0.7110344171524048,
+   "rotation_deg": 270,
+   "correct": true,
+   "km_from_truth": 94.12778541387004,
+   "raw_matches": 185,
+   "inliers": 150,
+   "tile_shape": [
+    800,
+    800
+   ],
+   "tile_keypoints": 821
+  },
+  {
+   "rank": 1,
+   "tile_id": "09_0226_0266@2021",
+   "score": 0.6982473134994507,
+   "rotation_deg": 0,
+   "correct": true,
+   "km_from_truth": 118.82895541426316,
+   "raw_matches": 166,
+   "inliers": 125,
+   "tile_shape": [
+    800,
+    800
+   ],
+   "tile_keypoints": 793
+  },
+  {
+   "rank": 2,
+   "tile_id": "09_0226_0268@2021",
+   "score": 0.6739324927330017,
+   "rotation_deg": 180,
+   "correct": true,
+   "km_from_truth": 123.98313845086709,
+   "raw_matches": 146,
+   "inliers": 117,
+   "tile_shape": [
+    800,
+    800
+   ],
+   "tile_keypoints": 831
+  },
+  {
+   "rank": 3,
+   "tile_id": "09_0228_0266@2021",
+   "score": 0.6665684580802917,
+   "rotation_deg": 0,
+   "correct": true,
+   "km_from_truth": 87.17064968179017,
+   "raw_matches": 170,
+   "inliers": 136,
+   "tile_shape": [
+    800,
+    800
+   ],
+   "tile_keypoints": 787
+  },
+  {
+   "rank": 4,
+   "tile_id": "09_0284_0274@2021",
+   "score": 0.5972200632095337,
+   "rotation_deg": 270,
+   "correct": false,
+   "km_from_truth": 4377.654654933607,
+   "raw_matches": 17,
+   "inliers": 0,
+   "tile_shape": [
+    800,
+    800
+   ],
+   "tile_keypoints": 856
+  },
+  {
+   "rank": 5,
+   "tile_id": "09_0230_0266@2021",
+   "score": 0.5773220062255859,
+   "rotation_deg": 0,
+   "correct": false,
+   "km_from_truth": 213.08900841520216,
+   "raw_matches": 33,
+   "inliers": 14,
+   "tile_shape": [
+    800,
+    800
+   ],
+   "tile_keypoints": 828
+  },
+  {
+   "rank": 6,
+   "tile_id": "09_0284_0276@2021",
+   "score": 0.5672879219055176,
+   "rotation_deg": 270,
+   "correct": false,
+   "km_from_truth": 4399.214988503626,
+   "raw_matches": 19,
+   "inliers": 4,
+   "tile_shape": [
+    800,
+    800
+   ],
+   "tile_keypoints": 841
+  },
+  {
+   "rank": 7,
+   "tile_id": "09_0224_0334@2021",
+   "score": 0.5666740536689758,
+   "rotation_deg": 0,
+   "correct": false,
+   "km_from_truth": 4930.053190199757,
+   "raw_matches": 18,
+   "inliers": 0,
+   "tile_shape": [
+    800,
+    800
+   ],
+   "tile_keypoints": 812
+  },
+  {
+   "rank": 8,
+   "tile_id": "09_0286_0276@2021",
+   "score": 0.5553308725357056,
+   "rotation_deg": 270,
+   "correct": false,
+   "km_from_truth": 4542.928709021914,
+   "raw_matches": 29,
+   "inliers": 4,
+   "tile_shape": [
+    800,
+    800
+   ],
+   "tile_keypoints": 838
+  },
+  {
+   "rank": 9,
+   "tile_id": "09_0226_0280@2021",
+   "score": 0.5462955236434937,
+   "rotation_deg": 0,
+   "correct": false,
+   "km_from_truth": 970.6347252586424,
+   "raw_matches": 30,
+   "inliers": 4,
+   "tile_shape": [
+    800,
+    800
+   ],
+   "tile_keypoints": 796
+  },
+  {
+   "rank": 10,
+   "tile_id": "09_0224_0266@2021",
+   "score": 0.5459798574447632,
+   "rotation_deg": 0,
+   "correct": false,
+   "km_from_truth": 252.85935627667385,
+   "raw_matches": 35,
+   "inliers": 0,
+   "tile_shape": [
+    800,
+    800
+   ],
+   "tile_keypoints": 843
+  },
+  {
+   "rank": 11,
+   "tile_id": "09_0222_0278@2021",
+   "score": 0.5446118712425232,
+   "rotation_deg": 90,
+   "correct": false,
+   "km_from_truth": 899.492682784459,
+   "raw_matches": 16,
+   "inliers": 4,
+   "tile_shape": [
+    800,
+    800
+   ],
+   "tile_keypoints": 842
+  },
+  {
+   "rank": 12,
+   "tile_id": "09_0224_0276@2021",
+   "score": 0.5444271564483643,
+   "rotation_deg": 180,
+   "correct": false,
+   "km_from_truth": 710.1879733827627,
+   "raw_matches": 21,
+   "inliers": 0,
+   "tile_shape": [
+    800,
+    800
+   ],
+   "tile_keypoints": 847
+  },
+  {
+   "rank": 13,
+   "tile_id": "09_0230_0284@2021",
+   "score": 0.5429864525794983,
+   "rotation_deg": 180,
+   "correct": false,
+   "km_from_truth": 1287.1575443788834,
+   "raw_matches": 20,
+   "inliers": 4,
+   "tile_shape": [
+    800,
+    800
+   ],
+   "tile_keypoints": 805
+  },
+  {
+   "rank": 14,
+   "tile_id": "09_0224_0310@2021",
+   "score": 0.5423789024353027,
+   "rotation_deg": 270,
+   "correct": false,
+   "km_from_truth": 3177.443036225696,
+   "raw_matches": 38,
+   "inliers": 4,
+   "tile_shape": [
+    800,
+    800
+   ],
+   "tile_keypoints": 862
+  }
+ ],
+ "best_rank": 0,
+ "photo_keypoints": 823,
+ "fix": true,
+ "min_inliers": 30,
+ "estimated_centre": [
+  18.308507212904296,
+  9.043626494240016
+ ],
+ "error_km": 15.861133006216109,
+ "tie_points": 150,
+ "stage_seconds": {
+  "preprocess": 0.0099,
+  "retriever (TensorRT)": 0.0973,
+  "search": 0.0353,
+  "SIFT on photo": 0.4966,
+  "LightGlue + MAGSAC, 15 tiles": 1.5276
+ }
+}

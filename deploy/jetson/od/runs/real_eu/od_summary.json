@@ -1,0 +1,308 @@
+{
+ "summary": {
+  "frames": 34,
+  "fixed_frames": 11,
+  "tie_points": 790,
+  "sigma_rad": 0.011237730841176402,
+  "frame_fix_error_km_median": 6.062762324253268,
+  "od_position_error_km": {
+   "median": 2.134541767268168,
+   "max": 4.724602506891219,
+   "end": 2.501364794419472
+  },
+  "od_velocity_error_m_s": {
+   "median": 20.25547679976427,
+   "max": 20.32828960315006
+  },
+  "initial_guess_position_error_km_median": 133.04751530832638,
+  "gyro_bias_true": [
+   0.002,
+   -0.001,
+   0.0015
+  ],
+  "gyro_bias_est": [
+   0.001938382065280746,
+   -0.0009473690051832581,
+   0.0014612829568638919
+  ],
+  "outlier_landmarks": 0,
+  "od_iterations": 1,
+  "settings": {
+   "out": "od/runs/real_eu",
+   "start": "2026-11-05T00:00:00Z",
+   "lat0": 31.5,
+   "lon0": 13.5,
+   "alt_km": 600.0,
+   "inc_deg": 97.8,
+   "descending": false,
+   "duration_s": 330,
+   "capture_s": 10,
+   "fx": 1401.679012345679,
+   "grid": 8,
+   "fix_rate": 0.596,
+   "errors_from": "deploy/jetson/od/geo_fix_errors_source.json",
+   "point_noise_km": 0.3,
+   "sigma_rad": null,
+   "gyro_noise": 0.0008726,
+   "gyro_bias": [
+    0.002,
+    -0.001,
+    0.0015
+   ],
+   "perfect": false,
+   "covariance": false,
+   "poses_only": false,
+   "tie_points_from": "od/runs/real_eu/match_results_pass.json",
+   "seed": 0
+  }
+ },
+ "frames": [
+  {
+   "t": 0.0,
+   "fix": true,
+   "rendered": true,
+   "error_km": 6.062762324253268,
+   "inliers": 110,
+   "matched_tile_correct": true,
+   "centre_est": [
+    32.06386054545454,
+    14.165156818181815
+   ]
+  },
+  {
+   "t": 10.0,
+   "fix": true,
+   "rendered": true,
+   "error_km": 4.212482664685869,
+   "inliers": 126,
+   "matched_tile_correct": true,
+   "centre_est": [
+    32.06232494444444,
+    14.242700801587302
+   ]
+  },
+  {
+   "t": 20.0,
+   "fix": true,
+   "rendered": true,
+   "error_km": 3.789088939571395,
+   "inliers": 93,
+   "matched_tile_correct": true,
+   "centre_est": [
+    32.29405896774193,
+    12.775106204301078
+   ]
+  },
+  {
+   "t": 30.0,
+   "fix": true,
+   "rendered": true,
+   "error_km": 3.8848002021271135,
+   "inliers": 77,
+   "matched_tile_correct": true,
+   "centre_est": [
+    32.36889307792208,
+    12.95881764935065
+   ]
+  },
+  {
+   "t": 40.0,
+   "fix": true,
+   "rendered": true,
+   "error_km": 35.15761197006212,
+   "inliers": 35,
+   "matched_tile_correct": false,
+   "centre_est": [
+    33.54361985714285,
+    10.927263657142857
+   ]
+  },
+  {
+   "t": 50.0,
+   "fix": true,
+   "rendered": true,
+   "error_km": 73.7112428311734,
+   "inliers": 31,
+   "matched_tile_correct": false,
+   "centre_est": [
+    33.584437774193546,
+    10.909098129032255
+   ]
+  },
+  {
+   "t": 60.0,
+   "fix": false,
+   "rendered": true
+  },
+  {
+   "t": 70.0,
+   "fix": false,
+   "rendered": true
+  },
+  {
+   "t": 80.0,
+   "fix": false,
+   "rendered": true
+  },
+  {
+   "t": 90.0,
+   "fix": true,
+   "rendered": true,
+   "error_km": 10.700999190404756,
+   "inliers": 72,
+   "matched_tile_correct": true,
+   "centre_est": [
+    37.80583027777778,
+    13.19223498611111
+   ]
+  },
+  {
+   "t": 100.0,
+   "fix": true,
+   "rendered": true,
+   "error_km": 1.7577084675260788,
+   "inliers": 66,
+   "matched_tile_correct": true,
+   "centre_est": [
+    37.78143327272727,
+    13.306170590909092
+   ]
+  },
+  {
+   "t": 110.0,
+   "fix": true,
+   "rendered": true,
+   "error_km": 5.675746889438216,
+   "inliers": 76,
+   "matched_tile_correct": true,
+   "centre_est": [
+    37.74404526315789,
+    13.29773325
+   ]
+  },
+  {
+   "t": 120.0,
+   "fix": false,
+   "rendered": true
+  },
+  {
+   "t": 130.0,
+   "fix": false,
+   "rendered": true
+  },
+  {
+   "t": 140.0,
+   "fix": false,
+   "rendered": true
+  },
+  {
+   "t": 150.0,
+   "fix": false,
+   "rendered": true
+  },
+  {
+   "t": 160.0,
+   "fix": true,
+   "rendered": true,
+   "error_km": 12.153458253698952,
+   "inliers": 67,
+   "matched_tile_correct": false,
+   "centre_est": [
+    42.87650332835821,
+    10.31115656716418
+   ]
+  },
+  {
+   "t": 170.0,
+   "fix": false,
+   "rendered": true
+  },
+  {
+   "t": 180.0,
+   "fix": false,
+   "rendered": true
+  },
+  {
+   "t": 190.0,
+   "fix": false,
+   "rendered": true
+  },
+  {
+   "t": 200.0,
+   "fix": false,
+   "rendered": true
+  },
+  {
+   "t": 210.0,
+   "fix": false,
+   "rendered": true
+  },
+  {
+   "t": 220.0,
+   "fix": false,
+   "rendered": true
+  },
+  {
+   "t": 230.0,
+   "fix": false,
+   "rendered": true
+  },
+  {
+   "t": 240.0,
+   "fix": false,
+   "rendered": true
+  },
+  {
+   "t": 250.0,
+   "fix": true,
+   "rendered": true,
+   "error_km": 12.229364144309566,
+   "inliers": 37,
+   "matched_tile_correct": false,
+   "centre_est": [
+    46.09879118918919,
+    7.671310216216217
+   ]
+  },
+  {
+   "t": 260.0,
+   "fix": false,
+   "rendered": true
+  },
+  {
+   "t": 270.0,
+   "fix": false,
+   "rendered": true
+  },
+  {
+   "t": 280.0,
+   "fix": false,
+   "rendered": true
+  },
+  {
+   "t": 290.0,
+   "fix": false,
+   "rendered": false
+  },
+  {
+   "t": 300.0,
+   "fix": false,
+   "rendered": false
+  },
+  {
+   "t": 310.0,
+   "fix": false,
+   "rendered": false
+  },
+  {
+   "t": 320.0,
+   "fix": false,
+   "rendered": false
+  },
+  {
+   "t": 330.0,
+   "fix": false,
+   "rendered": false
+  }
+ ]
+}
