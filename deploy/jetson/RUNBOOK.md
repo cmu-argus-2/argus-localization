@@ -221,30 +221,19 @@ The GPU has no separate memory; it shares the board's 7.6 GB.
 
 ### Power and battery (approximate)
 
-**Jetson** (`tegrastats` VDD_IN, the module's total input, 15 W mode, current default setup):
+**Jetson** (`tegrastats` VDD_IN, module total input, 15 W mode): **~7.6 W while localizing, ~3.3 J per photo** (4.3 W idle).
 
-| | |
-|---|---|
-| Idle | 4.3 W |
-| Localizing, average | ~7.6 W |
-| Energy per photo | ~3.3 J (0.44 s) |
-| Extra over idle, per photo | ~1.4 J |
+**Battery** (Argus BatteryBoard v3.1, [cmu-argus-2/Avionics-BatteryBoard](https://github.com/cmu-argus-2/Avionics-BatteryBoard)): 6 × Panasonic NCR18650GA in 2S3P, 7.2 V, 10.35 Ah ≈ **74.5 Wh**.
 
-**Battery** (Argus BatteryBoard v3.1, [cmu-argus-2/Avionics-BatteryBoard](https://github.com/cmu-argus-2/Avionics-BatteryBoard)): 6 × Panasonic NCR18650GA in 2S3P, 7.2 V nominal (8.4 V full, ~5 V empty), 10.35 Ah ≈ **74.5 Wh**. MAX17205 fuel gauge, battery heaters, per-cell fuses.
-
-| | Energy | Share of the 74.5 Wh pack |
+| | Energy | Share of battery |
 |---|---|---|
-| One photo | 3.3 J (0.0009 Wh) | ~0.001% |
-| 100 photos, back to back | 330 J (0.09 Wh) | ~0.1% |
-| One pass as planned: 2 photos | ~7 J (0.002 Wh) | ~0.003% |
-| Localizing nonstop for 10 min | ~1.3 Wh | ~1.7% |
+| One photo | 3.3 J | ~0.001% |
+| One pass as planned (2 photos) | ~7 J | ~0.003% |
+| 100 photos | 330 J (0.09 Wh) | ~0.1% |
 | Localizing nonstop for 1 h | ~7.6 Wh | ~10% |
 
-- **The Jetson never sits idle:** the main board powers it on only to take and localize two photos per pass (longer sessions possible later). So the energy is the photos plus startup, which is not yet measured and likely larger than two photos.
-- **Localization is cheap on power:** a pass is a few thousandths of a percent of the battery.
-- **OD with 2 photos per pass:** the OD results here used 11 fixes over 5.5 min; with 2 per pass, OD has to combine several passes (not yet tested).
-- **Not included:** converter losses (battery → Jetson), cold reducing capacity, depth-of-discharge limits, other subsystems' load.
-- **Open (avionics):** the Jetson's power allocation per orbit, orbit-average solar input, whether the Jetson may run in eclipse, converter efficiency.
+- The main board powers the Jetson only to take and localize the photos, so it never sits idle.
+- Not included: Jetson startup (not yet measured), converter losses, cold, depth-of-discharge limits.
 
 ### What would make it faster, biggest likely win first
 Done and rejected items are in the Experiment log. The TensorRT LightGlue engine takes ~34 ms per tile.
