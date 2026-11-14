@@ -28,7 +28,7 @@ Running AstroLoc localization on the Jetson Orin Nano: photo → retriever → s
 | Time / energy per photo | 0.45 s mean / ~3.3 J | 0.44 s mean / ~3.3 J |
 
 - **OD:** the Jetson's real tie points into FSW-Payload's OD on a simulated pass give **1.40 km** orbit error (see *Localization → OD*).
-- **Cost:** ~7.6 W while localizing, 3.9 GB peak board memory (of 7.6 GB).
+- **Cost:** ~7.6 W while localizing, 3.9 GB peak board memory (of 7.6 GB; measured on the earlier setup).
 - **Time:** a photo with a fix takes 0.2–0.4 s; one with no fix checks all 10 tiles (~0.65 s, the worst case). 3.3 s per photo originally; each step is in the *Experiment log*.
 - **Wrong fixes:** 3 of 108 astronaut-photo fixes are > 50 km off (none on Argus-like frames); filter before OD.
 - **Backup model:** AstroLoc-tiny (`nano_train/checkpoints_faithful_dynamic`, 27M parameters, 512 numbers): 54.0% vs 55.0% fix, 0.70 s, 0.5 GB less memory (setup before the stop rule).
@@ -141,9 +141,9 @@ Pass: Libya (31.5° N, 13.5° E) north over Tunisia, Sicily, Sardinia/Corsica an
 - **Inside PyTorch LightGlue, the ARM CPU was the limit:** the thread launching ~850 small GPU kernels per tile was busy 99% of the time, the GPU 53%. This is why the TensorRT engine helps.
 - **Disk is not a bottleneck.** Clocks in 15 W mode: CPU up to 1.51 GHz, GPU up to 625 MHz.
 
-### Memory
+## Memory
 
-The GPU has no separate memory; it shares the board's 7.6 GB.
+Measured on the earlier setup above (PyTorch LightGlue); not yet re-measured on the current setup. The GPU has no separate memory; it shares the board's 7.6 GB.
 
 | | MB |
 |---|---|
@@ -154,7 +154,7 @@ The GPU has no separate memory; it shares the board's 7.6 GB.
 | … PyTorch GPU tensors, peak (reserved), including the GPU database copy | 335 (366) |
 | … the rest: CUDA, cuDNN and cuBLAS libraries, Python | ~1,200 |
 
-### Power and battery (approximate)
+## Power and battery (current setup, approximate)
 
 **Jetson** (`tegrastats` VDD_IN, module total input, 15 W mode): **~7.6 W while localizing, ~3.3 J per photo** (4.3 W idle).
 
@@ -170,7 +170,7 @@ The GPU has no separate memory; it shares the board's 7.6 GB.
 - The main board switches the Jetson on about twice per orbit (capture, process, downlink) and buffers the data until a ground-station pass, so it never sits idle.
 - Not included: Jetson startup (not yet measured), converter losses, cold, depth-of-discharge limits.
 
-### What would make it faster, biggest likely win first
+## What would make it faster, biggest likely win first
 1. **Higher power mode (MAXN SUPER, JetPack 6.2):** GPU 625 → 1,020 MHz. A LightGlue of the same size runs at 21.6 ms per pair on an Orin Nano in this mode (kornia/lightglue on Hugging Face). Needs a reflash, so it's a team decision.
 2. **Tracking mode:** after the first fix, use OD's predicted position, skip the retriever and match only the 1–3 tiles near it.
 3. **Photo SIFT (CPU) in parallel with the retriever (GPU):** up to ~50 ms.
