@@ -115,9 +115,11 @@ Pass: Libya (31.5° N, 13.5° E) north over Tunisia, Sicily, Sardinia/Corsica an
 
 38 real same-pass photo pairs (12–147 s apart, times from NASA's photo pages); both photos localized on 8 of 38. These photos are oblique, so the main plan uses Argus-like nadir frames instead. Details: `two_frame/README.md`.
 
-## Where the time goes
+## Where the time goes — ⚠️ EARLIER SETUP (0.73 s), NOT CURRENT
 
-Measured on an earlier setup (PyTorch LightGlue, half precision, all 10 tiles, 0.73 s per photo); since then the TensorRT engine takes ~34 ms per tile in place of ~58 ms, and the stop rule checks ~5 tiles instead of 10. 50 photos, 15 W mode, nothing else running; per-step timing adds ~0.07 s. `profile_full.py --lightglue-mp --tile-pack ../tile_feats_pack --search-on-gpu`.
+> ⚠️ **Old run, kept for the breakdown.** PyTorch LightGlue (half precision), all 10 tiles: **0.73 s per photo**. The current setup is **0.44 s**: the TensorRT LightGlue engine takes ~34 ms per tile instead of ~58 ms, and the stop rule checks ~5 tiles instead of 10. The step shares below are from the old run.
+
+50 photos, 15 W mode, nothing else running; per-step timing adds ~0.07 s. `profile_full.py --lightglue-mp --tile-pack ../tile_feats_pack --search-on-gpu`.
 
 | Step | Runs on | ms per photo | Share |
 |---|---|---|---|
