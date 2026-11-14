@@ -28,7 +28,7 @@ The workstation and the Jetson are shared by the whole team. A mistake there aff
 - **Accuracy must be checked, not assumed.** Use `compare_topk.py` against the baseline and report fixes lost or gained and answers changed. A speed-up only counts if accuracy holds.
 - **Log `tegrastats` with every timed run** (`run_match_full.sh` does this) and report time, peak board memory, average power and energy per photo.
 - **Find where time goes before optimizing.** Use `profile_full.py` for per-step cost and `nsys` (`lg_bench.py`) for inside the GPU.
-- **Verify new code against the old path** before timing it. Example: `test_batched_lightglue.py` checks batched matching against one tile at a time.
+- **Verify new code against the old path** before timing it. Example: `archive/test_batched_lightglue.py` checks batched matching against one tile at a time.
 - **Record negative results too** (tested and rejected, with the numbers), so nobody repeats them.
 - The 200 test photos are oblique, square astronaut photos. Say so when a result might not carry over to Argus frames (4608 × 2592, near-nadir).
 

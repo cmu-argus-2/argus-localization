@@ -6,7 +6,7 @@ Running AstroLoc localization on the Jetson Orin Nano: photo → retriever → s
 
 **The full localization flow runs on the Jetson** — TensorRT retriever, database search and the SIFT + LightGlue matcher in one process — and reproduces the workstation.
 
-**Now:** 0.44 s and ~3.3 J per photo. Fix on 54% of astronaut photos and 60% of Argus-like frames; on Argus-like frames the tie points are within 0.7 km median. Real tie points into FSW-Payload OD on a simulated pass: 1.4 km orbit error.
+**Now:** full-size AstroLoc retriever (106.5M parameters; ~0.1 s of the total) + TensorRT LightGlue: 0.44 s and ~3.3 J per photo. Fix on 54% of astronaut photos and 60% of Argus-like frames; on Argus-like frames the tie points are within 0.7 km median. Real tie points into FSW-Payload OD on a simulated pass: 1.4 km orbit error.
 
 ### Retrieval only (rough location)
 
@@ -232,7 +232,7 @@ The GPU has no separate memory; it shares the board's 7.6 GB.
 | 100 photos | 330 J (0.09 Wh) | ~0.1% |
 | Localizing nonstop for 1 h | ~7.6 Wh | ~10% |
 
-- The main board powers the Jetson only to take and localize the photos, so it never sits idle.
+- The main board switches the Jetson on about twice per orbit (capture, process, downlink) and buffers the data until a ground-station pass, so it never sits idle.
 - Not included: Jetson startup (not yet measured), converter losses, cold, depth-of-discharge limits.
 
 ### What would make it faster, biggest likely win first
@@ -360,7 +360,7 @@ Results land in `match_results_pre.json`, with logs `match_run_pre.log` and `teg
 cd ~/Desktop/astroloc
 for k in 15 10 5; do ./run_match_full.sh k$k --tile-feats ../tile_feats_2021_09 --top-k $k; done
 python3 compare_topk.py --data e2e_alps_full --ks 15 10 5
-# half precision / fewer points: run_speed.sh, then
+# half precision / fewer points: archive/run_speed.sh, then
 python3 compare_topk.py --data e2e_alps_full --tags base10 mp kp512 mp_kp512
 ```
 
@@ -382,7 +382,7 @@ python3 visualize_trace.py --trace walkthrough/pipeline_walkthrough/data --out w
 | `e2e_match.py` | both | adds the matcher on top of retrieval; `--engine` runs the TensorRT retriever in the same process, `--tile-feats` uses stored tile features, `--stop-inliers N` stops at the first tile with ≥ N inliers, `--log-tiles` records every tile's inliers, `--save-tie-points` stores each fix's (u, v, lat, lon) points; every fix logs `tie_error_km` (tie points vs truth from the photo's corners, the error OD sees) next to `match_error_km` (footprint centre) |
 | `precompute_tile_feats.py` | both | computes and stores the SIFT features of every tile, once |
 | `run_match_full.sh` | Jetson | runs `e2e_match.py` with `tegrastats` logging; the first argument tags the output files |
-| `profile_match.py` | Jetson | times each matcher stage on 20 photos |
+| `archive/profile_match.py` | Jetson | times each matcher stage on 20 photos (before stored tile features) |
 | `compare_topk.py` | Jetson | compares full-flow runs side by side (`--ks` or `--tags`) |
 | `od/simulate_pass.py` | Mac | simulated Argus pass → simulated (or, with `--tie-points-from`, real) localization tie points → FSW-Payload Python OD, compared with truth; `--poses-only` writes frame poses for rendering |
 | `od/render_pass.py` | workstation | renders a pass's frames from the Landsat GeoTIFFs as an e2e test set |
@@ -393,15 +393,15 @@ python3 visualize_trace.py --trace walkthrough/pipeline_walkthrough/data --out w
 | `lightglue_trt.py` | workstation, Jetson | LightGlue as a fixed-size network: export to ONNX (`export --points --batch --layers`), check against PyTorch (`check`); used by `e2e_match.py --lightglue-trt` |
 | `trt_lg_bench.py` | Jetson | time each step around the TensorRT LightGlue engine |
 | `prepare_geotiff_set.py` | workstation | square Argus-like test frames from the Landsat GeoTIFFs |
-| `run_speed.sh` | Jetson | current vs half precision vs 512 points vs both |
-| `run_speed2.sh` | Jetson | current vs small CPU fixes vs preloaded tile features vs batched LightGlue |
+| `archive/run_speed.sh` | Jetson | current vs half precision vs 512 points vs both |
+| `archive/run_speed2.sh` | Jetson | current vs small CPU fixes vs preloaded tile features vs batched LightGlue |
 | `pack_tile_feats.py` | Jetson | packs the 7,602 tile feature files into one set of arrays (`--tile-pack`) |
-| `test_batched_lightglue.py` | either | checks batched LightGlue against one tile at a time |
+| `archive/test_batched_lightglue.py` | either | checks batched LightGlue against one tile at a time |
 | `profile_full.py` | Jetson | time, CPU, GPU, memory and disk cost of every step (run with `tegrastats` for power) |
 | `lg_bench.py` | Jetson | one LightGlue pair repeated, for `nsys profile -t cuda,nvtx` |
 | `pipeline_trace.py`, `visualize_trace.py` | Jetson, Mac | record and draw every stage for one success and one failure; see `walkthrough/PIPELINE-WALKTHROUGH.md` |
 | `export_onnx.py` | workstation | PyTorch → ONNX, with a parity check |
-| `check_engine.py`, `compare_precision.py`, `test_images.py` | Jetson | engine sanity, FP32 vs FP16, real-image check |
+| `check_engine.py`, `test_images.py`, `archive/compare_precision.py` | Jetson | engine sanity, real-image check, FP32 vs FP16 |
 
 ## Environment
 
@@ -411,7 +411,7 @@ python3 visualize_trace.py --trace walkthrough/pipeline_walkthrough/data --out w
 
 ## Known issues
 
-1. **Pick the right checkpoint.** Nano v1 (`nano_train/checkpoints/`) scores 3% top-1; v2 scores 34.5%. There are ten full-size checkpoints, two from the latest training round (`checkpoints_faithful_lora_v2`, `checkpoints_faithful_dynamic_v2`); only `checkpoints_faithful_lora_v2` has been tested, and the repo's own OD code names it the current best model. A newer AstroLoc-tiny run, `nano_train/checkpoints_faithful_dynamic`, nearly matches full-size on the 200 photos (see Experiment log); it is not yet on the Jetson.
+1. **Pick the right checkpoint.** Nano v1 (`nano_train/checkpoints/`) scores 3% top-1; v2 scores 34.5%. There are ten full-size checkpoints, two from the latest training round (`checkpoints_faithful_lora_v2`, `checkpoints_faithful_dynamic_v2`); only `checkpoints_faithful_lora_v2` has been tested, and the repo's own OD code names it the current best model. A newer AstroLoc-tiny run, `nano_train/checkpoints_faithful_dynamic`, nearly matches full-size on the 200 photos and runs on the Jetson (0.70 s, 0.5 GB less memory; see Experiment log); full-size stays the default.
 2. **LoRA checkpoints saved before commit `cc75c2b` (nano v2 among them) need their weight names remapped.** That commit renames LoRA weights (`blocks.N.` → `blocks.N.block.`). Our scripts remap the names on load, and so does the repo's own loader from `d92f5bc` on.
 3. **TensorRT needs a static batch and opset 17.** Export with `--static-batch --batch 1 --opset 17`.
 4. **FP16 rejected.** 2× faster but cosine 0.877 vs FP32 — enough to retrieve wrong tiles.

@@ -7,7 +7,7 @@ For each photo, the top-10 tiles are matched three ways:
 Reports matches and MAGSAC inliers per tile. Works on CPU or GPU.
 
 Run from the argus-localization repo root:
-    python deploy/jetson/test_batched_lightglue.py --data ~/e2e_alps_full \
+    python deploy/jetson/archive/test_batched_lightglue.py --data ~/e2e_alps_full \
         --tiles-dir /mnt/sdc1/astroloc/data/database/2021_09 --photos 5
 """
 
@@ -24,6 +24,7 @@ from PIL import Image
 
 sys.path.insert(0, os.getcwd())
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # e2e_match.py, one folder up
 from e2e_match import batched_lightglue, homography_check  # noqa: E402
 from data_loading.earthloc_loader import parse_geotile_filename  # noqa: E402
 from lightglue.utils import numpy_image_to_torch  # noqa: E402

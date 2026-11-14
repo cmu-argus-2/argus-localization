@@ -6,6 +6,15 @@ Everything needed to run, measure and extend AstroLoc localization on the Jetson
 - **`overview/START-HERE.md`** — the whole system on one page: each part, which are neural networks, which are off the shelf.
 - **`walkthrough/PIPELINE-WALKTHROUGH.pdf`** — one photo through every stage, with pictures. Start there if the pipeline is new to you.
 
+**Quick start** (Jetson, shared folder `~/Desktop/astroloc/`, everything already installed):
+```bash
+cd ~/Desktop/astroloc
+./run_match_full.sh mine --top-k 10 --tile-pack ../tile_feats_pack --search-on-gpu \
+    --lightglue-trt ../lightglue_sift_k1024_fp16.trt --stop-inliers 30 --save-tie-points
+# → e2e_alps_full/match_results_mine.json: per photo fix / no fix, tie points, errors; summary in match_run_mine.log
+```
+Use another test set with `D=../e2e_geotiff ./run_match_full.sh …`. Access and setup: §3–4. OD from the tie points: `od/README.md`.
+
 ---
 
 ## 1. What it does
@@ -43,36 +52,61 @@ The setup is: top 10 tiles, search on the GPU, tile features precomputed and pac
 
 ## 2. What's in this folder
 
+**Run**
 | File | Runs on | What it does |
 |---|---|---|
-| `export_onnx.py` | workstation | PyTorch checkpoint → ONNX, with a check that the ONNX output matches PyTorch |
-| `e2e_prepare.py` | workstation | builds the zoom-9 fingerprint database and a 200-photo test set with ground truth |
-| `e2e_jetson.py` | Jetson | retrieval-only test with the TensorRT engine, compared with the workstation |
-| `e2e_match.py` | both | **the full flow** (retriever + search + matcher). All options in §6 |
-| `lightglue_trt.py` | workstation, Jetson | LightGlue rebuilt as a fixed-size network: ONNX export and check, and the TensorRT runtime used by `--lightglue-trt` |
-| `trt_lg_bench.py` | Jetson | times the TensorRT LightGlue engine |
-| `run_stop.sh`, `simulate_stop.py` | Jetson, any | timed stop-rule runs, and replaying stop thresholds offline from a `--log-tiles` run |
-| `prepare_geotiff_set.py` | workstation | builds the 208 Argus-like frames from the Landsat GeoTIFFs |
-| `grade_tie_points.py` | workstation | exact tie-point error on those frames (truth from each GeoTIFF's geotransform) |
-| `od/simulate_pass.py` | Mac / any | simulated Argus pass → simulated or real tie points → FSW-Payload Python OD, compared with truth |
-| `od/render_pass.py` | workstation | renders a pass's frames from the GeoTIFFs (true perspective views) as a test set |
-| `od/check_tie_points.py` | Mac / any | exact tie-point error on a rendered pass |
-| `od/runs/` | — | results of the OD runs in `RUNBOOK.md` |
-| `overview/` | — | `START-HERE.md` (one-page overview of the system) and the AstroLoc paper summary |
-| `precompute_tile_feats.py` | both | computes SIFT features for every tile once (one `.npz` per tile) |
-| `pack_tile_feats.py` | Jetson | packs those 7,602 files into one memory-mapped set (`--tile-pack`) |
-| `run_match_full.sh` | Jetson | runs `e2e_match.py` with `tegrastats` logging; first argument = run tag |
-| `run_speed.sh`, `run_speed2.sh` | Jetson | the comparison batches recorded in `RUNBOOK.md` |
-| `compare_topk.py` | Jetson | puts runs side by side: accuracy, time, memory, power |
+| `e2e_match.py` | Jetson, workstation | **the full flow**: retriever + search + matcher, scoring, tie points. Options in §6 |
+| `run_match_full.sh` | Jetson | runs `e2e_match.py` with `tegrastats` power/memory logging; first argument = run tag |
+| `lightglue_trt.py` | workstation, Jetson | LightGlue as a fixed-size network: ONNX export and check, and the TensorRT runtime behind `--lightglue-trt` |
+
+**Build once**
+| File | Runs on | What it does |
+|---|---|---|
+| `export_onnx.py` | workstation | retriever checkpoint → ONNX, checked against PyTorch (then `trtexec` on the Jetson, §5.1) |
+| `e2e_prepare.py` | workstation | fingerprint database of all tiles + the 200-photo test set with truth |
+| `prepare_geotiff_set.py` | workstation | the 208 Argus-like test frames from the Landsat GeoTIFFs |
+| `precompute_tile_feats.py`, `pack_tile_feats.py` | Jetson, workstation | SIFT features of every tile, then packed into one memory-mapped set (`--tile-pack`) |
+
+**Evaluate and compare**
+| File | Runs on | What it does |
+|---|---|---|
+| `e2e_jetson.py` | Jetson | retrieval only, compared with the workstation |
+| `grade_tie_points.py` | workstation | exact tie-point error on the Argus-like frames |
+| `compare_topk.py` | Jetson | runs side by side: accuracy, time, memory, power |
+| `run_stop.sh`, `simulate_stop.py` | Jetson, any | stop-rule timing runs; replay stop thresholds offline from a `--log-tiles` run |
+| `check_engine.py`, `test_images.py` | Jetson | engine sanity check; real-image check |
+
+**Profile**
+| File | Runs on | What it does |
+|---|---|---|
 | `profile_full.py` | Jetson | time, CPU, GPU, memory and disk cost of every step |
-| `lg_bench.py` | Jetson | one LightGlue pair repeated, for `nsys` |
-| `profile_match.py` | Jetson | older per-stage timing of the matcher (before tile features were stored) |
-| `test_batched_lightglue.py` | either | checks batched LightGlue against one tile at a time |
+| `lg_bench.py`, `trt_lg_bench.py` | Jetson | one LightGlue pair repeated (PyTorch, for `nsys`); TensorRT engine timing |
 | `pipeline_trace.py`, `visualize_trace.py` | Jetson, Mac | record and draw every stage for one photo (`walkthrough/`) |
-| `check_engine.py`, `compare_precision.py`, `test_images.py` | Jetson | engine sanity check, FP32 vs FP16, real-image check |
-| `two_frame/*.py` | workstation, Mac, Jetson | finding real same-pass photo pairs for OD (§5.8) |
-| `config.sh`, `sync.sh` | Mac | your settings, and copying scripts to the workstation or Jetson |
-| `jetson_folder_README.md` | — | copy of the label file inside the Jetson's shared folder |
+
+**Folders**
+| Folder | What's in it |
+|---|---|
+| `od/` | localization → orbit determination on a simulated pass, and results (own README) |
+| `two_frame/` | real same-pass astronaut photo pairs for OD (own README) |
+| `walkthrough/` | one photo through every stage, with figures |
+| `overview/` | one-page system overview, AstroLoc paper summary, copy of the Jetson folder's label file |
+| `archive/` | scripts behind past experiments, kept for reproducing the Experiment log (own README) |
+| `config.sh`, `sync.sh` | your settings, and copying scripts to the workstation or Jetson (Mac) |
+
+### Where the code is (for reviewers)
+
+| Pipeline step | Code |
+|---|---|
+| Resize + normalize | `e2e_match.py::preprocess` |
+| Retriever (TensorRT) | `e2e_match.py::trt_embedder` |
+| Search (GPU) | `main()`: dot product against `db_vecs.npy`, `torch.topk` over 4 rotations |
+| Photo SIFT, once per photo | `main()`: `extract(photo)`, handed to the repo matcher |
+| Tile features | `e2e_match.py::TilePack` (packed) or `stored_tile_feats` (one file per tile) |
+| LightGlue (TensorRT) | `lightglue_trt.py::LightGlueTRT` (`set_photo`, `match`); network in `LightGlueStatic` |
+| Geometry check | `e2e_match.py::homography_check` (MAGSAC, 3 px) |
+| Stop rule, fix decision | `main()`: stop at the first tile with ≥ `--stop-inliers`; fix if ≥ `--min-inliers` (30) |
+| Footprint, tie points | repo `Georeferencer.estimate_query_footprint`, `make_tie_points` |
+| Scoring | `e2e_match.py::tie_point_error_km`, `summarize` |
 
 ---
 
@@ -131,7 +165,7 @@ ssh argus-jetson 'cd ~/Desktop/astroloc && nohup setsid ./my_run.sh > /dev/null 
 
 ### 3.2 What's already on the Jetson (shared by everyone)
 
-There is one shared account (`argus`) and one working folder, `~/Desktop/astroloc/`, with no per-person copies. The folder has its own `README.md` with this list (a copy is `jetson_folder_README.md` here), and an empty `users/` folder for personal work. **Treat everything listed here as shared.** Use it, don't move or delete it, and put your own work where the conventions below say.
+There is one shared account (`argus`) and one working folder, `~/Desktop/astroloc/`, with no per-person copies. The folder has its own `README.md` with this list (a copy is `overview/jetson_folder_README.md` here), and an empty `users/` folder for personal work. **Treat everything listed here as shared.** Use it, don't move or delete it, and put your own work where the conventions below say.
 
 | In `~/Desktop/astroloc/` | What it is | Size |
 |---|---|---|
